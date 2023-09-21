@@ -1,0 +1,56 @@
+  *{
+            padding: 0px;
+            margin: 0px;
+        }
+        .div1 {
+            width: 95%;
+          /*   border: 2px double black; */
+            margin: auto;
+        }
+        input{
+            font-size: 15px;
+            font-family: "Microsoft Sans Serif";
+            text-align: center;
+            border: none;
+            background-color: transparent;
+            width: 95%;
+        }
+        .submit1{
+            margin: auto;
+            background-color: gray;
+            width: 30%;
+        }
+       /* button{
+            font-size: 20px;
+            font-family: "Microsoft Sans Serif";
+            text-align: center;
+            margin: auto;
+            background-color: transparent;
+            width: 31%;
+        }*/
+         .title{
+				font-size: 20px;
+				font-weight:bold;
+				border-bottom:none;
+		}
+		td{
+			font-size:15px;
+			text-align: center;
+		}
+		th{
+			font-size: 15px;
+		}
+		.but1{
+        	display:flex;
+        	justify-content: center;
+        	margin:5px;
+        	} 
+        button{
+            font-size: 15px;
+            font-family: "Microsoft Sans Serif";
+            /*text-align: center; */
+            margin: 5px;
+            background-color: black;
+            color:white;
+            width: 100px;
+        } 
