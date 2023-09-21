@@ -10,7 +10,7 @@ public interface LoginService {
     boolean forgetPassword(String email,Integer otpCheck,String newPassword);
 
 
-    String newPassword(String newPassword);
+    String updatePassword(Integer empId,String oldPassword,String newPassword);
 
     void logout(HttpSession httpSession);
 

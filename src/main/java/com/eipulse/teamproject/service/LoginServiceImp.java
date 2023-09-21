@@ -52,19 +52,19 @@ public class LoginServiceImp implements LoginService {
             javaMailSender.send(message);
         }
         if(otpVal==otpCheck){
-            login.setPassWord(newPassword);
+            login.setPassWord(passwordEncoder.encode(newPassword));
+            loginRepository.save(login);
             return true;
         }
         return false;
     }
     @Override
-    public String newPassword(String newPassword) {
+    public String updatePassword(Integer empId,String oldPassword,String newPassword) {
 
         return null;
     }
 
     @Override
     public void logout(HttpSession httpSession) {
-
     }
 }

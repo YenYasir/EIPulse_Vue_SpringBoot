@@ -3,14 +3,16 @@ package com.eipulse.teamproject.controller;
 
 import com.eipulse.teamproject.entitys.Employee;
 import com.eipulse.teamproject.service.EmpServiceImp;
+import jakarta.mail.Multipart;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-@Controller
+@RestController
 public class EmpController {
 
     private EmpServiceImp empServiceImp;
@@ -20,23 +22,23 @@ public class EmpController {
     }
 
     @PostMapping("/employee/post")
-    public String postNewEmployeePage(@ModelAttribute Employee newEmployee) {
-        empServiceImp.saveEmp(newEmployee);
-        return "/employee/post";
+    public Employee postNewEmployeePage(@RequestBody Employee newEmployee) {
+        return empServiceImp.saveEmp(newEmployee);
     }
 
-    @GetMapping("/employee/findAllEmp")
-    public String findAllEmpPage(Model model){
-        List<Employee> employeeList= empServiceImp.findEmpAll();
-        model.addAttribute("employees",employeeList);
-        return "/employee/allEmp";
+    @GetMapping("/employee")
+    public List<Employee> findAllEmp(){
+        List<Employee>employees =empServiceImp.findEmpAll();
+        if(employees !=null){
+            return employees;
+        }
+        return null;
     }
 
-    @GetMapping("/employee/findByIdEmp")
-    public String findByIdEmp(@RequestParam("empId")Integer empId,Model model){
-        Employee employee = empServiceImp.findEmpById(empId);
-        model.addAttribute("employee",employee);
-        return "/employee/findByIdEmp";
+    @GetMapping("/employee/{empId}")
+    public Employee findByIdEmp(@PathVariable Integer empId){
+
+        return empServiceImp.findEmpById(empId);
     }
     @GetMapping("/employee/editPage")
     public  String editEmployeePage(@RequestParam("empId")Integer empId,Model model){

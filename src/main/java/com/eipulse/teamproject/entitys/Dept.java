@@ -1,5 +1,6 @@
 package com.eipulse.teamproject.entitys;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -19,6 +20,7 @@ public class Dept {
 	@Column(name = "DeptOffice")
 	private String deptOffice;
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "dept", cascade = CascadeType.ALL)
+	@JsonIgnore
 	private List<EmployeeInfo> employeeInfo;
 
 

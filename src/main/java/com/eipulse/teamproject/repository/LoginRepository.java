@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 public interface LoginRepository extends JpaRepository<Login,Integer> {
 
 
-    @Query(value = "from Contact where email = ?1")
+    @Query(value = "from Employee where email = ?1")
     Login findByEmail(String email);
 }

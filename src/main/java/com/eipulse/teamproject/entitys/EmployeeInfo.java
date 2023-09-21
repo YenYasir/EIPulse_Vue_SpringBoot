@@ -1,5 +1,6 @@
 package com.eipulse.teamproject.entitys;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -23,6 +24,7 @@ public class EmployeeInfo {
 	@Id
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "EmpId", referencedColumnName = "empid")
+	@JsonIgnore
 	private Employee employee;
 
 }

@@ -1,5 +1,6 @@
 package com.eipulse.teamproject.entitys;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -21,6 +22,7 @@ public class Emergency {
 	private String emergencyRelationship;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "EmpId", referencedColumnName = "empid")
+	@JsonIgnore
 	private Employee employee;
 
 }

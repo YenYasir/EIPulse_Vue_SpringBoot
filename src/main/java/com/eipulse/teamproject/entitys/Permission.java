@@ -1,5 +1,6 @@
 package com.eipulse.teamproject.entitys;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -25,5 +26,6 @@ public class Permission {
 //        inverseJoinColumns = {@JoinColumn(name = "empid")})
 //    private List<Employee> employees;
 	@OneToMany(fetch = FetchType.LAZY)
+	@JsonIgnore
 	private List<EmployeePermission> employeePermission;
 }
