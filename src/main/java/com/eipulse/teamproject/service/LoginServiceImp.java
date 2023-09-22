@@ -30,7 +30,7 @@ public class LoginServiceImp implements LoginService {
     @Override
     public Login checkLogin(Integer EmpId, String PassWord) {
 
-        Login empLogin = loginRepository.findById(EmpId).get();
+        Login empLogin = loginRepository.findById(EmpId).orElse(null);
         if (empLogin != null) {
             if (passwordEncoder.matches(PassWord, empLogin.getPassWord())) {
             return empLogin;
