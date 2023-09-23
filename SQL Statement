@@ -1,0 +1,132 @@
+use eipulse;
+create table dept
+(
+    dept_id     int auto_increment primary key,
+    dept_name   varchar(30)  not null,
+    dept_office varchar(30)  not null
+);
+
+create table employee
+(
+    emp_id    int auto_increment primary key,
+    id_number varchar(20)  not null,
+    emp_name  varchar(20)  not null,
+    gender    varchar(10)  null,
+    birth     varchar(20)  not null,
+    photo     longblob     not null,
+    email     varchar(30)  not null,
+    phone     varchar(30)  not null,
+    tel       varchar(30)  null,
+    address   varchar(30)  not null
+);
+
+create table emergency
+(
+    emergency_id            int auto_increment primary key,
+    emergency_name          varchar(30)  not null,
+    emergency_phone         varchar(30)  not null,
+    emergency_relationship  varchar(30)  not null,
+    emp_id                  int          not null,
+    constraint emergency_ibfk_1 foreign key (emp_id) references employee (emp_id)
+);
+
+
+create table login
+(
+    emp_id     int           not null primary key,
+    password   varchar(255)  not null,
+    constraint login_ibfk_1 foreign key (emp_id) references employee (emp_id)
+);
+
+create table permission
+(
+    permission_id int auto_increment primary key,
+    grade         varchar(50)   not null,
+    info          varchar(255)  null
+);
+
+create table employee_permission
+(
+    emp_id         int not null,
+    permission_id  int not null,
+    primary key (emp_id, permission_id),
+    constraint employee_permission_ibfk_1 foreign key (emp_id) references employee (emp_id),
+    constraint employee_permission_ibfk_2 foreign key (permission_id) references permission (permission_id)
+);
+
+create table product
+(
+    product_id      int auto_increment primary key,
+    product_name    varchar(30)                        not null,
+    product_type    varchar(30)                        not null,
+    description     varchar(50)                        null,
+    price           int                                not null,
+    stock_quantity  int                                not null,
+    image_url       varchar(50)                        null,
+    created_at      datetime default CURRENT_TIMESTAMP null,
+    updated_at      datetime default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP
+);
+
+create table title
+(
+    title_id    int auto_increment primary key,
+    title_name  varchar(30)  not null
+);
+
+create table employee_info
+(
+    emp_id   int not null primary key,
+    dept_id  int not null,
+    title_id int not null,
+    constraint employee_info_ibfk_1 foreign key (emp_id) references employee (emp_id),
+    constraint employee_info_ibfk_2 foreign key (dept_id) references dept (dept_id),
+    constraint employee_info_ibfk_3 foreign key (title_id) references title (title_id)
+);
+
+
+
+
+
+create table shopping_cart
+(
+    cart_id     int auto_increment,
+    emp_id      int not null,
+    created_at   datetime default CURRENT_TIMESTAMP null,
+    updated_at   datetime default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP,
+    constraint shopping_cart_pk primary key (cart_id),
+    constraint shopping_cart_employee_emp_id_fk foreign key (emp_id) references employee (emp_id)
+);
+
+
+create table cart_item
+(
+    cart_item_id int auto_increment,
+    cart_id      int not null,
+    product_id   int not null,
+    quantity     int not null,
+    created_at   datetime default CURRENT_TIMESTAMP null,
+    updated_at   datetime default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP,
+    constraint cart_item_pk primary key (cart_item_id),
+    constraint cart_item_product_product_id_fk foreign key (product_id) references product (product_id),
+    constraint cart_item_shopping_cart_cart_id_fk foreign key (cart_id) references shopping_cart (cart_id)
+);
+
+create table gift_cash_list
+(
+    gift_cash_list_id int auto_increment,
+    cash              int not null,
+    gift_type         varchar(20) not null,
+    constraint gift_cash_list_pk primary key (gift_cash_list_id)
+);
+
+create table employee_gift_cash
+(
+    employee_gift_cash_id int auto_increment,
+    emp_id                int not null,
+    gift_cash_list_id     int not null,
+    created_at            datetime default CURRENT_TIMESTAMP null,
+    updated_at            datetime default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+    constraint employee_gift_cash_pk primary key (employee_gift_cash_id),
+    constraint employee_gift_cash_employee_emp_id_fk foreign key (emp_id) references employee (emp_id),
+    constraint employee_gift_cash_gift_cash_list_id_fk foreign key (gift_cash_list_id) references gift_cash_list (gift_cash_list_id)
+);
