@@ -31,7 +31,7 @@ public class EmpTestController {
 		return empRepo.saveAll(empList);
 		
 	}
-	@PostMapping("/employee/post")
+//	@PostMapping("/employee/post")
     public Employee postNewEmployeePage(@RequestParam("idNumber") String idNumber,
     									@RequestParam("EmpName") String EmpName,
     									@RequestParam("gender") String gender,
@@ -70,9 +70,9 @@ public class EmpTestController {
     }
 	
 	
-//	@PostMapping("/employee/post")
-//    public String postNewEmployeePage1(@ModelAttribute Employee newEmployee) {
-//        empService.addEmp(newEmployee);
-//        return "/employee/post";
-//    }
+	@PostMapping("/employee/post")
+    public String postNewEmployeePage1(@ModelAttribute Employee newEmployee) {
+        empService.addEmp(newEmployee);
+        return "/employee/post";
+    }
 }

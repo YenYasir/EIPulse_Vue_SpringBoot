@@ -23,6 +23,7 @@ public class Employee {
     @Column(name="EmpId")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer empId;
+    
     @Column(name="IdNumber")
     private String idNumber;
     
