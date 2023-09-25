@@ -11,6 +11,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -62,6 +63,27 @@ public class Employee {
 	
 	@Column(name="EditDate")
 	private	LocalDate editDate;
+	
+	@Column(name = "DeptId")
+	private Integer deptId;
+	
+	@Column(name = "titleid")
+	private Integer titleid;
+	
+	@Column(name = "role_id")
+	private Integer role_id;
+	
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "DeptId", referencedColumnName = " deptId",insertable = false, updatable = false)
+	private Dept dept;
+	
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "TitleId", referencedColumnName = " titleid",insertable = false, updatable = false)
+	private Title title;
+	
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "role_id", referencedColumnName = " role_id",insertable = false, updatable = false)
+	private Role role;
 	
 	@OneToOne(fetch = FetchType.LAZY,mappedBy = "employee", cascade = CascadeType.ALL)
     private EmployeeInfo employeeInfo;

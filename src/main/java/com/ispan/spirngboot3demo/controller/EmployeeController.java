@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.ispan.spirngboot3demo.model.Dept;
 import com.ispan.spirngboot3demo.model.Employee;
+import com.ispan.spirngboot3demo.model.Title;
 import com.ispan.spirngboot3demo.repository.EmployeeRepository;
 import com.ispan.spirngboot3demo.service.EmployeeService;
 
@@ -44,9 +46,31 @@ public class EmployeeController {
 	}
 	
 	//換部門>>update部門
+	@Transactional
+	@PutMapping("/emp/updateDept")
+	public String updateEmpDept(@RequestParam Integer id,@RequestParam("newdept")Dept newdept) {
+		Optional<Employee> optional = empRepo.findById(id);
+		if(optional!=null) {
+			Employee emp = optional.get();
+			emp.setDept(newdept);
+			return "修改成功";		
+		}
+		return "沒有這筆資料";
+	}
 	
 	
 	//升遷>>update>>title
+	@Transactional
+	@PutMapping("/emp/updateTitle")
+	public String updateEmpTitle(@RequestParam Integer id,@RequestParam("newtitle")Title newtitle) {
+		Optional<Employee> optional = empRepo.findById(id);
+		if(optional!=null) {
+			Employee emp = optional.get();
+			emp.setTitle(newtitle);
+			return "修改成功";		
+		}
+		return "沒有這筆資料";
+	}
 	
 	//年資>>計算後的value 用model帶到前端顯示
 	@GetMapping("/emp/calculatejobage")
@@ -55,21 +79,30 @@ public class EmployeeController {
 		if(result.isPresent()) {
 			Employee emp = result.get();
 			 LocalDate hireDate = emp.getHirdate(); // 假設這個是LocalDate型態
-		        LocalDate currentDate = LocalDate.now();
+			 System.out.println(hireDate);
+		     LocalDate currentDate = LocalDate.now();
+		     System.out.println(currentDate);
 
 		        long monthsBetween = ChronoUnit.MONTHS.between(hireDate, currentDate);
 		        double yearsOfService = monthsBetween / 12.0; // 計算年數
 		        double roundedYears = Math.round(yearsOfService * 2) / 2.0; // 每六個月為0.5年，四捨五入
-
+		        
 		        model.addAttribute("jobage", roundedYears);
-		        return "/emp/jobage"; //返回對應的視圖名稱
+		        System.out.println(roundedYears);
+		        return String.format("%d", (int)roundedYears);//返回對應的視圖名稱
 		    } else {
 		        return "employeeNotFound"; // 員工未找到，返回對應的視圖名稱
 		    }
 		}
 	//轉跳人事界面和普通員工介面>>
-	
-	//role 系統管理員、HR、一般員工
+//	@GetMapping("/emp/hrPage")
+//	public String returnTohrPage(@RequestParam("id")Integer empid) {
+//		Optional<Employee> empID = empRepo.findById(empid);
+//		if(empID!=null) {
+//			
+//		}
+//	}
+	//role 系統管理員、HR、經理、一般員工
 	
 	//權限變更紀錄>>建立新的table
 	
