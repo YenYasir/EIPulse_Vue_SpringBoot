@@ -10,7 +10,7 @@ import lombok.Data;
 public class Login {
 	@Id
 	@Column(name="EmpId")
-	private int empId;
+	private Integer empId;
 	
 	@Column(name="PassWord")
     private String passWord;

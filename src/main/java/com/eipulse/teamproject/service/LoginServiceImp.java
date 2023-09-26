@@ -9,7 +9,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+//import java.util.Optional;
 import java.util.Random;
 
 @Service
@@ -28,12 +28,13 @@ public class LoginServiceImp implements LoginService {
 
 
     @Override
-    public Login checkLogin(Integer empId, String password) {
+    public Login checkLogin(Integer EmpId, String PassWord) {
 
-        Login empLogin = loginRepository.findById(empId).get();
+        Login empLogin = loginRepository.findById(EmpId).orElse(null);
         if (empLogin != null) {
-            if (passwordEncoder.matches(password, empLogin.getPassWord())) ;
+            if (passwordEncoder.matches(PassWord, empLogin.getPassWord())) {
             return empLogin;
+            }
         }
         return null;
     }
@@ -43,9 +44,9 @@ public class LoginServiceImp implements LoginService {
         int otpVal=0;
         Login login = loginRepository.findByEmail(email);
         if ( login != null) {
-            otpVal = new Random().nextInt(999999);
+            otpVal = new Random().nextInt(999999); 
             SimpleMailMessage message = new SimpleMailMessage();
-            message.setFrom("anddie0904@gmail.com");
+            message.setFrom("blueyykai@gmail.com");
             message.setTo(email);
             message.setSubject("Eipulse員工驗證碼");
             message.setText("您的驗證碼："+otpVal);
@@ -60,7 +61,7 @@ public class LoginServiceImp implements LoginService {
     }
     @Override
     public String updatePassword(Integer empId,String oldPassword,String newPassword) {
-
+    		
         return null;
     }
 

@@ -5,13 +5,14 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDate;
-import java.util.Date;
+//import java.util.Date;
 import java.util.List;
 
 
 @Data
 @Entity
 @Table(name = "Employee")
+
 public class Employee {
     @Id
     @Column(name = "EmpId")
@@ -25,7 +26,7 @@ public class Employee {
     private String gender;
     @Column(name = "Birth")
     private LocalDate birth;
-    @Column(name = "Photo")
+    @Column(name = "Photo",columnDefinition = "longblob")
     private byte[] photo;
     @Column(name = "Phone")
     private String phone;
