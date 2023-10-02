@@ -3,6 +3,7 @@ package com.eipulse.teamproject.service;
 import com.eipulse.teamproject.entitys.Login;
 import com.eipulse.teamproject.repository.LoginRepository;
 import jakarta.servlet.http.HttpSession;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 import java.util.Random;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 public class LoginServiceImp implements LoginService {
@@ -29,59 +31,62 @@ public class LoginServiceImp implements LoginService {
 
     @Override
     public Login checkLogin(Integer empId, String password) {
+        Optional<Login> optionalLogin = loginRepository.findById(empId);
 
-        Login empLogin = loginRepository.findById(empId).get();
-        if (empLogin != null) {
-            if (passwordEncoder.matches(password, empLogin.getPassWord())) ;
-            return empLogin;
+        if (optionalLogin.isPresent()) {
+
+            Login empLogin = optionalLogin.get();
+
+            if (password != null && empLogin.getPassword() != null) {
+//                password.equals(empLogin.getPassword())
+                if (passwordEncoder.matches(password, empLogin.getPassword())) {
+                    return empLogin;
+                }
+            }
         }
-        return null;
+        throw new UnsupportedOperationException("登入失敗");
     }
+
 
     @Override
     public Login forgetPassword(String email,Integer otpVal) {
-//        int otpVal = 0;
-        Login login = loginRepository.findByEmail(email);
-        if (login != null) {
-//            otpVal = new Random().nextInt(999999);
-            SimpleMailMessage message = new SimpleMailMessage();
-            message.setFrom("anddie0904@gmail.com");
-            message.setTo(email);
-            message.setSubject("Eipulse員工驗證碼");
-            message.setText("您的驗證碼：" + otpVal);
-            javaMailSender.send(message);
+        Optional<Login> optional = loginRepository.findByEmail(email);
+        if (optional.isPresent()) {
+            Login login = optional.get();
+//進階版Thread
+            CompletableFuture.runAsync(()->{
+                SimpleMailMessage message = new SimpleMailMessage();
+                message.setFrom("anddie0904@gmail.com");
+                message.setTo(email);
+                message.setSubject("Eipulse員工驗證碼");
+                message.setText("您的驗證碼：" + otpVal);
+                javaMailSender.send(message);
+            }).exceptionally(ex->{
+                throw new UnsupportedOperationException("mail發送失敗");
+            });
+
+//            使用Thead讓mail執行速度加快
+//            new Thread(()->{
+//                SimpleMailMessage message = new SimpleMailMessage();
+//                message.setFrom("anddie0904@gmail.com");
+//                message.setTo(email);
+//                message.setSubject("Eipulse員工驗證碼");
+//                message.setText("您的驗證碼：" + otpVal);
+//                javaMailSender.send(message);
+//            }).start();
+
             return login;
         }
-        return null;
+        throw new UnsupportedOperationException("無此email");
     }
 
     @Override
     public boolean newPassword(Login login,String newPassword) {
-        login.setPassWord(passwordEncoder.encode(newPassword));
+        login.setPassword(passwordEncoder.encode(newPassword));
         loginRepository.save(login);
         return true;
     }
 
-    //    @Override
-//    public boolean forgetPassword(String email,Integer otpCheck,String newPassword) {
-//        int otpVal=0;
-//        Login login = loginRepository.findByEmail(email);
-//        if ( login != null) {
-//            otpVal = new Random().nextInt(999999);
-//            SimpleMailMessage message = new SimpleMailMessage();
-//            message.setFrom("anddie0904@gmail.com");
-//            message.setTo(email);
-//            message.setSubject("Eipulse員工驗證碼");
-//            message.setText("您的驗證碼："+otpVal);
-//            javaMailSender.send(message);
-//        }
-//        if(otpVal==otpCheck){
-//            login.setPassWord(passwordEncoder.encode(newPassword));
-//            loginRepository.save(login);
-//            return true;
-//        }
-//        return false;
-//    }
     @Override
     public String updatePassword(Integer empId, String oldPassword, String newPassword) {
 

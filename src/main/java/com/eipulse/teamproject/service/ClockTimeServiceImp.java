@@ -36,18 +36,20 @@ public class ClockTimeServiceImp implements ClockTimeService {
 
     @Override
     public ClockTime saveClockTime(Integer empId, String type,double latitude,double longitude) {
-
+//        Search emp near company
         OfficeRegions officeRegions = officeRegionsServiceImp.findByLikeRegionsDistance(latitude,longitude);
         Employee employee = empRepository.findById(empId).orElse(null);
         LocalDateTime now = LocalDateTime.now();
         ClockTime clockTime = new ClockTime(now, type, employee);
         LocalDate today = clockTime.getTime().toLocalDate();
+//        calculate emp with company distance
         double empLocation = officeRegionsServiceImp.haversineDistance(officeRegions.getLatitude(),officeRegions.getLongitude(),latitude,longitude);
         System.out.println(empLocation);
         if(empLocation <= 200){
             clockTime.setOfficeRegions(officeRegions);
             Optional<Attendance> optional = attendanceRepository.findByDateAndEmployee(today, clockTime.getEmployee());
             if(optional.isEmpty()){
+//                create new attendance
                 Attendance newAttendance = new Attendance();
                 newAttendance.setDate(today);
                 newAttendance.setEmployee(clockTime.getEmployee());

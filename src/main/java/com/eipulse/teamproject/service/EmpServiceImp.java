@@ -36,7 +36,7 @@ public class EmpServiceImp implements EmpService {
 
             Login login = new Login();
             login.setEmpId(newEmp.getEmpId());
-            login.setPassWord(passwordEncoderl.encode(password));
+            login.setPassword(passwordEncoderl.encode(password));
             loginRepository.save(login);
             return employee;
         }

@@ -35,6 +35,7 @@ public class ClockTimeController {
     }
 
 //    OK
+    @ResponseBody///將單獨controller設計為json格式不需要設整個calss為restcontroller
     @GetMapping("/clockTime/{empId}/all")
     public  List<ClockTimeDTO> findByEmpIdAllTime(@PathVariable Integer empId){
         return clockTimeServiceImp.findByEmpIdAllTime(empId);

@@ -72,14 +72,18 @@ public class OfficeRegionsServiceImp implements OfficeRegionsService{
         return false;
     }
 
-    @Override
+    @Override //like search emp near company
     public OfficeRegions findByLikeRegionsDistance(double latitude, double longitude) {
+//        get all company location
         List<OfficeRegions> allRegions = findAllRegions();
+//        create key value of regions
         Map<OfficeRegions,Double> distances = new HashMap<>();
         for(OfficeRegions region : allRegions){
+//            use haversine check emp with everyone company distance
             double distance = haversineDistance(region.getLatitude(), region.getLongitude(),latitude,longitude);
             distances.put(region,distance);
         }
+//        sort distance
         List<Map.Entry<OfficeRegions,Double>> sortedList = distances.entrySet().stream()
                 .sorted(Map.Entry.comparingByValue()).collect(Collectors.toList());
         OfficeRegions closestRegions = sortedList.get(0).getKey();

@@ -48,7 +48,6 @@ public class Employee {
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "employee", cascade = CascadeType.ALL)
     private List<EmployeePermission> permissions;
-    @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "employee", cascade = CascadeType.ALL)
     private Login login;
     @JsonIgnore
