@@ -1,27 +1,33 @@
 package com.eipulse.teamproject.entitys;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "EmployeePermission")
+@Table(name = "employee_permission")
 public class EmployeePermission {
 	@Id
-	@Column(name = "EmpId")
+	@Column(name = "emp_id")
 	private int empId;
 	@Id
-	@Column(name = "PermissionId")
+	@Column(name = "permission_id")
 	private int permissionId;
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "EmpId", referencedColumnName = "empid",insertable = false, updatable = false)
+	@JoinColumn(name = "emp_id", referencedColumnName = "emp_id", insertable = false, updatable = false)
 	@JsonIgnore
 	private Employee employee;
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "PermissionId", referencedColumnName = "permissionId",insertable = false, updatable = false)
+	@JoinColumn(name = "permission_id", referencedColumnName = "permission_id", insertable = false, updatable = false)
 	@JsonIgnore
 	private Permission permission;
 
 }
-

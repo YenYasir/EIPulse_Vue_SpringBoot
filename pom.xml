@@ -105,13 +105,13 @@
 		</dependency>
 
         
-		<!-- 
+
 		<dependency>
 			<groupId>com.linecorp.bot</groupId>
 			<artifactId>line-bot-spring-boot</artifactId>
 			<version>6.0.0</version>
-		</dependency>  -->
-		
+		</dependency>  
+	  
 	</dependencies>
 
 	<build>
