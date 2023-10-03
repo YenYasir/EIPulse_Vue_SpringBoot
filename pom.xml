@@ -105,13 +105,22 @@
 		</dependency>
 
         
+<<<<<<< HEAD
 
+=======
+		<!-- 
+>>>>>>> 1ca9295fe3eb08b4237b64000ca99a668a54be01
 		<dependency>
 			<groupId>com.linecorp.bot</groupId>
 			<artifactId>line-bot-spring-boot</artifactId>
 			<version>6.0.0</version>
+<<<<<<< HEAD
 		</dependency>  
 	  
+=======
+		</dependency>  -->
+		
+>>>>>>> 1ca9295fe3eb08b4237b64000ca99a668a54be01
 	</dependencies>
 
 	<build>

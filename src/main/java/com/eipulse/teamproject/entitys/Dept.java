@@ -1,5 +1,6 @@
 package com.eipulse.teamproject.entitys;
 
+<<<<<<< HEAD
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -32,4 +33,30 @@ public class Dept {
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "emp_id", referencedColumnName = "emp_id")
 	private Employee employee;
+=======
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+import lombok.Data;
+
+import java.util.List;
+
+
+@Data
+@Entity
+@Table(name = "Dept")
+public class Dept {
+	@Id
+	@Column(name = "DeptId")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int deptId;
+	@Column(name = "DeptName")
+	private String deptName;
+	@Column(name = "DeptOffice")
+	private String deptOffice;
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "dept", cascade = CascadeType.ALL)
+	@JsonIgnore
+	private List<EmployeeInfo> employeeInfo;
+
+
+>>>>>>> 1ca9295fe3eb08b4237b64000ca99a668a54be01
 }

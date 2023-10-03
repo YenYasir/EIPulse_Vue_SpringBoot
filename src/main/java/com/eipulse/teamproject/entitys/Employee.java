@@ -1,9 +1,17 @@
 package com.eipulse.teamproject.entitys;
 
+<<<<<<< HEAD
+=======
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+import lombok.Data;
+
+>>>>>>> 1ca9295fe3eb08b4237b64000ca99a668a54be01
 import java.time.LocalDate;
 //import java.util.Date;
 import java.util.List;
 
+<<<<<<< HEAD
 import com.eipulse.teamproject.meetingroom.Reservations;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -19,10 +27,13 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
+=======
+>>>>>>> 1ca9295fe3eb08b4237b64000ca99a668a54be01
 
 @Data
 @Entity
 @Table(name = "Employee")
+<<<<<<< HEAD
 public class Employee {
 	@Id
 	@Column(name = "emp_id")
@@ -93,3 +104,55 @@ public class Employee {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "employee", cascade = CascadeType.ALL)
 	private List<Reservations> reservations;
 }
+=======
+
+public class Employee {
+    @Id
+    @Column(name = "EmpId")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int empId;
+    @Column(name = "IdNumber")
+    private String idNumber;
+    @Column(name = "EmpName")
+    private String empName;
+    @Column(name = "Gender")
+    private String gender;
+    @Column(name = "Birth")
+    private LocalDate birth;
+    @Column(name = "Photo",columnDefinition = "longblob")
+    private byte[] photo;
+    @Column(name = "Phone")
+    private String phone;
+    @Column(name = "Tel")
+    private String tel;
+    @Column(name = "Address")
+    private String address;
+    @Column(name = "Email")
+    private String email;
+    //    @ManyToMany(fetch = FetchType.LAZY)
+//    @JoinTable(
+//        name = "EmployeePermission",
+//        joinColumns = {@JoinColumn(name = "EmpId")},
+//        inverseJoinColumns = {@JoinColumn(name = "PermissionId")})
+//    private List<Permission> permissions;
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "employee", cascade = CascadeType.ALL)
+    private List<EmployeePermission> permissions;
+    @JsonIgnore
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "employee", cascade = CascadeType.ALL)
+    private Login login;
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "employee", cascade = CascadeType.ALL)
+    private List<Emergency> emergencies;
+    @JsonIgnore
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "employee", cascade = CascadeType.ALL)
+    private EmployeeInfo employeeInfo;
+    //	忽略關聯查詢，避免出現多餘資料例如關聯的table
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "employee", cascade = CascadeType.ALL)
+    private List<ClockTime> clockTime;
+
+
+}
+
+>>>>>>> 1ca9295fe3eb08b4237b64000ca99a668a54be01

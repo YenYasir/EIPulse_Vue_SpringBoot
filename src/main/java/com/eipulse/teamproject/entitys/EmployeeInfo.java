@@ -1,5 +1,6 @@
 package com.eipulse.teamproject.entitys;
 
+<<<<<<< HEAD
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -35,3 +36,33 @@ public class EmployeeInfo {
 	@JoinColumn(name = "emp_id", referencedColumnName = "emp_id", insertable = false, updatable = false)
 	private Employee employee;
 }
+=======
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+import lombok.Data;
+
+
+@Data
+@Entity
+@Table(name = "employeeinfo")
+public class EmployeeInfo {
+	
+	
+	@Column(name = "DeptId")
+	private int deptId;
+	@Column(name = "TitleId")
+	private int titleId;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "DeptId", referencedColumnName = "deptid",insertable = false, updatable = false)
+	private Dept dept;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "TitleId", referencedColumnName = "titleid",insertable = false, updatable = false)
+	private Title title;
+	@Id
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "EmpId", referencedColumnName = "empid")
+	@JsonIgnore
+	private Employee employee;
+
+}
+>>>>>>> 1ca9295fe3eb08b4237b64000ca99a668a54be01
