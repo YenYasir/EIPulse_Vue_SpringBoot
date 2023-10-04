@@ -1,10 +1,10 @@
 package com.eipulse.teamproject.entitys;
 
-<<<<<<< HEAD
 import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -14,90 +14,52 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @Entity
-@Table(name = "clocktime")
+@Table(name = "clock_time")
 public class ClockTime {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "clocktime_id")
+	@Column(name = "clock_time_id")
 	private Integer clockTimeId;
-	@Column(name = "emp_id")
-	private Integer empId;
-	@Column(name = "clocktime")
-	private LocalDateTime clocktime;
-	@Column(name = "clocktime_type")
-	private String clocktimeType;
+	@Column(name = "time")
+	private LocalDateTime time;
+	@Column(name = "type")
+	private String type;
+
+	@ManyToOne(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
+	@JoinColumn(name = "regions_id")
+	private OfficeRegions officeRegions;
 
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "emp_id", referencedColumnName = "emp_id", insertable = false, updatable = false)
+	@JoinColumn(name = "emp_id", referencedColumnName = "emp_id")
 	private Employee employee;
 
+//    public String getEmployee() {
+////                    三元運算子if !=null return  else  return null
+//        return (this.employee !=null) ? this.employee.getEmpId() + this.employee.getEmpName():null;
+//    }
+
 	public ClockTime() {
+
 	}
 
-	public ClockTime(Integer clockTimeId, Integer empId, LocalDateTime clocktime, String clocktimeType,
-			Employee employee) {
-		this.clockTimeId = clockTimeId;
-		this.empId = empId;
-		this.clocktime = clocktime;
-		this.clocktimeType = clocktimeType;
+	public ClockTime(LocalDateTime time, String type, OfficeRegions officeRegions, Employee employee) {
+		this.time = time;
+		this.type = type;
+		this.officeRegions = officeRegions;
 		this.employee = employee;
 	}
 
-	public ClockTime(Integer empId, LocalDateTime clocktime, String clocktimeType) {
-		this.empId = empId;
-		this.clocktime = clocktime;
-		this.clocktimeType = clocktimeType;
+	public ClockTime(LocalDateTime time, String type, Employee employee) {
+		this.time = time;
+		this.type = type;
+		this.employee = employee;
 	}
-=======
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
-import lombok.Data;
-
-import java.time.LocalDateTime;
-
-
-@Data
-@Entity
-@Table(name = "ClockTime")
-public class ClockTime {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ClockTimeId")
-    private Integer clockTimeId;
-    @Column(name = "EmpId")
-    private Integer empId;
-    @Column(name = "ClockTime")
-    private LocalDateTime clockTime;
-    @Column(name = "ClockTimeType")
-    private String clockTimeType;
-
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "EmpId",referencedColumnName = "EmpId",insertable = false, updatable = false)
-    private Employee employee;
-
-    public ClockTime() {
-    }
-
-    public ClockTime(Integer clockTimeId, Integer empId, LocalDateTime clockTime, String clockTimeType, Employee employee) {
-        this.clockTimeId = clockTimeId;
-        this.empId = empId;
-        this.clockTime = clockTime;
-        this.clockTimeType = clockTimeType;
-        this.employee = employee;
-    }
-
-    public ClockTime(Integer empId, LocalDateTime clockTime, String clockTimeType) {
-        this.empId = empId;
-        this.clockTime = clockTime;
-        this.clockTimeType = clockTimeType;
-    }
-
->>>>>>> 1ca9295fe3eb08b4237b64000ca99a668a54be01
 
 }

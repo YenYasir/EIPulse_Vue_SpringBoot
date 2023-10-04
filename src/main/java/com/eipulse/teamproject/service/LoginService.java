@@ -1,17 +1,15 @@
 package com.eipulse.teamproject.service;
 
-
-
 import com.eipulse.teamproject.entitys.Login;
 import jakarta.servlet.http.HttpSession;
 
 public interface LoginService {
-	
 
-	
-    Login checkLogin(Integer EmpId,String PassWord);
+    Login checkLogin(Integer empId,String password);
 
-    boolean forgetPassword(String email,Integer otpCheck,String newPassword);
+    Login forgetPassword(String email,Integer otpVal);
+
+    boolean newPassword(Login login,String newPassword);
 
 
     String updatePassword(Integer empId,String oldPassword,String newPassword);

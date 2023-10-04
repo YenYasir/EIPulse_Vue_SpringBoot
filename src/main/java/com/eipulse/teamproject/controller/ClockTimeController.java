@@ -1,34 +1,53 @@
-//package com.eipulse.teamproject.controller;
-//
-//
-//import com.eipulse.teamproject.entitys.ClockTime;
-//import com.eipulse.teamproject.service.ClockTimeServiceImp;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.web.bind.annotation.*;
-//
-//import java.time.LocalDateTime;
-//import java.util.List;
-//
-//@RestController
-//public class ClockTimeController {
-//
-//    private ClockTimeServiceImp clockTimeServiceImp;
-//
-//    @Autowired
-//    public ClockTimeController(ClockTimeServiceImp clockTimeServiceImp) {
-//        this.clockTimeServiceImp = clockTimeServiceImp;
-//    }
-//
-//    @PostMapping("/clockTime/save")
-//    public ClockTime saveClockTimePage(@RequestParam(name = "empId")Integer empId,
-//                                          @RequestParam(name = "type")String type){
-//        LocalDateTime now = LocalDateTime.now();
-//        return clockTimeServiceImp.saveClockTime(new ClockTime(empId,now,type));
-//    }
-//    @GetMapping("/clockTime/byId")
-//    public List<ClockTime> findAllById(@RequestParam(name = "empId")Integer empId){
-//        List<ClockTime> clockTimeList = clockTimeServiceImp.findAllByIdTime(empId);
-//        return clockTimeList;
-//    }
-//
-//}
+package com.eipulse.teamproject.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.eipulse.teamproject.dto.ClockTimeDTO;
+import com.eipulse.teamproject.entitys.ClockTime;
+import com.eipulse.teamproject.serviceimp.ClockTimeServiceImp;
+
+@Controller
+public class ClockTimeController {
+
+	private ClockTimeServiceImp clockTimeServiceImp;
+
+	@Autowired
+	public ClockTimeController(ClockTimeServiceImp clockTimeServiceImp) {
+		this.clockTimeServiceImp = clockTimeServiceImp;
+	}
+
+	// OK
+	@PostMapping("/clockTime/postTime")
+	public String postTime(@RequestParam("empId") Integer empId, @RequestParam("type") String type,
+			@RequestParam("latitude") double latitude, @RequestParam("longitude") double longitude) {
+		ClockTime clockTime = clockTimeServiceImp.saveClockTime(empId, type, latitude, longitude);
+		return "redirect:/";
+	}
+
+	// OK
+	@GetMapping("/clockTime/{empId}")
+	public ClockTimeDTO findByEmpIdTime(@PathVariable Integer empId) {
+		return clockTimeServiceImp.findByEmpIdLastTime(empId);
+	}
+
+//    OK
+	@ResponseBody /// 將單獨controller設計為json格式不需要設整個calss為restcontroller
+	@GetMapping("/clockTime/{empId}/all")
+	public List<ClockTimeDTO> findByEmpIdAllTime(@PathVariable Integer empId) {
+		return clockTimeServiceImp.findByEmpIdAllTime(empId);
+	}
+
+//OK
+	@GetMapping("/clockTime/all")
+	public List<ClockTimeDTO> findAllTime() {
+		return clockTimeServiceImp.findAllTime();
+	}
+}

@@ -11,9 +11,9 @@ import com.eipulse.teamproject.meetingroom.Reservations;
 
 public interface ReservationsRepository extends JpaRepository<Reservations, Integer> {
 
-	@Query(value = "SELECT * FROM reservation WHERE room_id = (select id from meeting_room where name = ?1)", nativeQuery = true)
+	@Query(value = "SELECT * FROM reservations WHERE room_id = (select id from meeting_room WHERE name = ?1)", nativeQuery = true)
 	List<Reservations> findByName(String name);
 
-	@Query("select reserv from reservation as reserv where reserv.dateEnd >=:date order by createdAt desc")
+	@Query(value = "SELECT reserv FROM reservations as reserv WHERE reserv.dateEnd >=:date ORDER BY createdAt desc", nativeQuery = true)
 	LinkedList<Reservations> findAllByDate(Date date);
 }

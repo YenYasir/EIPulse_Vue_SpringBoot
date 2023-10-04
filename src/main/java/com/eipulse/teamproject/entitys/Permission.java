@@ -1,6 +1,5 @@
 package com.eipulse.teamproject.entitys;
 
-<<<<<<< HEAD
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -13,36 +12,21 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import lombok.Data;
-=======
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.util.List;
-
->>>>>>> 1ca9295fe3eb08b4237b64000ca99a668a54be01
-
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "permission")
 public class Permission {
 	@Id
-<<<<<<< HEAD
 	@Column(name = "permission_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int permissionId;
+	private int permission_id;
 	@Column(name = "grade")
 	private String grade;
 	@Column(name = "info")
-=======
-	@Column(name = "PermissionId")
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int permissionId;
-	@Column(name = "Grade")
-	private String grade;
-	@Column(name = "Info")
->>>>>>> 1ca9295fe3eb08b4237b64000ca99a668a54be01
 	private String info;
 //    @ManyToMany(fetch = FetchType.LAZY)
 //    @JoinTable(
