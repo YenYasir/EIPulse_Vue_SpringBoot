@@ -54,18 +54,7 @@ create table employee_permission
     constraint employee_permission_ibfk_2 foreign key (permission_id) references permission (permission_id)
 );
 
-create table product
-(
-    product_id      int auto_increment primary key,
-    product_name    varchar(30)                        not null,
-    product_type    varchar(30)                        not null,
-    description     varchar(50)                        null,
-    price           int                                not null,
-    stock_quantity  int                                not null,
-    image_url       varchar(50)                        null,
-    created_at      datetime default CURRENT_TIMESTAMP null,
-    updated_at      datetime default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP
-);
+
 
 create table title
 (
@@ -84,7 +73,39 @@ create table employee_info
 );
 
 
+#福委會:
+create table product_type
+(
+    type_id      int auto_increment,
+    type_name    varchar(30) not null,
+    subtype_name varchar(30) not null,
+    constraint product_type_pk
+        primary key (type_id)
+);
+create table sub_type
+(
+    sub_type_id     int auto_increment,
+    product_type_id int         not null,
+    sub_name        varchar(20) not null,
+    constraint sub_type_pk
+        primary key (sub_type_id),
+    constraint sub_type_product_type_type_id_fk
+        foreign key (product_type_id) references product_type (type_id)
+);
 
+create table product
+(
+    product_id      int auto_increment primary key,
+    product_name    varchar(30)                        not null,
+		type_id         int                                not null,
+    description     varchar(50)                        null,
+    price           int                                not null,
+    stock_quantity  int                                not null,
+    image_url       varchar(50)                        null,
+    created_at      datetime default CURRENT_TIMESTAMP null,
+    updated_at      datetime default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP,
+		foreign key(type_id) references product_type(type_id)
+);
 
 
 create table shopping_cart
@@ -130,8 +151,81 @@ create table employee_gift_cash
     constraint employee_gift_cash_employee_emp_id_fk foreign key (emp_id) references employee (emp_id),
     constraint employee_gift_cash_gift_cash_list_id_fk foreign key (gift_cash_list_id) references gift_cash_list (gift_cash_list_id)
 );
+alter table employee_gift_cash
+    change updated_at expiry_date datetime not null;
 
+alter table employee_gift_cash
+    add status varchar(20) not null;
+create table `order`
+(
+    order_id              int auto_increment,
+    emp_id                int                                not null,
+    employee_gift_cash_id int                                null,
+    total_price           int                                not null,
+    status                varchar(10)                        not null,
+    created_at            datetime default CURRENT_TIMESTAMP null,
+    updated_at            datetime default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP,
+    constraint order_pk
+        primary key (order_id),
+    constraint order_employee_emp_id_fk
+        foreign key (emp_id) references employee (emp_id),
+    constraint order_employee_gift_cash_employee_gift_cash_id_fk
+        foreign key (employee_gift_cash_id) references employee_gift_cash (employee_gift_cash_id)
+);
 
+create table order_item
+(
+    order_item_id int auto_increment,
+    order_id      int not null,
+    product_id    int not null,
+    price         int not null,
+    quantity      int not null,
+    total_price    int not null,
+    constraint order_item_pk
+        primary key (order_item_id),
+    constraint order_item_order_order_id_fk
+        foreign key (order_id) references `order` (order_id),
+    constraint order_item_product_product_id_fk
+        foreign key (product_id) references product (product_id)
+);
+
+#打卡:
+create table office_regions
+(
+    regions_id   int auto_increment,
+    latitude     double      not null,
+    longitude    double      not null,
+    regions_name varchar(20) not null,
+    constraint office_regions_pk
+        primary key (regions_id)
+);
+create table clock_time
+(
+    clock_time_id int auto_increment,
+    emp_id        int         not null,
+    time          datetime    not null,
+    type          varchar(10) not null,
+    regions_id    int         null,
+    constraint clock_time_pk
+        primary key (clock_time_id),
+    constraint clock_time_employee_emp_id_fk
+        foreign key (emp_id) references employee (emp_id),
+    constraint clock_time_office_regions_regions_id_fk
+        foreign key (regions_id) references office_regions (regions_id)
+);
+
+create table attendance
+(
+    attendance_id int auto_increment,
+    date          date          not null,
+    emp_id        int           not null,
+    total_hours   decimal(4, 2) not null,
+    status        varchar(10)   not null,
+    constraint attendance_pk
+        primary key (attendance_id),
+    constraint attendance_employee_emp_id_fk
+        foreign key (emp_id) references employee (emp_id)
+);
 
 INSERT INTO dept(dept_name, dept_office)
 VALUES('人事','就人事'),('行政','就行政'),('總務','就總務');
