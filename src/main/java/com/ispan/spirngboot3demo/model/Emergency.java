@@ -1,6 +1,14 @@
 package com.ispan.spirngboot3demo.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.Data;
 
 
@@ -10,29 +18,31 @@ import lombok.Data;
 public class Emergency {
 
 	@Id
-	@Column(name = "EmergencyId")
+	@Column(name = "emergency_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer emergencyId;
-	@Column(name = "EmergencyName1")
+	@Column(name = "emergency_name1")
 	private String emerName1;
 	
-	@Column(name = "EmergencyPhone1")
+	@Column(name = "emergency_phone1")
 	private String emerPhone1;
 	
-	@Column(name = "EmergencyRelationship1")
+	@Column(name = "emergency_relationship1")
 	private String emerRelationship1;
 	
-	@Column(name = "EmergencyName2",nullable = true)
+	@Column(name = "emergency_name2",nullable = true)
 	private String emerName2;
 	
-	@Column(name = "EmergencyPhone2",nullable = true)
+	@Column(name = "emergency_phone2",nullable = true)
 	private String emerPhone2;
 	
-	@Column(name = "EmergencyRelationship2",nullable = true)
+	@Column(name = "emergency_relationship2",nullable = true)
 	private String emerRelationship2;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "EmpId", referencedColumnName = "empid")
+//	@JoinColumn(name = "emp_id", referencedColumnName = "empId")
+	@JoinColumn(name = "emp_id")//, referencedColumnName = "emp_id")
 	private Employee employee;
+
 
 }

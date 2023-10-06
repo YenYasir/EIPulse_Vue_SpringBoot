@@ -21,14 +21,14 @@ import lombok.Data;
 @Table(name = "Dept")
 public class Dept {
 	@Id
-	@Column(name = "DeptId")
+	@Column(name = "dept_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer deptId;
-	@Column(name = "DeptName")
+	@Column(name = "dept_name")
 	private String deptName;
-	@Column(name = "DeptOffice")
+	@Column(name = "dept_office")
 	private String deptOffice;
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "dept", cascade = CascadeType.ALL)
-	private List<EmployeeInfo> employeeInfo;
+	private List<PermissionInfo> permissionInfo;
 	
 }

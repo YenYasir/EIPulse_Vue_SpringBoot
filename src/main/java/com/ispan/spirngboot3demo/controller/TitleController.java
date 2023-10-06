@@ -1,13 +1,13 @@
 package com.ispan.spirngboot3demo.controller;
 
+import com.ispan.spirngboot3demo.repository.TitleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ispan.spirngboot3demo.model.Title;
-import com.ispan.spirngboot3demo.repository.TitleRepository;
+
 
 @RestController
 public class TitleController {

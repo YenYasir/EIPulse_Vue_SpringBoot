@@ -1,92 +1,85 @@
 package com.ispan.spirngboot3demo.model;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
+
 @Data
 @Entity
-@Table(name = "Employee")
+@Table(name = "employee")
 public class Employee {
     @Id
-    @Column(name="EmpId")
+    @Column(name="emp_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer empId;
     
-    @Column(name="IdNumber")
+    @Column(name="id_number")
     private String idNumber;
     
-    @Column(name="EmpName")
+    @Column(name="emp_name")
     private String empName;
     
-    @Column(name="Gender")
+    @Column(name="gender")
     private String gender;
        
-    @Column(name="Birth")
+    @Column(name="birth")
     private LocalDate birth;
     
-    @Column(name="Photo",columnDefinition = "longblob",nullable = true)
+    @Column(name="photo",columnDefinition = "longblob",nullable = true)
     private byte[] photo;
     
-    @Column(name="Phone")
+    @Column(name="phone")
     private String phone;
     
-    @Column(name="Tel")
+    @Column(name="tel")
     private String tel;
     
-    @Column(name="Address")
+    @Column(name="address")
     private String address;
     
-    @Column(name="Email")
+    @Column(name="email")
     private String email;
     
-	@Column(name="EmpStat")
+	@Column(name="emp_stat")
 	private String empStat;
 	
-	@Column(name="Hirdate")
+	@Column(name="hirdate")
 	private	LocalDate hirdate;
 	
-	@Column(name="LeaveDate",nullable = true)
+	@Column(name="leave_date",nullable = true)
 	private	LocalDate leaveDate;
 	
-	@Column(name="EditDate")
+	@Column(name="edit_date")
 	private	LocalDate editDate;
-	
-	@Column(name = "DeptId")
+
+	@Column(name = "dept_id")
 	private Integer deptId;
-	
-	@Column(name = "titleid")
-	private Integer titleid;
-	
+
+	@Column(name = "title_id")
+	private Integer titleId;
+
 	@Column(name = "role_id")
-	private Integer role_id;
-	
+	private Integer roleId;
+
 	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "DeptId", referencedColumnName = " deptId",insertable = false, updatable = false)
+//	@JoinColumn(name = "dept_id", referencedColumnName = "deptId",insertable = false, updatable = false)
+	@JoinColumn(name = "dept_id",insertable = false, updatable = false)
 	private Dept dept;
 	
 	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "TitleId", referencedColumnName = " titleid",insertable = false, updatable = false)
+//	@JoinColumn(name = "title_id", referencedColumnName = "titleId",insertable = false, updatable = false)
+	@JoinColumn(name = "title_id",insertable = false, updatable = false)
 	private Title title;
 	
 	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "role_id", referencedColumnName = " role_id",insertable = false, updatable = false)
+//	@JoinColumn(name = "role_id", referencedColumnName = "roleId",insertable = false, updatable = false)
+	@JoinColumn(name = "role_id",insertable = false, updatable = false)
 	private Role role;
 	
-	@OneToOne(fetch = FetchType.LAZY,mappedBy = "employee", cascade = CascadeType.ALL)
-    private EmployeeInfo employeeInfo;
+	@OneToOne(fetch = FetchType.LAZY, mappedBy = "employee", cascade = CascadeType.ALL)
+    private PermissionInfo permissionInfo;
 	
 	@OneToMany(fetch = FetchType.LAZY,mappedBy = "employee", cascade = CascadeType.ALL)
 	private List<Emergency> emergencies;

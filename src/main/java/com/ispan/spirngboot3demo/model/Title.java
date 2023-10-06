@@ -9,24 +9,22 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "Title")
+@Table(name = "title")
 public class Title {
 	@Id
-    @Column(name="TitleId")
+    @Column(name="title_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int titleId;
-    @Column(name="TitleName")
+    @Column(name="title_name")
     private String titleName;
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "title", cascade = CascadeType.ALL)
-	private List<EmployeeInfo> employeeInfo;
+	private List<PermissionInfo> permissionInfo;
     
     
 }

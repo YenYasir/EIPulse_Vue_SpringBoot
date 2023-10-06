@@ -4,11 +4,16 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 
+import com.ispan.spirngboot3demo.model.TitleMoveRecord;
+import com.ispan.spirngboot3demo.repository.TitleRecordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -26,7 +31,9 @@ public class EmployeeController {
 	private EmployeeService empService;
 	@Autowired
 	private EmployeeRepository empRepo;
-	
+	@Autowired
+	private TitleRecordRepository titleRepo;
+
 	@GetMapping("/")
 	public String index() {
 		return "index";
@@ -59,19 +66,41 @@ public class EmployeeController {
 	}
 	
 	
-	//升遷>>update>>title
+	//升遷+調動紀錄>>update>>title，以title調動紀錄為主然後將after_title_id更新到員工的資料表
+	//1 先確保員工存在
+	//2 建立升遷紀錄
+	//3 更新員工職位
 	@Transactional
-	@PutMapping("/emp/updateTitle")
-	public String updateEmpTitle(@RequestParam Integer id,@RequestParam("newtitle")Title newtitle) {
-		Optional<Employee> optional = empRepo.findById(id);
-		if(optional!=null) {
-			Employee emp = optional.get();
-			emp.setTitle(newtitle);
-			return "修改成功";		
+	@PostMapping("/emp/updateTitle")
+	public ResponseEntity<String> insertTitleMoveRecord(@RequestParam("empId") Integer empId,
+														@RequestParam("beforeTitleId") Integer beforeTitleId,
+														@RequestParam("afterTitleId") Integer afterTitleId,
+														@RequestParam("reason") String reason,
+														@RequestParam("moveDate") LocalDate moveDate,
+														@RequestParam("approver") String approver) {
+
+		Optional<Employee> optional = empRepo.findById(empId);
+		if(!optional.isPresent()) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("沒有這筆資料");
 		}
-		return "沒有這筆資料";
+
+		Employee emp = optional.get();
+
+		TitleMoveRecord record = new TitleMoveRecord();
+		record.setBeforeTitleId(beforeTitleId);
+		record.setAfterTitleId(afterTitleId);
+		record.setReason(reason);
+		record.setApprover(approver);
+		record.setMoveDate(moveDate);
+		record.setEmployee(emp); // 設置Employee對象，而不是ID
+		titleRepo.save(record);
+
+		emp.setTitleId(afterTitleId);
+		empRepo.save(emp);  // 保存更新的員工資料
+
+		return ResponseEntity.ok("更新成功");
 	}
-	
+
 	//年資>>計算後的value 用model帶到前端顯示
 	@GetMapping("/emp/calculatejobage")
 	public String getJobAgeById(@RequestParam Integer id,Model model ) {
