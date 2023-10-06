@@ -38,6 +38,10 @@ public class TitleMoveRecord {
       @Column(name = "approver")
       private String approver;
 
+      @Column(name="edit_date")
+      private LocalDate editDate;
+
+
       @OneToOne(fetch = FetchType.LAZY)
 //      @JoinColumn(name = "emp_id", referencedColumnName = "empId", insertable = false, updatable = false)
       @JoinColumn(name = "empId", referencedColumnName = "emp_id")//, insertable = false, updatable = false)

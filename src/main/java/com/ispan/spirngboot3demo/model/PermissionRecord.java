@@ -1,22 +1,14 @@
 package com.ispan.spirngboot3demo.model;
 
-import java.time.LocalDate;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
+
+import java.time.LocalDate;
 
 @Data
 @Entity
-@Table(name="dept_move")
-public class DeptMoveRecord {
+@Table(name="permission_move")
+public class PermissionRecord {
 
      @Id
      @Column(name = "id")
@@ -26,10 +18,10 @@ public class DeptMoveRecord {
      @Column(name = "reason")
      private  String reason;
 
-     @Column(name = "before_dept_id")
+     @Column(name = "before_permission_id")
      private Integer beforeDeptId;
 
-     @Column(name = "after_dept_id")
+     @Column(name = "after_permission_id")
      private  Integer afterdeptId;
 
      @Column(name = "move_date")
@@ -40,7 +32,7 @@ public class DeptMoveRecord {
 
      @Column(name="edit_date")
      private LocalDate editDate;
-     
+
 
      @OneToOne(fetch = FetchType.LAZY)
 //      @JoinColumn(name = "emp_id", referencedColumnName = "empId", insertable = false, updatable = false)

@@ -86,12 +86,15 @@ public class EmployeeController {
 
 		Employee emp = optional.get();
 
+		LocalDate nowTime = LocalDate.now();
+
 		TitleMoveRecord record = new TitleMoveRecord();
 		record.setBeforeTitleId(beforeTitleId);
 		record.setAfterTitleId(afterTitleId);
 		record.setReason(reason);
 		record.setApprover(approver);
 		record.setMoveDate(moveDate);
+		record.setEditDate(nowTime);
 		record.setEmployee(emp); // 設置Employee對象，而不是ID
 		titleRepo.save(record);
 
@@ -131,9 +134,8 @@ public class EmployeeController {
 //			
 //		}
 //	}
-	//role 系統管理員、HR、經理、一般員工
-	
-	//權限變更紀錄>>建立新的table
+
+	//權限變更紀錄>>
 	
 	//部門調動紀錄
 	
