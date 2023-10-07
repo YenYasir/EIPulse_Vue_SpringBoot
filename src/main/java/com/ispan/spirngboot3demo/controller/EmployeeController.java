@@ -4,8 +4,8 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 
-import com.ispan.spirngboot3demo.model.TitleMoveRecord;
-import com.ispan.spirngboot3demo.repository.TitleRecordRepository;
+import com.ispan.spirngboot3demo.model.*;
+import com.ispan.spirngboot3demo.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,10 +17,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.ispan.spirngboot3demo.model.Dept;
-import com.ispan.spirngboot3demo.model.Employee;
-import com.ispan.spirngboot3demo.model.Title;
-import com.ispan.spirngboot3demo.repository.EmployeeRepository;
 import com.ispan.spirngboot3demo.service.EmployeeService;
 
 
@@ -33,6 +29,12 @@ public class EmployeeController {
 	private EmployeeRepository empRepo;
 	@Autowired
 	private TitleRecordRepository titleRepo;
+	@Autowired
+	private ResignRepository resignRepo;
+	@Autowired
+	private DeptMoveRepository deptMoveRepo;
+	@Autowired
+	private PermissionRecordRepository permiRecordRepo;
 
 	@GetMapping("/")
 	public String index() {
@@ -136,10 +138,106 @@ public class EmployeeController {
 //	}
 
 	//權限變更紀錄>>
-	
+	@Transactional
+	@PostMapping("/emp/updateDept")
+	public ResponseEntity<String> insertPermissionMoveRecord(@RequestParam("empId") Integer empId,
+													   @RequestParam("beforeRoleId") Integer beforeRoleId,
+													   @RequestParam("afterRoleId") Integer afterRoleId,
+													   @RequestParam("reason") String reason,
+													   @RequestParam("moveDate") LocalDate moveDate,
+													   @RequestParam("approver") String approver) {
+
+		Optional<Employee> optional = empRepo.findById(empId);
+		if(!optional.isPresent()) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("沒有這筆資料");
+		}
+
+		Employee emp = optional.get();
+
+		LocalDate nowTime = LocalDate.now();
+
+		PermissionRecord record = new PermissionRecord();
+		record.setBeforeRoleId(beforeRoleId);
+		record.setAfterRoleId(afterRoleId);
+		record.setReason(reason);
+		record.setApprover(approver);
+		record.setMoveDate(moveDate);
+		record.setEditDate(nowTime);
+		record.setEmployee(emp); // 設置Employee對象，而不是ID
+		permiRecordRepo.save(record);
+
+		emp.setRoleId(afterRoleId);
+		empRepo.save(emp);  // 保存更新的員工資料
+
+		return ResponseEntity.ok("更新成功");
+	}
+
+
 	//部門調動紀錄
-	
-	//員工調整紀錄
+	@Transactional
+	@PostMapping("/emp/updateDept")
+	public ResponseEntity<String> insertDeptMoveRecord(@RequestParam("empId") Integer empId,
+														@RequestParam("beforeDeptId") Integer beforeDeptId,
+														@RequestParam("afterDeptId") Integer afterDeptId,
+														@RequestParam("reason") String reason,
+														@RequestParam("moveDate") LocalDate moveDate,
+														@RequestParam("approver") String approver) {
+
+		Optional<Employee> optional = empRepo.findById(empId);
+		if(!optional.isPresent()) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("沒有這筆資料");
+		}
+
+		Employee emp = optional.get();
+
+		LocalDate nowTime = LocalDate.now();
+
+		DeptMoveRecord record = new DeptMoveRecord();
+		record.setBeforeDeptId(beforeDeptId);
+		record.setAfterDeptId(afterDeptId);
+		record.setReason(reason);
+		record.setApprover(approver);
+		record.setMoveDate(moveDate);
+		record.setEditDate(nowTime);
+		record.setEmployee(emp); // 設置Employee對象，而不是ID
+		deptMoveRepo.save(record);
+
+		emp.setDeptId(afterDeptId);
+		empRepo.save(emp);  // 保存更新的員工資料
+
+		return ResponseEntity.ok("更新成功");
+	}
+	//員工離職紀錄
+	@Transactional
+	@PostMapping("/emp/updateDept")
+	public ResponseEntity<String> insertResignRecord(@RequestParam("empId") Integer empId,
+													 @RequestParam("reason") String reason,
+													 @RequestParam("leaveDate") LocalDate leaveDate,
+													 @RequestParam("approver") String approver) {
+
+		Optional<Employee> optional = empRepo.findById(empId);
+		if(!optional.isPresent()) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("沒有這筆資料");
+		}
+
+		Employee emp = optional.get();
+
+		LocalDate nowTime = LocalDate.now();
+
+		ResignRecord record = new ResignRecord();
+		record.setReason(reason);
+		record.setLeaveDate(leaveDate);
+		record.setEditDate(nowTime);
+		record.setEmployee(emp); // 設置Employee對象，而不是ID
+		resignRepo.save(record);
+
+		emp.setEmpStat("離職");
+		emp.setLeaveDate(leaveDate);
+		empRepo.save(emp);  // 保存更新的員工資料
+
+		return ResponseEntity.ok("更新成功");
+	}
+
 	
 	//員工離職後記錄的table>>recycle
 	

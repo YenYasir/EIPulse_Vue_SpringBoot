@@ -17,9 +17,6 @@ public class Role {
 	
 	@Column(name = "role_name")
 	private String roleName;
-	
-	@Column(name = "permission")
-	private Integer permission;
 
 	@Column(name = "permission_statement")
 	private  String permissionStatement;

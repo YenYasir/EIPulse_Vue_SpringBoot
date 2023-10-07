@@ -30,7 +30,7 @@ public class DeptMoveRecord {
      private Integer beforeDeptId;
 
      @Column(name = "after_dept_id")
-     private  Integer afterdeptId;
+     private  Integer afterDeptId;
 
      @Column(name = "move_date")
      private  LocalDate moveDate;
@@ -40,7 +40,7 @@ public class DeptMoveRecord {
 
      @Column(name="edit_date")
      private LocalDate editDate;
-     
+
 
      @OneToOne(fetch = FetchType.LAZY)
 //      @JoinColumn(name = "emp_id", referencedColumnName = "empId", insertable = false, updatable = false)

@@ -18,11 +18,11 @@ public class PermissionRecord {
      @Column(name = "reason")
      private  String reason;
 
-     @Column(name = "before_permission_id")
-     private Integer beforeDeptId;
+     @Column(name = "before_role_id")
+     private Integer beforeRoleId;
 
-     @Column(name = "after_permission_id")
-     private  Integer afterdeptId;
+     @Column(name = "after_role_id")
+     private  Integer afterRoleId;
 
      @Column(name = "move_date")
      private  LocalDate moveDate;
