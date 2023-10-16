@@ -1,0 +1,6 @@
+POST http://localhost:8080/eipulse/title/add
+Content-Type: application/json
+{
+    "titleName":"1234",
+    "deptId":1
+}

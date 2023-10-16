@@ -1,30 +1,51 @@
 package com.ispan.spirngboot3demo.model;
 
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
-import lombok.Data;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @Entity
-@Table(name = "title")
+@Table(name = "title", schema = "new_eipulse")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class Title {
-	@Id
-    @Column(name="title_id")
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int titleId;
-    @Column(name="title_name")
+    @Column(name = "title_id")
+    private Integer id;
+
+    @Column(name = "title_name", length = 50)
     private String titleName;
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "title", cascade = CascadeType.ALL)
-	private List<PermissionInfo> permissionInfo;
-    
-    
+
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "dept_id")
+    private Dept dept;
+
+
+    @OneToMany(mappedBy = "title")
+    private Set<Employee> employees = new LinkedHashSet<>();
+
+    public Title() {
+    }
+
+    public Title(String titleName, Dept dept) {
+        this.titleName = titleName;
+        this.dept = dept;
+    }
+
+    public Title(Integer id, String titleName, Dept dept) {
+        this.id = id;
+        this.titleName = titleName;
+        this.dept = dept;
+    }
 }

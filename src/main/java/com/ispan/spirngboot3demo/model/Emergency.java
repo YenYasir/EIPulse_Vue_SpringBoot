@@ -1,48 +1,45 @@
 package com.ispan.spirngboot3demo.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
-
-@Data
+@Getter
+@Setter
 @Entity
-@Table(name = "Emergency")
+@Table(name = "emergency", schema = "new_eipulse")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "emergencyId")
 public class Emergency {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "emergency_id", nullable = false)
+    private Integer emergencyId;
 
-	@Id
-	@Column(name = "emergency_id")
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer emergencyId;
-	@Column(name = "emergency_name1")
-	private String emerName1;
-	
-	@Column(name = "emergency_phone1")
-	private String emerPhone1;
-	
-	@Column(name = "emergency_relationship1")
-	private String emerRelationship1;
-	
-	@Column(name = "emergency_name2",nullable = true)
-	private String emerName2;
-	
-	@Column(name = "emergency_phone2",nullable = true)
-	private String emerPhone2;
-	
-	@Column(name = "emergency_relationship2",nullable = true)
-	private String emerRelationship2;
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-//	@JoinColumn(name = "emp_id", referencedColumnName = "empId")
-	@JoinColumn(name = "emp_id")//, referencedColumnName = "emp_id")
-	private Employee employee;
+    @Column(name = "emergency_name", nullable = false, length = 50)
+    private String emergencyName;
+
+    @Column(name = "phone", nullable = false, length = 50)
+    private String phone;
+
+    @Column(name = "relation", nullable = false, length = 20)
+    private String relation;
 
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "emp_id", nullable = false)
+    private Employee emp;
+
+    public Emergency() {
+    }
+
+    public Emergency(String emergencyName, String phone, String relation, Employee emp) {
+        this.emergencyName = emergencyName;
+        this.phone = phone;
+        this.relation = relation;
+        this.emp = emp;  // 這裡我加了這行，設定員工
+    }
 }

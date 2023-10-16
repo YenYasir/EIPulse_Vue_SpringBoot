@@ -8,31 +8,42 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "resign_record", schema = "new_eipulse")
+@Table(name = "title_move", schema = "new_eipulse")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "id")
-public class ResignRecord {
+public class TitleMove {
     @Id
-    @Column(name = "resign_id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     private Integer id;
+
+    @Column(name = "before_dept_info", nullable = false)
+    private String beforeDeptInfo;
+
+    @Column(name = "after_dept_info", nullable = false)
+    private String afterDeptInfo;
+
+    @Column(name = "effect_date")
+    private LocalDateTime effectDate;
+
+    @Column(name = "edit_date")
+    private LocalDateTime editDate;
+
+    @Column(name = "approver", length = 20)
+    private String approver;
 
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "emp_id", nullable = false)
     private Employee emp;
 
-    @Column(name = "approver", length = 50)
-    private String approver;
-
-    @Column(name = "reason", nullable = false)
+    @Column(name = "reason", nullable = false, length = 50)
     private String reason;
-
-    @Column(name = "edit_date")
-    private LocalDateTime editDate;
 
 }

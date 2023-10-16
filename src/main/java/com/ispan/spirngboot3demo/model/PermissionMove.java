@@ -13,12 +13,13 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Entity
-@Table(name = "resign_record", schema = "new_eipulse")
+@Table(name = "permission_move", schema = "new_eipulse")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "id")
-public class ResignRecord {
+public class PermissionMove {
     @Id
-    @Column(name = "resign_id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     private Integer id;
 
 
@@ -26,11 +27,17 @@ public class ResignRecord {
     @JoinColumn(name = "emp_id", nullable = false)
     private Employee emp;
 
-    @Column(name = "approver", length = 50)
-    private String approver;
+    @Column(name = "before_permission_name", nullable = false, length = 50)
+    private String beforePermissionName;
+
+    @Column(name = "after_permission_name", nullable = false, length = 50)
+    private String afterPermissionName;
 
     @Column(name = "reason", nullable = false)
     private String reason;
+
+    @Column(name = "approver", length = 50)
+    private String approver;
 
     @Column(name = "edit_date")
     private LocalDateTime editDate;
