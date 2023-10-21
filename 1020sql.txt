@@ -1,0 +1,266 @@
+DROP DATABASE IF EXISTS eipulsetest;
+
+CREATE DATABASE eipulsetest;
+
+
+ALTER TABLE `dept`
+DROP FOREIGN KEY `dept_ibfk_1`;
+
+ALTER TABLE `form_record`
+DROP FOREIGN KEY `form_record_ibfk_1`;
+
+SELECT*FROM `form_record`;
+SELECT*FROM `apply_leave`;
+
+use eipulsetest;
+
+-- 員工狀態表
+DROP TABLE IF EXISTS `emp_stat`;
+CREATE TABLE `emp_stat` (
+	`id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	`status` VARCHAR(50)
+)AUTO_INCREMENT=1;
+
+-- 加入員工狀態
+INSERT INTO `emp_stat`(`status`) VALUES
+('在職'),('留職停薪'),('離職');
+
+-- 員工表
+DROP TABLE IF EXISTS `employee`;
+CREATE TABLE `employee` (
+  `emp_id` 		INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `id_number` 	VARCHAR(255) not null ,
+  `emp_name` 	VARCHAR(255) not null,
+	`dept_id` int not null,
+	`position` VARCHAR(50) not null,
+  `gender` tinyint(4) not NULL DEFAULT 0,
+  `birth` 		DATE not null,
+  `photo`		 LONGBLOB DEFAULT NULL,
+  `phone`		 VARCHAR(50) not null,
+  `tel` 		VARCHAR(50) not null,
+  `address` 	VARCHAR(255) not null,
+  `email`		 VARCHAR(255) not null,
+  `emp_stat` 	int not NULL DEFAULT '1' , -- 判斷在職離職
+  `hirdate` 	DATE not null,
+  `leave_date`	 DATE DEFAULT NULL,
+  `edit_date` 	datetime(0)  DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0),
+	FOREIGN KEY(`emp_stat`) REFERENCES `emp_stat`(`id`)
+)AUTO_INCREMENT=1;
+
+-- 插入員工資訊
+INSERT INTO `employee` (`id_number`, `emp_name`, `dept_id`, `position`, `gender`, `birth`, `phone`, `tel`, `address`, `email`, `hirdate`, `edit_date`)
+VALUES 
+('F678901', '張八', 101, '工程師', 1, '1993-12-10', '0918181818', '0223456789', '台南市中西區民權路一段', 'zhangba@example.com', '2019-04-25', '2023-10-15 13:30:00'),
+('G789012', '許九', 102, '設計師', 0, '1995-08-17', '0932323232', '0223456789', '新竹市東區公道五路二段', 'xujiu@example.com', '2020-11-08', '2023-10-15 13:31:00'),
+('H890123', '李十', 103, '經理', 1, '1989-11-22', '0974747474', '0223456789', '彰化市彰南路一段', 'lishi@example.com', '2017-09-30', '2023-10-15 13:32:00'),
+('I901234', '林十一', 104, '專案經理', 0, '1986-04-01', '0925252525', '0223456789', '台中市南區建國北路', 'linshi@example.com', '2016-02-14', '2023-10-15 13:33:00'),
+('J012345', '陳十二', 105, '資深工程師', 1, '1992-09-28', '0987878787', '0223456789', '新北市三峽區大學路', 'chenershier@example.com', '2018-12-10', '2023-10-15 13:34:00'),
+('K123456', '張十三', 101, '工程師', 1, '1993-06-03', '0939393939', '0223456789', '高雄市三民區建國三路', 'zhangshisan@example.com', '2019-08-25', '2023-10-15 13:35:00'),
+('L234567', '林十四', 102, '設計師', 0, '1995-01-15', '0989898989', '0223456789', '桃園市中壢區中北路', 'linshisi@example.com', '2020-03-05', '2023-10-15 13:36:00'),
+('M345678', '王十五', 103, '經理', 1, '1990-07-19', '0978787878', '0223456789', '新竹市北區西大路', 'wangshiwu@example.com', '2013-10-28', '2023-10-15 13:37:00'),
+('N456789', '許十六', 104, '專案經理', 0, '1987-03-07', '0919191919', '0223456789', '台南市安南區健康路一段', 'xushiliu@example.com', '2016-11-19', '2023-10-15 13:38:00'),
+('O567890', '張十七', 101, '資深工程師', 1, '1985-11-12', '0945454545', '0223456789', '新北市新莊區中正路', 'zhangshiqi@example.com', '2014-07-15', '2023-10-15 13:39:00'),
+('P678901', '王十八', 101, '工程師', 1, '1994-02-18', '0922222222', '0223456789', '台中市北區忠明北路', 'wangshiba@example.com', '2020-01-30', '2023-10-15 13:40:00'),
+('Q789012', '李十九', 102, '設計師', 0, '1988-09-23', '0966666666', '0223456789', '高雄市左營區博愛二路', 'lishijiu@example.com', '2015-05-11', '2023-10-15 13:41:00'),
+('R890123', '陳二十', 103, '經理', 1, '1991-12-31', '0981212121', '0223456789', '桃園市桃園區中山東路', 'chenershi@example.com', '2017-06-22', '2023-10-15 13:42:00'),
+('S901234', '林二十一', 104, '專案經理', 0, '1989-05-09', '0997979797', '0223456789', '新竹市東區民族路', 'linershiyi@example.com', '2018-03-17', '2023-10-15 13:43:00'),
+('T012345', '張二十二', 101, '資深工程師', 1, '1997-08-03', '0958585858', '0223456789', '台南市東區裕農路', 'zhangershi@example.com', '2020-09-12', '2023-10-15 13:44:00'),
+('U123456', '許二十三', 101, '工程師', 1, '1986-10-27', '0931313131', '0223456789', '新北市永和區中山路一段', 'xuershiersan@example.com', '2015-12-05', '2023-10-15 13:45:00'),
+('V234567', '王二十四', 102, '設計師', 0, '1987-07-06', '0929292929', '0223456789', '台中市南區建國南路', 'wangershisi@example.com', '2016-11-30', '2023-10-15 13:46:00'),
+('W345678', '李二十五', 103, '經理', 1, '1993-04-13', '0967676767', '0223456789', '桃園市中壢區中山北路', 'liershier@example.com', '2018-08-20', '2023-10-15 13:47:00'),
+('X456789', '陳二十六', 104, '專案經理', 0, '1992-01-26', '0956565656', '0223456789', '高雄市三民區大順二路', 'chenerliu@example.com', '2019-09-02', '2023-10-15 13:48:00'),
+('Y567890', '張二十七', 101, '資深工程師', 1, '1996-03-21', '0948484848', '0223456789', '新北市汐止區大同路', 'zhangershiqi@example.com', '2020-04-15', '2023-10-15 13:49:00');
+
+
+-- 部門表
+DROP TABLE IF EXISTS `dept`;
+CREATE TABLE `dept`  (
+  `id` int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `dept_name` varchar(20) not NULL,
+  `dept_office` varchar(100) not NULL ,
+	`dept_manager` int DEFAULT NULL,
+	FOREIGN KEY (`dept_manager`) REFERENCES `Employee`(`emp_id`)
+)AUTO_INCREMENT=100;
+
+-- 插入部門資訊
+INSERT INTO `dept` (`dept_name`, `dept_office`, `dept_manager`)
+VALUES 
+('資訊部', '台北辦公室', 1),
+('設計部', '新北辦公室', 2),
+('行銷部', '高雄辦公室', 3),
+('研發部', '台中辦公室', 4),
+('品管部', '桃園辦公室', 5),
+('人資部', '新竹辦公室', 6);
+
+
+-- 將員工部門加上外鍵約束
+ALTER TABLE `employee`
+ADD FOREIGN KEY (`dept_id`) REFERENCES `dept`(`id`);
+
+-- 表單申請類別
+DROP TABLE IF EXISTS `form_type`;
+CREATE table `form_type`(
+	`id` int PRIMARY key not null AUTO_INCREMENT,
+	`type_name` VARCHAR(50) not null 
+)AUTO_INCREMENT=1;
+
+-- 插入表單申請類別
+INSERT INTO `form_type` (`type_name`) VALUES
+('請假'),('加班'),('申請會議室'),('出差');
+
+-- 判斷表單狀態(未審核、批准、退回)
+DROP TABLE IF EXISTS `status_code`;
+CREATE table `status_code`(
+	`id` int PRIMARY key not null AUTO_INCREMENT,
+	`status` varchar(30) not null 
+)AUTO_INCREMENT=1;
+
+INSERT INTO `status_code` (`status`) VALUES
+('審核中'),('批准'),('退回'),('修改後批准'),('撤回');
+
+-- 表單總管
+DROP TABLE IF EXISTS `form_record`;
+CREATE TABLE `form_record` (
+	`form_id` int PRIMARY KEY NOT NULL AUTO_INCREMENT,
+	`type` int NOT NULL, -- 表單類型
+	`status` int NOT NULL DEFAULT '1',
+	`emp_id` int NOT NULL,
+	`create_time` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0),
+	`update_time` datetime(0) DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0),
+	FOREIGN KEY (`status`) REFERENCES `status_code`(`id`),
+	FOREIGN KEY (`type`) REFERENCES `form_type`(`id`),
+	FOREIGN KEY (`emp_id`) REFERENCES `employee`(`emp_id`)
+) AUTO_INCREMENT=1;
+
+-- 插入表單資料
+INSERT INTO `form_record` (`type`, `status`, `emp_id`)
+VALUES
+(1, 1, 10),
+(1, 1, 12),
+(1, 3, 13),
+(1, 2, 14),
+(1, 5, 15),
+(2, 1, 14),
+(2, 1, 16),
+(2, 3, 17),
+(2, 2, 9),
+(2, 5, 20);
+
+-- 請假類型
+DROP TABLE IF EXISTS `leave_type`;
+CREATE TABLE `leave_type`  (
+  `id` int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `days` int DEFAULT NULL , -- 該假別可請假天數
+  `type` VARCHAR(20) not NULL ,
+  `status` int  DEFAULT 1 , -- 判斷請假人是否有此假別權限 ex.生理假 
+  `remark` varchar(200)  DEFAULT NULL
+)AUTO_INCREMENT=1;
+
+-- 插入請假類別
+INSERT INTO `leave_type` (`days`, `type`, `status`, `remark`) VALUES
+ (3, '半年特休', 1, '半年3天'),
+ (4,'一年特休',1,'滿一年多四天'),
+ (3, '半薪病假', 1, '超過3天都為事假'),
+ (12, '生理假', 2, '人家是女生耶'),
+ (30, '事假', 1,''),
+ (7, '婚假', 1, ''),
+ (7, '喪假', 1, ''),
+ (30, '產假', 2, '人家是女生耶');
+
+DROP TABLE IF EXISTS `apply_leave`;
+CREATE table `apply_leave`(
+`form_id` int PRIMARY key not null,
+`type` int not null, -- 請什麼假別
+`reason` VARCHAR(200), -- 請假原因
+`days` int not null , -- 請假天數
+`hours` int not null, -- 請假時數
+`start_time` datetime(0) NOT NULL , -- 請假起始日
+`file` LONGBLOB DEFAULT NULL, -- 是否有附檔
+FOREIGN KEY (`form_id`) REFERENCES `form_record`(`form_id`),
+FOREIGN KEY (`type`) REFERENCES `leave_type`(`id`)
+);
+
+-- 插入五筆請假資料
+INSERT INTO `apply_leave` (`form_id`, `type`, `reason`, `days`, `hours`, `start_time`, `file`)
+VALUES
+(1, 1, '就想放假', 2, 0, '2023-10-17 09:00:00', NULL),
+(2, 2, '就想放假', 1, 4, '2023-10-18 13:30:00', NULL),
+(3, 3, '生病了', 2, 0, '2023-10-19 08:00:00', NULL),
+(4, 4, '姨媽來', 1, 0, '2023-10-20 10:00:00', NULL),
+(5, 5, '家裡有事', 0, 8, '2023-10-21 12:00:00', NULL);
+
+
+-- 加班的類型(平日/假日/國定假日)
+DROP TABLE IF EXISTS `overtime_type`;
+CREATE TABLE `overtime_type`  (
+`id` int not null PRIMARY key AUTO_INCREMENT,
+`type`VARCHAR(10) not null
+)AUTO_INCREMENT=1;
+
+-- 插入加班種類
+INSERT INTO `overtime_type`(`type`) VALUES
+('平日'),('休息日'),('國定假日或特別休假'),('例假');
+
+DROP TABLE IF EXISTS `apply_overtime`;
+CREATE table `apply_overtime`(
+`form_id` int PRIMARY key not null,
+`type` int not null, -- 判斷平日加班/假日加班等等
+`reason` VARCHAR(200), -- 加班原因
+`date` DATE not null, -- 加班日
+`start_time` TIME not NULL, -- 加班開始時間
+`end_time` TIME not NULL , -- 加班結束時間
+`file` LONGBLOB DEFAULT NULL, -- 是否有附檔
+FOREIGN KEY (`form_id`) REFERENCES `form_record`(`form_id`),
+FOREIGN KEY (`type`) REFERENCES `overtime_type`(`id`)
+);
+
+-- 插入加班資料
+INSERT INTO `apply_overtime` (`form_id`, `type`, `reason`, `date`, `start_time`, `end_time`, `file`)
+VALUES
+(6, 1, '加班原因1', '2023-10-17', '18:00:00', '22:00:00', NULL),
+(7, 2, '加班原因2', '2023-10-18', '19:30:00', '23:30:00', NULL),
+(8, 1, '加班原因3', '2023-10-19', '17:00:00', '20:00:00', NULL),
+(9, 3, '加班原因4', '2023-10-20', '16:30:00', '21:30:00', NULL),
+(10, 2, '加班原因5', '2023-10-21', '20:00:00', '24:00:00', NULL);
+
+DROP TABLE IF EXISTS `attendance_code`;
+CREATE TABLE `attendance_code`(
+	`id` int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	`type` VARCHAR(50) -- 考勤類型：1正常,2遲到,3早退,4曠工,5請假
+)AUTO_INCREMENT=1;
+
+INSERT INTO `attendance_code` (`type`)
+VALUES
+('正常'),('遲到'),('早退'),('曠工'),('請假');
+
+-- 考勤表
+DROP TABLE IF EXISTS `attendance`;
+CREATE TABLE `attendance`  (
+  `id` int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `emp_id` int not NULL,
+  `mor_start_time` time DEFAULT NULL,
+  `mor_end_time` time DEFAULT NULL,
+  `aft_start_time` time DEFAULT NULL,
+  `aft_end_time` time DEFAULT NULL,
+  `attendance_date` date NOT NULL,
+  `status` int not null DEFAULT '1', -- 判斷遲到、早退等等
+  `remark` varchar(200) DEFAULT NULL,
+  FOREIGN KEY (`emp_id`) REFERENCES `Employee`(`emp_id`),
+	FOREIGN KEY (`status`) REFERENCES `attendance_code`(`id`)
+)AUTO_INCREMENT=1;
+
+-- 插入考勤資料
+INSERT INTO `attendance` (`emp_id`, `mor_start_time`, `mor_end_time`, `aft_start_time`, `aft_end_time`, `attendance_date`, `status`, `remark`)
+VALUES
+(11, '09:00:00', '18:00:00', '12:00:00', '17:00:00', '2023-10-17', 1, '正常出勤'),
+(12, '08:30:00', '17:30:00', '12:30:00', '18:00:00', '2023-10-17', 1, '正常出勤'),
+(13, '09:15:00', '18:15:00', '12:15:00', '17:15:00', '2023-10-17', 2, '遲到15分鐘'),
+(14, '09:30:00', '18:30:00', '12:30:00', '17:30:00', '2023-10-17', 3, '早退30分鐘'),
+(15, '08:45:00', '17:45:00', '12:45:00', '18:15:00', '2023-10-17', 1, '正常出勤'),
+(16, '09:00:00', '18:00:00', '12:00:00', '17:00:00', '2023-10-18', 1, '正常出勤'),
+(17, '08:30:00', '17:30:00', '12:30:00', '18:00:00', '2023-10-18', 1, '正常出勤'),
+(18, '09:15:00', '18:15:00', '12:15:00', '17:15:00', '2023-10-18', 2, '遲到15分鐘'),
+(19, '09:30:00', '18:30:00', '12:30:00', '17:30:00', '2023-10-18', 3, '早退30分鐘'),
+(20, '08:45:00', '17:45:00', '12:45:00', '18:15:00', '2023-10-18', 1, '正常出勤');
+
+
