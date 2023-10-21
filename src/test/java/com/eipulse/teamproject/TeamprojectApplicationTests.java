@@ -1,11 +1,13 @@
 package com.eipulse.teamproject;
 
-import com.eipulse.teamproject.entitys.Employee;
+import com.eipulse.teamproject.repository.EmpRepository;
+import com.eipulse.teamproject.service.EmpService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.mail.SimpleMailMessage;
+import org.springframework.data.jpa.repository.query.JSqlParserUtils;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 
@@ -13,20 +15,10 @@ import java.time.LocalDate;
 class TeamprojectApplicationTests {
 
 	@Autowired
-	private JavaMailSender javaMailSender;
+	private EmpService empService;
 	@Test
+	@Transactional
 	void contextLoads() {
-
-//		SimpleMailMessage message = new SimpleMailMessage();
-//		message.setFrom("anddie0904@gmail.com");
-//		message.setTo("d0981843347@gmail.com");
-//		message.setSubject("測試中");
-//		message.setText("這是一封測試郵件");
-//		javaMailSender.send(message);
-		LocalDate time = LocalDate.of(2022,10,01);
-//		int month =time.get();
-//		String password = String.format("%02d", time.getMonthValue())+String.format("%02d",time.getDayOfMonth());
-//		System.out.println(password);
 	}
 
 }

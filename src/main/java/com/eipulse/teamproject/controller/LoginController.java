@@ -4,31 +4,30 @@ package com.eipulse.teamproject.controller;
 import com.eipulse.teamproject.dto.EmailDTO;
 import com.eipulse.teamproject.dto.LoginDTO;
 import com.eipulse.teamproject.dto.NewPasswordDTO;
-import com.eipulse.teamproject.entitys.Login;
+import com.eipulse.teamproject.entity.Login;
 import com.eipulse.teamproject.repository.LoginRepository;
-import com.eipulse.teamproject.service.LoginServiceImp;
+import com.eipulse.teamproject.service.LoginService;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpClientErrorException;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 //@CrossOrigin(origins = "http://localhost:5173/")//cross
 @RestController
 public class LoginController {
 
-    private LoginServiceImp loginServiceImp;
+    private LoginService loginService;
     private final LoginRepository loginRepository;
 
     @Autowired
-    public LoginController(LoginServiceImp loginServiceImp,
+    public LoginController(LoginService loginService,
                            LoginRepository loginRepository) {
-        this.loginServiceImp = loginServiceImp;
+        this.loginService = loginService;
         this.loginRepository = loginRepository;
     }
 
@@ -36,11 +35,17 @@ public class LoginController {
     public ResponseEntity<?> loginCheck(@RequestBody LoginDTO requestLogin,HttpSession httpSession){
         System.out.println(requestLogin);
         try{
-            Login login = loginServiceImp.checkLogin(requestLogin.getEmpId(),requestLogin.getPassword());
-            httpSession.setAttribute("empId",login.getEmpId());
-            System.out.println(login);
-            return new ResponseEntity<>(HttpStatus.OK);
+            Login login = loginService.checkLogin(requestLogin.getEmpId(),requestLogin.getPassword());
+            httpSession.setAttribute("emp",login);
+//            httpSession.setAttribute("empId",login.getEmpId());
+            Map<String, String> response = new HashMap<>();
+            response.put("empId",Integer.toString(login.getEmpId()));
+            response.put("empName",login.getEmployee().getEmpName());
+            Login httpLogin = (Login) httpSession.getAttribute("emp");
+            System.out.println("HTTP:"+httpLogin);
+            return new ResponseEntity<>(response,HttpStatus.OK);
         }catch (UnsupportedOperationException e){
+            System.out.println(e.getMessage());
             return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
         }
     }
@@ -48,8 +53,9 @@ public class LoginController {
     public ResponseEntity<?> forgetPassword(@RequestBody EmailDTO requestEmail,HttpSession httpSession){
         int otpVal = new Random().nextInt(999999);
         httpSession.setAttribute("mailOtp",otpVal);
+        System.out.println(httpSession.getId());
         try{
-            Login login = loginServiceImp.forgetPassword(requestEmail.getEmail(),otpVal);
+            Login login = loginService.forgetPassword(requestEmail.getEmail(),otpVal);
             System.out.println(login);
             return new ResponseEntity<>(login.getEmpId(), HttpStatus.OK);
         }catch (UnsupportedOperationException e){
@@ -61,11 +67,13 @@ public class LoginController {
         try {
             Integer mailOtp=(Integer) httpSession.getAttribute("mailOtp");
             Login login = loginRepository.findById(newPasswordDTO.getEmpId()).get();
+            System.out.println(httpSession.getId());
+
             System.out.println(mailOtp);
             System.out.println(newPasswordDTO);
             if(mailOtp != null && mailOtp.equals(newPasswordDTO.getOtpCheck()) ){
                 System.out.println("OTP相同");
-                loginServiceImp.newPassword(login, newPasswordDTO.getNewPassword());
+                loginService.newPassword(login, newPasswordDTO.getNewPassword());
             }else {
                 System.out.println("OTP不同");
 

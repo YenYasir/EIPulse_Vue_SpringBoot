@@ -31,6 +31,7 @@ function initMap() {
             lat:position.coords.latitude,
             lng:position.coords.longitude
         }
+        console.log(userCenter)
         map.setCenter(userCenter);
         new google.maps.Marker({
             position:userCenter, //顯示員工位置的大頭針

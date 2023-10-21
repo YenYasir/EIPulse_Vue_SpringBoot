@@ -1,6 +1,6 @@
 package com.eipulse.teamproject.repository;
 
-import com.eipulse.teamproject.entitys.Login;
+import com.eipulse.teamproject.entity.Login;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

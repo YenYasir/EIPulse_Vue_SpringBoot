@@ -1,34 +1,31 @@
 package com.eipulse.teamproject.controller;
 
 
-import com.eipulse.teamproject.entitys.Employee;
-import com.eipulse.teamproject.service.EmpServiceImp;
-import jakarta.mail.Multipart;
+import com.eipulse.teamproject.entity.Employee;
+import com.eipulse.teamproject.service.EmpService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 @RestController
 public class EmpController {
 
-    private EmpServiceImp empServiceImp;
+    private EmpService empService;
     @Autowired
-    public EmpController(EmpServiceImp empServiceImp) {
-        this.empServiceImp = empServiceImp;
+    public EmpController(EmpService empService) {
+        this.empService = empService;
     }
 
     @PostMapping("/employee/post")
     public Employee postNewEmployeePage(@RequestBody Employee newEmployee) {
-        return empServiceImp.saveEmp(newEmployee);
+        return empService.saveEmp(newEmployee);
     }
 
     @GetMapping("/employee")
     public List<Employee> findAllEmp(){
-        List<Employee>employees =empServiceImp.findEmpAll();
+        List<Employee>employees = empService.findEmpAll();
         if(employees !=null){
             return employees;
         }
@@ -39,22 +36,22 @@ public class EmpController {
     @GetMapping("/employee/{empId}")
     public Employee findByIdEmp(@PathVariable Integer empId){
 
-        return empServiceImp.findEmpById(empId);
+        return empService.findEmpById(empId);
     }
     @GetMapping("/employee/editPage")
     public  String editEmployeePage(@RequestParam("empId")Integer empId,Model model){
-        Employee employee = empServiceImp.findEmpById(empId);
+        Employee employee = empService.findEmpById(empId);
         model.addAttribute("employee",employee);
         return "/employee/editPage";
     }
     @PutMapping("/employee/edit")
     public String editEmployee(@ModelAttribute("newEmployee")Employee newEmployee){
-        empServiceImp.updateEmp(newEmployee.getEmpId(),newEmployee);
+        empService.updateEmp(newEmployee.getEmpId(),newEmployee);
         return "/employee/allEmp";
     }
     @DeleteMapping("/employee/deleteEmp")
     public String deleteEmployee(@RequestParam("empId") Integer empId) {
-        empServiceImp.deleteEmp(empId);
+        empService.deleteEmp(empId);
         return "/employee/allEmp";
     }
 
