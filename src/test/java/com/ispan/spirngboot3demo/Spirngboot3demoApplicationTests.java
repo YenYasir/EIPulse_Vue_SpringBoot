@@ -5,6 +5,7 @@ import com.ispan.spirngboot3demo.model.PermissionInfoDTO;
 import com.ispan.spirngboot3demo.model.TitleDTO;
 import com.ispan.spirngboot3demo.repository.PermissionInfoRepository;
 import com.ispan.spirngboot3demo.repository.PermissionRepository;
+import com.ispan.spirngboot3demo.repository.ResignRecordRepository;
 import com.ispan.spirngboot3demo.service.PermisInfoService;
 import com.ispan.spirngboot3demo.service.TitleService;
 import org.junit.jupiter.api.Test;
@@ -19,24 +20,11 @@ import java.util.List;
 class Spirngboot3demoApplicationTests {
 
 	@Autowired
-	private PermissionInfoRepository permissionInfoRepository;
+	private ResignRecordRepository resignRecordRepository;
 	@Transactional
 	@Test
 	void contextLoads() {
-		List<PermissionInfo> permissionInfos = permissionInfoRepository.findAll();
-		List<PermissionInfoDTO> permissionInfoDTOs = new ArrayList<>();
-
-		for (PermissionInfo permissionInfo : permissionInfos) {
-			PermissionInfoDTO dto = new PermissionInfoDTO(
-					permissionInfo.getId(),
-					permissionInfo.getEmp().getEmpId(),
-					permissionInfo.getEmp().getEmpName(),
-					permissionInfo.getPermission().getPermissionId(),
-					permissionInfo.getPermission().getPermissionName()
-			);
-			permissionInfoDTOs.add(dto);
-		}
-		System.out.println(permissionInfoDTOs);
+		System.out.println(resignRecordRepository.findByEmpId(2));
 	}
 
 }

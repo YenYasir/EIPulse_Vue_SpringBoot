@@ -11,20 +11,18 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "permission_info", schema = "new_eipulse")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")
 public class PermissionInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 
-
+    @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "emp_id", nullable = false)
     private Employee emp;
 
-
+    @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "permission_id", nullable = false)
     private Permission permission;

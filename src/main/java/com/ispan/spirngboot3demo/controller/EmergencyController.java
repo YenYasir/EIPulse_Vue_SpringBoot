@@ -1,10 +1,7 @@
 package com.ispan.spirngboot3demo.controller;
 
-import com.ispan.spirngboot3demo.model.Dept;
 import com.ispan.spirngboot3demo.model.Emergency;
 import com.ispan.spirngboot3demo.model.EmergencyDTO;
-import com.ispan.spirngboot3demo.model.Employee;
-import com.ispan.spirngboot3demo.service.DeptService;
 import com.ispan.spirngboot3demo.service.EmergencyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 public class EmergencyController {

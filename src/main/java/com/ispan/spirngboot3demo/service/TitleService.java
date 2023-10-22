@@ -8,7 +8,6 @@ import com.ispan.spirngboot3demo.repository.TitleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.rmi.UnexpectedException;
 import java.util.List;
 import java.util.Optional;
 

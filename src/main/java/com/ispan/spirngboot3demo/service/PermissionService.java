@@ -1,8 +1,6 @@
 package com.ispan.spirngboot3demo.service;
 
-import com.ispan.spirngboot3demo.model.Dept;
 import com.ispan.spirngboot3demo.model.Permission;
-import com.ispan.spirngboot3demo.repository.DeptRepository;
 import com.ispan.spirngboot3demo.repository.PermissionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

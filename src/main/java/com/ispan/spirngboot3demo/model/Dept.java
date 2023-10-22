@@ -1,22 +1,26 @@
 package com.ispan.spirngboot3demo.model;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+
 
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 @Entity
 @Table(name = "dept", schema = "new_eipulse")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "deptId")
 public class Dept {
+
+    public Dept(String deptName, String deptOffice) {
+        this.deptName = deptName;
+        this.deptOffice = deptOffice;
+    }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "dept_id" )
@@ -28,6 +32,7 @@ public class Dept {
     @Column(name = "dept_office")
     private String deptOffice;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "dept")
     private Set<Title> titles = new LinkedHashSet<>();
 

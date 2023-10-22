@@ -1,15 +1,18 @@
 package com.ispan.spirngboot3demo.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 
 @Getter
 @Setter
 public class EmpDTO {
-    private Integer id;
+    private Integer empId;
     private String empName;
     private LocalDate birth;
     private String email;
@@ -19,15 +22,21 @@ public class EmpDTO {
     private String tel;
     private String photoUrl;
     private String address;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Integer titleId;
+    private String titleName;
     private String empState;
+    private LocalDate hireDate;
+    private LocalDate leaveDate;
+    private LocalDate editDate;
 
 
     public EmpDTO() {
     }
 
-    public EmpDTO(Integer id,String empName, LocalDate birth, String email, String idNumber, String gender, String phone, String tel, String photoUrl, String address, Integer titleId, String empState) {
-        this.id = id;
+    public EmpDTO(Integer empId,String empName, LocalDate birth, String email, String idNumber, String gender, String phone, String tel, String photoUrl, String address, Integer titleId,LocalDate hireDate, String empState) {
+        this.empId = empId;
         this.empName = empName;
         this.birth = birth;
         this.email = email;
@@ -38,6 +47,7 @@ public class EmpDTO {
         this.photoUrl = photoUrl;
         this.address = address;
         this.titleId = titleId;
+        this.hireDate = hireDate;
         this.empState = empState;
     }
 
@@ -47,5 +57,35 @@ public class EmpDTO {
         this.phone = phone;
         this.tel = tel;
         this.address = address;
+    }
+
+
+    public EmpDTO(Integer empId, String empName, LocalDate birth, String email, String idNumber, String gender, String phone, String tel, String photoUrl, String address, String titleName, String empState) {
+        this.empId = empId;
+        this.empName = empName;
+        this.birth = birth;
+        this.email = email;
+        this.idNumber = idNumber;
+        this.gender = gender;
+        this.phone = phone;
+        this.tel = tel;
+        this.photoUrl = photoUrl;
+        this.address = address;
+        this.titleName = titleName;
+        this.empState = empState;
+    }
+    public EmpDTO(Employee employee){
+        this.empId = employee.getEmpId();
+        this.empName = employee.getEmpName();
+        this.birth = employee.getBirth();
+        this.email = employee.getEmail();
+        this.idNumber = employee.getIdNumber();
+        this.gender = employee.getGender();
+        this.phone = employee.getPhone();
+        this.tel = employee.getTel();
+        this.photoUrl = employee.getPhotoUrl();
+        this.address = employee.getAddress();
+        this.titleName = employee.getTitle().getTitleName();
+        this.empState = employee.getEmpState();
     }
 }

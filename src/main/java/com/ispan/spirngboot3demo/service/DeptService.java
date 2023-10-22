@@ -1,7 +1,7 @@
 package com.ispan.spirngboot3demo.service;
 
 import com.ispan.spirngboot3demo.model.Dept;
-import com.ispan.spirngboot3demo.model.Employee;
+import com.ispan.spirngboot3demo.model.DeptDTO;
 import com.ispan.spirngboot3demo.repository.DeptRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,8 +18,8 @@ public class DeptService {
         this.deptRepo = deptRepo;
     }
 
-    public void addDept(Dept dept){
-        deptRepo.save(dept);
+    public void addDept(DeptDTO deptDTO){
+        deptRepo.save(new Dept(deptDTO.getDeptName(), deptDTO.getDeptOffice()));
     }
 
     public Dept findById(Integer id){

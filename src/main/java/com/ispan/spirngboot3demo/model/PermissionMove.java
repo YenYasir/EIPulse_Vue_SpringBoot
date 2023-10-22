@@ -14,8 +14,6 @@ import java.time.LocalDateTime;
 @Setter
 @Entity
 @Table(name = "permission_move", schema = "new_eipulse")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")
 public class PermissionMove {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,6 +21,7 @@ public class PermissionMove {
     private Integer id;
 
 
+    @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "emp_id", nullable = false)
     private Employee emp;
@@ -39,7 +38,7 @@ public class PermissionMove {
     @Column(name = "approver", length = 50)
     private String approver;
 
-    @Column(name = "edit_date")
+    @Column(name = "edit_date",insertable = false,updatable = false)
     private LocalDateTime editDate;
 
 }

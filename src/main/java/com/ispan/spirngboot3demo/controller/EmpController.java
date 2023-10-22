@@ -29,6 +29,7 @@ public class EmpController {
         System.out.println(employee);
         try {
             employeeService.addEmp(employee);
+            System.out.println(employee);
             return new ResponseEntity<>(HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
@@ -42,24 +43,24 @@ public class EmpController {
     }
     // 查詢全部員工
     @GetMapping("/employee/findAll")
-    public List<Employee> findAll(){
-        List<Employee> list = employeeService.findAllEmp();
-        if (list!=null){
-            return list;
+    public ResponseEntity<?> findAll(){
+        try{
+            return new ResponseEntity<>(employeeService.findAllEmp(),HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_GATEWAY);
         }
-        return null;
     }
 
     // 更新員工
-    @Transactional
-    @PutMapping("/employee/updateEmp")
-    public ResponseEntity<?> update(@RequestBody EmpDTO empDTO){
-      try {
-          return new ResponseEntity<>(employeeService.updateEmp(empDTO),HttpStatus.OK);
-      }catch (Exception e){
-          return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
-      }
-    }
+//    @Transactional
+//    @PutMapping("/employee/updateEmp")
+//    public ResponseEntity<?> update(@RequestBody EmpDTO empDTO){
+//      try {
+//          return new ResponseEntity<>(employeeService.updateEmp(empDTO),HttpStatus.OK);
+//      }catch (Exception e){
+//          return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
+//      }
+//    }
 
 
     // 刪除員工

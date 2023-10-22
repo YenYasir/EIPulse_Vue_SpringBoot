@@ -15,8 +15,6 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "title", schema = "new_eipulse")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")
 public class Title {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,11 +25,13 @@ public class Title {
     private String titleName;
 
 
+    @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "dept_id")
     private Dept dept;
 
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "title")
     private Set<Employee> employees = new LinkedHashSet<>();
 

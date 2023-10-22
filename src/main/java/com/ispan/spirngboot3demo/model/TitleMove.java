@@ -15,8 +15,6 @@ import java.time.LocalDateTime;
 @Setter
 @Entity
 @Table(name = "title_move", schema = "new_eipulse")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")
 public class TitleMove {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,6 +37,7 @@ public class TitleMove {
     private String approver;
 
 
+    @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "emp_id", nullable = false)
     private Employee emp;

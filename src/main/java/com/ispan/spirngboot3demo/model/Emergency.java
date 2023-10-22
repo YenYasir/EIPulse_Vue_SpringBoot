@@ -2,6 +2,7 @@ package com.ispan.spirngboot3demo.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -11,8 +12,6 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "emergency", schema = "new_eipulse")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "emergencyId")
 public class Emergency {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,6 +28,7 @@ public class Emergency {
     private String relation;
 
 
+    @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "emp_id", nullable = false)
     private Employee emp;

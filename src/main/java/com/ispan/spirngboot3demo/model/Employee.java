@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -18,8 +19,6 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "employee", schema = "new_eipulse")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "empId")
 public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -56,49 +55,45 @@ public class Employee {
 
 
 
-
+    @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "title_id", nullable = false)
     private Title title;
 
 
-
     @Column(name = "hire_date")
-    private LocalDateTime hireDate;
-
+    private LocalDate hireDate;
     @Column(name = "leave_date")
-    private LocalDateTime leaveDate;
-
-    @Column(name = "edit_date")
-    private LocalDateTime editDate;
+    private LocalDate leaveDate;
+    @Column(name = "edit_date",insertable = false,updatable = false)
+    private LocalDate editDate;
 
     @Column(name = "emp_state", nullable = false, length = 50)
     private String empState;
 
-
+    @JsonManagedReference
     @OneToMany(mappedBy = "emp")
     private Set<Emergency> emergencies = new LinkedHashSet<>();
 
-//    @JsonManagedReference
-
+    @JsonManagedReference
     @OneToMany(mappedBy = "emp")
     private Set<PermissionInfo> permissionInfos = new LinkedHashSet<>();
-
+    @JsonManagedReference
     @OneToMany(mappedBy = "emp")
     private Set<PermissionMove> permissionMoves = new LinkedHashSet<>();
 
-
+    @JsonManagedReference
     @OneToMany(mappedBy = "emp")
     private Set<ResignRecord> resignRecords = new LinkedHashSet<>();
 
-
+    @JsonManagedReference
     @OneToMany(mappedBy = "emp")
     private Set<TitleMove> titleMoves = new LinkedHashSet<>();
 
     public Employee() {
     }
 
-    public Employee(String empName, LocalDate birth, String email, String idNumber, String gender, String phone, String tel, String photoUrl, String address,Title title, String empState) {
+    public Employee(String empName, LocalDate birth, String email, String idNumber, String gender, String phone, String tel, String photoUrl, String address,Title title,LocalDate hireDate, String empState) {
         this.empName = empName;
         this.birth = birth;
         this.email = email;
@@ -109,6 +104,7 @@ public class Employee {
         this.photoUrl = photoUrl;
         this.address = address;
         this.title = title;
+        this.hireDate = hireDate;
         this.empState = empState;
     }
 

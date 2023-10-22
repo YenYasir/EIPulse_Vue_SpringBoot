@@ -10,8 +10,6 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "permission", schema = "new_eipulse")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "permissionId")
 public class Permission {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
