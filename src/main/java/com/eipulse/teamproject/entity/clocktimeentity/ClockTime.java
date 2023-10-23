@@ -38,7 +38,7 @@ public class ClockTime {
     private Employee employee;
 
 //    public String getEmployee() {
-////                    三元運算子if !=null return  else  return null
+////                    三元運算子 if !=null return  else  return null
 //        return (this.employee !=null) ? this.employee.getEmpId() + this.employee.getEmpName():null;
 //    }
 

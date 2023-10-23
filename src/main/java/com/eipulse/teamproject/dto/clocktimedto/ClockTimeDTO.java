@@ -18,7 +18,7 @@ public class ClockTimeDTO {
     private String officeRegions;
     private String empName;
 
-    //數值為0時不序列化
+    //數值為 0 時不序列化
     @JsonInclude(JsonInclude.Include.NON_DEFAULT)
     private double latitude = 0.0;
 

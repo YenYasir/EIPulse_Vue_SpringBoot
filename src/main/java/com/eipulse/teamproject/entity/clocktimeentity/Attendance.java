@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 
-//MySQL的boolean會轉為tinyint，0為false，1為true
+// MySQL 的 boolean 會轉為 tinyint ，0 為 false ， 1 為 true
 @Getter
 @Setter
 @Entity
