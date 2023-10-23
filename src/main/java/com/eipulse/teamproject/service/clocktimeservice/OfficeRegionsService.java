@@ -36,14 +36,7 @@ public class OfficeRegionsService {
         return officeRegionsRepository.save(officeRegions);
     }
 
-    public OfficeRegions findByIdRegions(Integer id) {
-        if(id!=null){
-            Optional<OfficeRegions> optional = officeRegionsRepository.findById(id);
 
-            return optional.get();
-        }
-        return null;
-    }
 
     public List<OfficeRegions> findAllRegions() {
         return officeRegionsRepository.findAll();
@@ -57,27 +50,19 @@ public class OfficeRegionsService {
         return null;
     }
 
-    public boolean deleteByIdRegions(Integer id) {
-        Optional<OfficeRegions> optional = officeRegionsRepository.findById(id);
-        if(optional.isPresent()){
-            officeRegionsRepository.deleteById(id);
-            return true;
-        }
-        return false;
-    }
 
-//like search emp near company
+//依經緯度模糊查詢距離員工最近的公司
     public OfficeRegions findByLikeRegionsDistance(double latitude, double longitude) {
-//        get all company location
+//       抓取全公司資料
         List<OfficeRegions> allRegions = findAllRegions();
-//        create key value of regions
+//       排序成Map
         Map<OfficeRegions,Double> distances = new HashMap<>();
         for(OfficeRegions region : allRegions){
-//            use haversine check emp with everyone company distance
+//            使用哈佛賽抓取距離最近公司
             double distance = haversineDistance(region.getLatitude(), region.getLongitude(),latitude,longitude);
             distances.put(region,distance);
         }
-//        sort distance
+//        進行距離排序
         List<Map.Entry<OfficeRegions,Double>> sortedList = distances.entrySet().stream()
                 .sorted(Map.Entry.comparingByValue()).collect(Collectors.toList());
         OfficeRegions closestRegions = sortedList.get(0).getKey();

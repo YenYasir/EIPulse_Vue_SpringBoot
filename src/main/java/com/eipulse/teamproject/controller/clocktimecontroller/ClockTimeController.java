@@ -1,6 +1,7 @@
 package com.eipulse.teamproject.controller.clocktimecontroller;
 
 
+import com.eipulse.teamproject.dto.ApiResponse;
 import com.eipulse.teamproject.dto.clocktimedto.ClockTimeDTO;
 import com.eipulse.teamproject.entity.clocktimeentity.ClockTime;
 import com.eipulse.teamproject.service.clocktimeservice.ClockTimeService;
@@ -58,12 +59,9 @@ public class ClockTimeController {
     //選擇要查詢日期的所有員工的打卡記錄
     @GetMapping("/clockTimes/{startDate}/{endDate}/{pageNumber}")
     public ResponseEntity<?>findClockTimeByDay(@PathVariable LocalDate startDate,@PathVariable LocalDate endDate,@PathVariable Integer pageNumber){
-        System.out.println(startDate);
-        System.out.println(endDate);
-        System.out.println(pageNumber);
         try {
             return new ResponseEntity<>(clockTimeService.findClockTimeByDate(startDate,endDate,pageNumber),HttpStatus.OK);
-        }catch (RuntimeException e){
+        }catch (Exception e){
             e.printStackTrace();
             return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
         }

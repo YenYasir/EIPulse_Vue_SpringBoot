@@ -4,8 +4,7 @@ import com.eipulse.teamproject.entity.clocktimeentity.Attendance;
 import com.eipulse.teamproject.entity.clocktimeentity.ClockTime;
 import com.eipulse.teamproject.entity.shoppingentity.EmployeeGiftCash;
 import com.eipulse.teamproject.entity.shoppingentity.Order;
-import com.eipulse.teamproject.entity.shoppingentity.ShoppingCart;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.eipulse.teamproject.entity.shoppingentity.Cart;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -49,8 +48,10 @@ public class Employee {
     @OneToMany(mappedBy = "employee")
     private Set<EmployeeGiftCash> employeeGiftCashSet;
 
+
+    @JsonManagedReference
     @OneToOne(mappedBy = "employee")
-    private ShoppingCart shoppingCarts;
+    private Cart cart;
 
     @JsonManagedReference
     @OneToMany(mappedBy = "employee")
@@ -79,7 +80,7 @@ public class Employee {
                 ", address='" + address + '\'' +
                 ", email='" + email + '\'' +
                 ", employeeGiftCashSet=" + employeeGiftCashSet +
-                ", shoppingCarts=" + shoppingCarts +
+                ", shoppingCarts=" + cart +
                 ", orders=" + orders +
                 ", clockTime=" + clockTime +
                 ", attendance=" + attendance +

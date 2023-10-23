@@ -51,22 +51,28 @@ public class AttendanceService {
     //自動更新出勤狀態
     public boolean updateAttendance() {
         List<Employee> employees = empRepository.findAll();
+        //先抓取全員工資料後迭代
         for (Employee employee : employees) {
+            //抓取每天的00:00 ~ 23:59打卡時間
             LocalDateTime startTime = startOfDay();
             LocalDateTime endTime = endOfDay();
 
             List<ClockTime> clockTimes = clockTimeRepository.findByTimeAndEmployee(employee, startTime, endTime);
-
+            //抓取單員工所有打卡紀錄後迭代計算總時數
             BigDecimal totalHours = calculateTotalHours(clockTimes);
 
+            //依日期先去抓取當天的出勤紀錄並更新資料
             LocalDate time = startTime.toLocalDate();
             Optional<Attendance> optionalAttendance = attendanceRepository.findByDateAndEmployee(time, employee);
             if (optionalAttendance.isPresent()) {
                 if(! clockTimes.isEmpty()){
                     Attendance attendance = optionalAttendance.get();
+                    //獲取第一筆上班判斷遲到
                     LocalDateTime firstClockTime = clockTimes.get(0).getTime();
+                    //獲取最後一筆判斷是否早退
                     LocalDateTime lastClockTime = clockTimes.get(clockTimes.size() - 1).getTime();
                     attendance.setTotalHours(totalHours);
+                    //判斷出勤狀態碼
                     updateAttendanceStatus(attendance, firstClockTime, lastClockTime, totalHours);
                     attendanceRepository.save(attendance);
                 }
@@ -77,8 +83,11 @@ public class AttendanceService {
 
     //計算總時數
     private BigDecimal calculateTotalHours(List<ClockTime> clockTimes) {
+        //初始化總時數
         BigDecimal totalHours = BigDecimal.ZERO;
+        //預設開始時間 null
         LocalDateTime startTime = null;
+        //將單員工當天所有打卡記錄迭代計算
         for (ClockTime clockTime : clockTimes) {
             if ("上班".equals(clockTime.getType())) {
                 startTime = clockTime.getTime();

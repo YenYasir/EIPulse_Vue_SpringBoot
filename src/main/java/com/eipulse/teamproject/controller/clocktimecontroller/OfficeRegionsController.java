@@ -21,13 +21,13 @@ public class OfficeRegionsController {
         this.officeRegionsService = officeRegionsService;
     }
 //OK
-    @PostMapping("/officeRegions/post")
+    @PostMapping("/officeRegions")
     public OfficeRegions postOfficeRegions(@RequestBody OfficeRegions officeRegions){
 
         return officeRegionsService.saveRegions(officeRegions);
     }
 //    ok
-    @GetMapping("/officeRegions/all")
+    @GetMapping("/officeRegions")
     public List<OfficeRegions> findAllOfficeRegions (){
         return officeRegionsService.findAllRegions();
     }

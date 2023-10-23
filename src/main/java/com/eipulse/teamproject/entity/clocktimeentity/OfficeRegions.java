@@ -26,12 +26,4 @@ public class OfficeRegions {
 
     @Column(name = "regions_name")
     private String regionsName;
-
-
-//    mappedBy確保映射關係，能透過OfficeRegions抓取到關聯的ClockTime資料
-    @OneToMany(mappedBy = "officeRegions",cascade = {CascadeType.DETACH,CascadeType.MERGE,
-                                                    CascadeType.PERSIST,CascadeType.REFRESH})
-    @JsonManagedReference
-    private List<ClockTime> clockTimes;
-
 }

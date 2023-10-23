@@ -37,14 +37,16 @@ public class ClockTimeService {
 
 
     public ClockTime saveClockTime(ClockTimeDTO clockTimeDTO) {
-//        Search emp near company
+//        先抓取離員工最近公司
         OfficeRegions officeRegions = officeRegionsService.findByLikeRegionsDistance(clockTimeDTO.getLatitude(),clockTimeDTO.getLongitude());
+        //獲取emp資料
         Employee employee = empRepository.findById(clockTimeDTO.getEmpId()).orElseThrow(()->new RuntimeException("員工資料異常"));
+        //目前打卡時間生成
         LocalDateTime now = LocalDateTime.now();
         ClockTime clockTime = new ClockTime(now, clockTimeDTO.getType(), employee);
-
+        //抓取今日是否有最後一筆打卡時間
         ClockTimeDTO lastClockTime = findByEmpIdToDayLastTime(clockTime.getEmployee().getEmpId());
-
+        //判斷最近一筆打卡類型，用於決定此筆類型
         if (lastClockTime != null) {
             if ("上班".equals(lastClockTime.getType())) {
                 clockTime.setType("下班");
@@ -55,15 +57,16 @@ public class ClockTimeService {
             clockTime.setType("上班");
         }
 
+        //生成打卡的日期，用於自動生成出勤記錄表用
         LocalDate today = clockTime.getTime().toLocalDate();
-//        calculate emp with company distance
+//        哈佛賽計算公司與員工距離，換算後為公尺
         double empLocation = officeRegionsService.haversineDistance(officeRegions.getLatitude(),officeRegions.getLongitude(),clockTimeDTO.getLatitude(),clockTimeDTO.getLongitude());
         System.out.println(empLocation);
         if(empLocation <= 200){
             clockTime.setOfficeRegions(officeRegions);
             Optional<Attendance> optional = attendanceRepository.findByDateAndEmployee(today, clockTime.getEmployee());
             if(optional.isEmpty()){
-//                create new attendance
+//                當天如無資料則自動新增一筆出勤資料
                 Attendance newAttendance = new Attendance();
                 newAttendance.setDate(today);
                 newAttendance.setEmployee(clockTime.getEmployee());
