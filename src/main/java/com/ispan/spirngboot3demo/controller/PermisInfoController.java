@@ -7,6 +7,7 @@ import com.ispan.spirngboot3demo.service.PermisInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -56,10 +57,11 @@ public class PermisInfoController {
 
 
     // Update permission info
+    @Transactional
     @PutMapping("/permissionInfo/update")
     public ResponseEntity<?> update(@RequestBody PermissionInfoDTO permissionInfoDTO) {
         try {
-            PermissionInfo info = infoService.update(permissionInfoDTO);
+            PermissionInfo info = infoService.updateAndLogChange(permissionInfoDTO);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);

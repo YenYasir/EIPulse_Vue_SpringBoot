@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -32,8 +33,11 @@ public class PermissionMove {
     @Column(name = "after_permission_name", nullable = false, length = 50)
     private String afterPermissionName;
 
-    @Column(name = "reason", nullable = false)
+    @Column(name = "reason")
     private String reason;
+
+    @Column(name = "effect_date")
+    private LocalDate effectDate;
 
     @Column(name = "approver", length = 50)
     private String approver;
@@ -41,4 +45,16 @@ public class PermissionMove {
     @Column(name = "edit_date",insertable = false,updatable = false)
     private LocalDateTime editDate;
 
+    public PermissionMove() {
+    }
+
+    // add 的建構子
+    public PermissionMove(Employee emp, String beforePermissionName, String afterPermissionName, String reason, LocalDate effectDate, String approver) {
+        this.emp = emp;
+        this.beforePermissionName = beforePermissionName;
+        this.afterPermissionName = afterPermissionName;
+        this.reason = reason;
+        this.effectDate = effectDate;
+        this.approver = approver;
+    }
 }

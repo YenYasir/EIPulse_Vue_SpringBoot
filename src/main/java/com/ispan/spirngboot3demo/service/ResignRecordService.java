@@ -34,7 +34,7 @@ public class ResignRecordService {
     // 查詢單筆
     public ResignDTO findById(Integer id){
        ResignRecord resign = resignRepo.findById(id).orElseThrow(()-> new RuntimeException("查詢錯誤"));
-       return  new ResignDTO(resign.getId(), resign.getEmp().getEmpId(),resign.getReason(),resign.getApprover());
+       return  new ResignDTO(resign.getId(), resign.getEmp().getEmpId(),resign.getReason(),resign.getLeaveDate(),resign.getApprover());
     }
     // 刪除
     public void deleteResign(Integer id) {
@@ -51,6 +51,7 @@ public class ResignRecordService {
                     resignRecord.getId(),
                     resignRecord.getEmp().getEmpId(),
                     resignRecord.getReason(),
+                    resignRecord.getLeaveDate(),
                     resignRecord.getApprover(),
                     resignRecord.getEditDate()
             );
@@ -69,7 +70,7 @@ public class ResignRecordService {
         resign.setApprover(resignDTO.getApprover());
         resign.setReason(resignDTO.getReason());
         ResignRecord record = resignRepo.save(resign);
-        // 這段是從資料庫把資料撈回來
+        // 這段是從資料庫把資料撈回來顯示
         resignDTO.setReason(record.getReason());
         resignDTO.setApprover(record.getApprover());
         return resignDTO;

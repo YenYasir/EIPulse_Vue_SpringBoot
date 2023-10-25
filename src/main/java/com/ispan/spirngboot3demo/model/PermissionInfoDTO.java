@@ -3,6 +3,9 @@ package com.ispan.spirngboot3demo.model;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 public class PermissionInfoDTO {
@@ -12,6 +15,12 @@ public class PermissionInfoDTO {
     private String empName;
     private Integer permissionId;
     private String permissionName;
+    private String beforePermissionName;
+    private String afterPermissionName;
+    private String reason;
+    private LocalDate effectDate;
+    private String approver;
+    private LocalDateTime editDate;
 
     public PermissionInfoDTO() {
     }

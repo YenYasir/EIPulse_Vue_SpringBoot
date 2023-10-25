@@ -32,7 +32,6 @@ public class TitleController {
         }
     }
 
-
     // 查詢單筆
     @GetMapping("/title/{id}")
     public ResponseEntity<?>findById(@PathVariable Integer id){

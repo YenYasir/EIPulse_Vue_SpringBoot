@@ -28,11 +28,14 @@ public class ResignRecord {
     @JoinColumn(name = "emp_id", nullable = false,unique = true)
     private Employee emp;
 
-    @Column(name = "approver", length = 50)
-    private String approver;
-
     @Column(name = "reason", nullable = false)
     private String reason;
+
+    @Column(name = "leave_date",insertable = false,updatable = false)
+    private LocalDate leaveDate;
+
+    @Column(name = "approver", length = 50)
+    private String approver;
 
     @Column(name = "edit_date",insertable = false,updatable = false)
     private LocalDate editDate;
@@ -50,6 +53,15 @@ public class ResignRecord {
         this.emp = emp;
         this.approver = approver;
         this.reason = reason;
+    }
+
+    public ResignRecord(Integer id, Employee emp, String reason, LocalDate leaveDate, String approver, LocalDate editDate) {
+        this.id = id;
+        this.emp = emp;
+        this.reason = reason;
+        this.leaveDate = leaveDate;
+        this.approver = approver;
+        this.editDate = editDate;
     }
 
     public ResignRecord(Employee emp, String approver, String reason) {

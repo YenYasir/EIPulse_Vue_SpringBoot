@@ -11,8 +11,9 @@ public class ResignDTO {
 
     private Integer id;
     private Integer empId;
-    private String approver;
     private String reason;
+    private LocalDate leaveDate;
+    private String approver;
     private LocalDate editDate;
     public ResignDTO() {
     }
@@ -35,11 +36,21 @@ public class ResignDTO {
         this.reason = reason;
     }
 
-    public ResignDTO(Integer id, Integer empId, String approver, String reason, LocalDate editDate) {
+
+    public ResignDTO(Integer id, Integer empId, String reason, LocalDate leaveDate, String approver) {
         this.id = id;
         this.empId = empId;
-        this.approver = approver;
         this.reason = reason;
+        this.leaveDate = leaveDate;
+        this.approver = approver;
+    }
+
+    public ResignDTO(Integer id, Integer empId, String reason, LocalDate leaveDate, String approver, LocalDate editDate) {
+        this.id = id;
+        this.empId = empId;
+        this.reason = reason;
+        this.leaveDate = leaveDate;
+        this.approver = approver;
         this.editDate = editDate;
     }
 

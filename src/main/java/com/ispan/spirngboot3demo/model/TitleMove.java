@@ -21,28 +21,38 @@ public class TitleMove {
     @Column(name = "id", nullable = false)
     private Integer id;
 
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "emp_id", nullable = false)
+    private Employee emp;
+
     @Column(name = "before_dept_info", nullable = false)
     private String beforeDeptInfo;
 
     @Column(name = "after_dept_info", nullable = false)
     private String afterDeptInfo;
 
-    @Column(name = "effect_date")
-    private LocalDateTime effectDate;
+    @Column(name = "reason", nullable = false, length = 50)
+    private String reason;
 
-    @Column(name = "edit_date")
-    private LocalDateTime editDate;
+    @Column(name = "effect_date")
+    private LocalDate effectDate;
 
     @Column(name = "approver", length = 20)
     private String approver;
 
+    @Column(name = "edit_date",insertable = false,updatable = false)
+    private LocalDateTime editDate;
 
-    @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "emp_id", nullable = false)
-    private Employee emp;
+    public TitleMove() {
+    }
 
-    @Column(name = "reason", nullable = false, length = 50)
-    private String reason;
-
+    public TitleMove(Employee emp, String beforeDeptInfo, String afterDeptInfo, String reason, LocalDate effectDate, String approver) {
+        this.emp = emp;
+        this.beforeDeptInfo = beforeDeptInfo;
+        this.afterDeptInfo = afterDeptInfo;
+        this.reason = reason;
+        this.effectDate = effectDate;
+        this.approver = approver;
+    }
 }
