@@ -12,7 +12,7 @@ import com.eipulse.common.utils.http.HttpUtils;
 /**
  * 獲取地址類
  * 
- * @author ruoyi
+ * @author eipulse
  */
 public class AddressUtils {
 	private static final Logger log = LoggerFactory.getLogger(AddressUtils.class);

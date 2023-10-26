@@ -4,34 +4,30 @@ import com.eipulse.common.exception.UtilException;
 import com.eipulse.common.utils.StringUtils;
 
 /**
- * sql操作工具类
+ * sql操作工具類
  * 
- * @author ruoyi
+ * @author eipulse
  */
-public class SqlUtil
-{
-    /**
-     * 仅支持字母、数字、下划线、空格、逗号、小数点（支持多个字段排序）
-     */
-    public static String SQL_PATTERN = "[a-zA-Z0-9_\\ \\,\\.]+";
+public class SqlUtil {
+	/**
+	 * 僅支持字母、數字、下劃線、空格、逗號、小數點（支持多個字段排序）
+	 */
+	public static String SQL_PATTERN = "[a-zA-Z0-9_\\ \\,\\.]+";
 
-    /**
-     * 检查字符，防止注入绕过
-     */
-    public static String escapeOrderBySql(String value)
-    {
-        if (StringUtils.isNotEmpty(value) && !isValidOrderBySql(value))
-        {
-            throw new UtilException("参数不符合规范，不能进行查询");
-        }
-        return value;
-    }
+	/**
+	 * 檢查字符，防止註入繞過
+	 */
+	public static String escapeOrderBySql(String value) {
+		if (StringUtils.isNotEmpty(value) && !isValidOrderBySql(value)) {
+			throw new UtilException("參數不符合規範，不能進行查詢");
+		}
+		return value;
+	}
 
-    /**
-     * 验证 order by 语法是否符合规范
-     */
-    public static boolean isValidOrderBySql(String value)
-    {
-        return value.matches(SQL_PATTERN);
-    }
+	/**
+	 * 驗證 order by 語法是否符合規範
+	 */
+	public static boolean isValidOrderBySql(String value) {
+		return value.matches(SQL_PATTERN);
+	}
 }

@@ -8,7 +8,7 @@ eipulse:
   copyrightYear: 2023
   # 實例演示開關
   demoEnabled: true
-  # 文件路徑 示例（ Windows配置D:/ruoyi/uploadPath，Linux配置 /home/ruoyi/uploadPath）
+  # 檔案路徑 示例（ Windows配置D:/ruoyi/uploadPath，Linux配置 /home/ruoyi/uploadPath）
   profile: C:/eipulse/uploadPath
   # 獲取ip地址開關
   addressEnabled: false
@@ -25,12 +25,12 @@ server:
   tomcat:
     # tomcat的URI編碼
     uri-encoding: UTF-8
-    # tomcat最大線程數，默認為200
+    # tomcat最大執行緒數，默認為200
     max-threads: 800
-    # Tomcat啟動初始化的線程數，默認值25
+    # Tomcat啟動初始化的執行緒數，默認值25
     min-spare-threads: 30
 
-# 日志配置
+# 日誌配置
 logging:
   level:
     com.eipulse: debug
@@ -38,20 +38,20 @@ logging:
 
 # Spring配置
 spring:
-  # 資源信息
+  # 資源資訊
   messages:
-    # 國際化資源文件路徑
+    # 國際化資源檔案路徑
     basename: i18n/messages
   profiles: 
     active: druid
-  # 文件上傳
+  # 檔案上傳
   servlet:
      multipart:
-       # 單個文件大小
+       # 單個檔案大小
        max-file-size:  10MB
-       # 設置總上傳的文件大小
+       # 設置總上傳的檔案大小
        max-request-size:  20MB
-  # 服務模塊
+  # 服務模組
   devtools:
     restart:
       # 熱部署開關
@@ -92,9 +92,9 @@ token:
 #mybatis:
     # 搜索指定包別名
     #typeAliasesPackage: com.eipulse.**.domain
-    # 配置mapper的掃描，找到所有的mapper.xml映射文件
+    # 配置mapper的掃描，找到所有的mapper.xml映射檔案
     #mapperLocations: classpath*:mapper/**/*Mapper.xml
-    # 加載全局的配置文件
+    # 加載全域的配置檔案
     #configLocation: classpath:mybatis/mybatis-config.xml
 
 # Swagger配置
@@ -108,7 +108,7 @@ swagger:
 xss: 
   # 過濾開關
   enabled: true
-  # 排除鏈接（多個用逗號分隔）
+  # 排除連結（多個用逗號分隔）
   excludes: /system/notice
-  # 匹配鏈接
+  # 匹配連結
   urlPatterns: /system/*,/monitor/*,/tool/*

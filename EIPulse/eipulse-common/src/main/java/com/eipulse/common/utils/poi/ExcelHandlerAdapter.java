@@ -1,19 +1,18 @@
 package com.eipulse.common.utils.poi;
 
 /**
- * Excel数据格式处理适配器
+ * Excel數據格式處理適配器
  * 
- * @author ruoyi
+ * @author eipulse
  */
-public interface ExcelHandlerAdapter
-{
-    /**
-     * 格式化
-     * 
-     * @param value 单元格数据值
-     * @param args excel注解args参数组
-     *
-     * @return 处理后的值
-     */
-    Object format(Object value, String[] args);
+public interface ExcelHandlerAdapter {
+	/**
+	 * 格式化
+	 * 
+	 * @param value 單元格數據值
+	 * @param args  excel註解args參數組
+	 *
+	 * @return 處理後的值
+	 */
+	Object format(Object value, String[] args);
 }

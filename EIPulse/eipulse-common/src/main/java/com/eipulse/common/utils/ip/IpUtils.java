@@ -11,7 +11,7 @@ import com.eipulse.common.utils.html.EscapeUtil;
 /**
  * 獲取IP方法
  * 
- * @author ruoyi
+ * @author eipulse
  */
 public class IpUtils {
 	public static String getIpAddr(HttpServletRequest request) {

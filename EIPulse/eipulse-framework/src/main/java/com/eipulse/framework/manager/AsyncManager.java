@@ -19,7 +19,7 @@ public class AsyncManager {
 	private final int OPERATE_DELAY_TIME = 10;
 
 	/**
-	 * 異步操作任務調度線程池
+	 * 異步操作任務調度執行緒池
 	 */
 	private ScheduledExecutorService executor = SpringUtils.getBean("scheduledExecutorService");
 
@@ -45,7 +45,7 @@ public class AsyncManager {
 	}
 
 	/**
-	 * 停止任務線程池
+	 * 停止任務執行緒池
 	 */
 	public void shutdown() {
 		Threads.shutdownAndAwaitTermination(executor);

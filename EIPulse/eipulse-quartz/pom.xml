@@ -12,12 +12,12 @@
     <artifactId>eipulse-quartz</artifactId>
 
     <description>
-        quartz定时任务
+        quartz定時任務
     </description>
 
     <dependencies>
 
-        <!-- 定时任务 -->
+        <!-- 定時任務 -->
         <dependency>
             <groupId>org.quartz-scheduler</groupId>
             <artifactId>quartz</artifactId>

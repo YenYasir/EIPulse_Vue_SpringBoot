@@ -12,18 +12,18 @@
     <artifactId>eipulse-generator</artifactId>
 
     <description>
-        generator代码生成
+        generator程式碼生成
     </description>
 
     <dependencies>
 
-        <!--velocity代码生成使用模板 -->
+        <!--velocity程式碼生成使用模板 -->
         <dependency>
             <groupId>org.apache.velocity</groupId>
             <artifactId>velocity</artifactId>
         </dependency>
 
-        <!-- collections工具类 -->
+        <!-- collections工具類 -->
         <dependency>
             <groupId>commons-collections</groupId>
             <artifactId>commons-collections</artifactId>
