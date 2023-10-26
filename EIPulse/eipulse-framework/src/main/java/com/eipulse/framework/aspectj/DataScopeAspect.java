@@ -13,41 +13,41 @@ import com.eipulse.common.utils.StringUtils;
 import com.eipulse.common.utils.SecurityUtils;
 
 /**
- * 数据过滤处理
+ * 數據過濾處理
  *
- * @author ruoyi
+ * @author eipulse
  */
 @Aspect
 @Component
 public class DataScopeAspect
 {
     /**
-     * 全部数据权限
+     * 全部數據權限
      */
     public static final String DATA_SCOPE_ALL = "1";
 
     /**
-     * 自定数据权限
+     * 自定數據權限
      */
     public static final String DATA_SCOPE_CUSTOM = "2";
 
     /**
-     * 部门数据权限
+     * 部門數據權限
      */
     public static final String DATA_SCOPE_DEPT = "3";
 
     /**
-     * 部门及以下数据权限
+     * 部門及以下數據權限
      */
     public static final String DATA_SCOPE_DEPT_AND_CHILD = "4";
 
     /**
-     * 仅本人数据权限
+     * 僅本人數據權限
      */
     public static final String DATA_SCOPE_SELF = "5";
 
     /**
-     * 数据权限过滤关键字
+     * 數據權限過濾關鍵字
      */
     public static final String DATA_SCOPE = "dataScope";
 
@@ -60,12 +60,12 @@ public class DataScopeAspect
 
     protected void handleDataScope(final JoinPoint joinPoint, DataScope controllerDataScope)
     {
-        // 获取当前的用户
+        // 獲取當前的員工
         LoginUser loginUser = SecurityUtils.getLoginUser();
         if (StringUtils.isNotNull(loginUser))
         {
             SysUser currentUser = loginUser.getUser();
-            // 如果是超级管理员，则不过滤数据
+            // 如果是超級管理員，則不過濾數據
             if (StringUtils.isNotNull(currentUser) && !currentUser.isAdmin())
             {
                 dataScopeFilter(joinPoint, currentUser, controllerDataScope.deptAlias(),
@@ -75,11 +75,11 @@ public class DataScopeAspect
     }
 
     /**
-     * 数据范围过滤
+     * 數據範圍過濾
      *
-     * @param joinPoint 切点
-     * @param user 用户
-     * @param userAlias 别名
+     * @param joinPoint 切點
+     * @param user 員工
+     * @param userAlias 別名
      */
     public static void dataScopeFilter(JoinPoint joinPoint, SysUser user, String deptAlias, String userAlias)
     {
@@ -117,7 +117,7 @@ public class DataScopeAspect
                 }
                 else
                 {
-                    // 数据权限为仅本人且没有userAlias别名不查询任何数据
+                    // 數據權限為僅本人且沒有userAlias別名不查詢任何數據
                     sqlString.append(" OR 1=0 ");
                 }
             }
@@ -135,7 +135,7 @@ public class DataScopeAspect
     }
 
     /**
-     * 拼接权限sql前先清空params.dataScope参数防止注入
+     * 拼接權限sql前先清空params.dataScope參數防止註入
      */
     private void clearDataScope(final JoinPoint joinPoint)
     {
