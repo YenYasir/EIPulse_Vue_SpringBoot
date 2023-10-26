@@ -3,7 +3,7 @@
 人事入口網站
 
 ### 平台簡介
-- 前端采用Vue3+VITE、Element UI。
+- 前端採用Vue3+VITE、Element UI。
 - 後端採用Spring Boot、Spring Security、Jpa、Redis & Jwt、hibernate。
 - 權限認證使用Jwt。
 - 支持加載動態權限菜單，多方式輕鬆權限控制。
