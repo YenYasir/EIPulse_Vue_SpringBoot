@@ -46,7 +46,7 @@ public class EmployeeService {
 		empRepo.deleteById(id);
 	}
 
-	// find all
+	// find all ，避免將關聯資料都被撈出來，所以先資料放進去DTO裡，再設定建構子 get data
 	public List<EmpDTO> findAllEmp(){
 		List<Employee>employees = empRepo.findAll();
 		List<EmpDTO>result = new ArrayList<>();

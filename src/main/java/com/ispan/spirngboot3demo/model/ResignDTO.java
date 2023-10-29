@@ -35,29 +35,29 @@ public class ResignDTO {
         this.transferForm = transferForm;
     }
 
-    public ResignDTO(Integer id, Integer empId, String reason, String approver) {
-        this.id = id;
-        this.empId = empId;
-        this.approver = approver;
-        this.reason = reason;
-    }
 
-
-    public ResignDTO(Integer id, Integer empId, String reason, LocalDate leaveDate, String approver) {
+    // 查詢單筆
+    public ResignDTO(Integer id, Integer empId, String reason, LocalDate leaveDate, String approver, boolean quit, boolean transferForm) {
         this.id = id;
         this.empId = empId;
         this.reason = reason;
         this.leaveDate = leaveDate;
         this.approver = approver;
+        this.quit = quit;
+        this.transferForm = transferForm;
     }
 
-    public ResignDTO(Integer id, Integer empId, String reason, LocalDate leaveDate, String approver, LocalDate editDate) {
+
+    // 查詢全部
+    public ResignDTO(Integer id, Integer empId, String reason, LocalDate leaveDate, String approver, LocalDate editDate, boolean quit, boolean transferForm) {
         this.id = id;
         this.empId = empId;
         this.reason = reason;
         this.leaveDate = leaveDate;
         this.approver = approver;
         this.editDate = editDate;
+        this.quit = quit;
+        this.transferForm = transferForm;
     }
 
     @Override

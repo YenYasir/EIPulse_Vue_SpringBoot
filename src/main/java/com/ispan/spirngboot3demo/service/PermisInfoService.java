@@ -29,6 +29,7 @@ public class PermisInfoService {
 
     // add
     public void addInfo(PermissionInfoDTO permissionInfoDTO){
+        //
         Employee emp = employeeRepository.findById(permissionInfoDTO.getEmpId()).get();
         Permission permis = permissionRepository.findById(permissionInfoDTO.getPermissionId()).get();
 
@@ -39,10 +40,13 @@ public class PermisInfoService {
     public PermissionInfoDTO findById(Integer id){
         PermissionInfo permissionInfo  = permissionInfoRepository.findById(id).orElseThrow(()->new RuntimeException("查詢錯誤"));
 
+        // 列出員工編號、權限編號、權限名稱
         return new PermissionInfoDTO(permissionInfo.getId(), permissionInfo.getEmp().getEmpId(),permissionInfo.getEmp().getEmpName(),permissionInfo.getPermission().getPermissionId(),permissionInfo.getPermission().getPermissionName());
     }
     // find all
     public List<PermissionInfoDTO> findAll(){
+
+        // find all ，避免將關聯資料都被撈出來，所以先資料放進去DTO裡，再設定建構子 get data
         List<PermissionInfo> permissionInfos = permissionInfoRepository.findAll();
         List<PermissionInfoDTO> permissionInfoDTOs = new ArrayList<>();
 
@@ -66,23 +70,14 @@ public class PermisInfoService {
         permissionInfoRepository.deleteById(id);
     }
 
-    // update
-    public PermissionInfo update(PermissionInfoDTO permissionInfoDTO){
-        PermissionInfo info = permissionInfoRepository.findById(permissionInfoDTO.getEmpId())
-                .orElseThrow(()-> new RuntimeException(permissionInfoDTO.getId()+"can't find"));
-        Permission permis = permissionRepository.findById(permissionInfoDTO.getPermissionId())
-                .orElseThrow(() -> new RuntimeException("Unable to find Permission with ID: " + permissionInfoDTO.getPermissionId()));
-
-        info.setPermission(permis);
-        return permissionInfoRepository.save(info);
-    }
-// 建立一個共用 DTO(permissionInfoDTO) 再各自把值分出來處理
+    // update info 的資料就會自動新增權限異動表的紀錄
+    // 建立一個共用 DTO(permissionInfoDTO) 再各自把值分出來處理
     @Transactional
     public PermissionInfo updateAndLogChange(PermissionInfoDTO permissionInfoDTO) {
         // 查找和驗證員工信息
         Employee emp = employeeRepository.findById(permissionInfoDTO.getEmpId()).orElseThrow(() -> new RuntimeException("Employee not found"));
 
-        // 查找和驗證原始 Permission 資料
+        // 查找和驗證舊 Permission 資料
         PermissionInfo originalInfo = permissionInfoRepository.findById(permissionInfoDTO.getEmpId())
                 .orElseThrow(() -> new RuntimeException("PermissionInfo not found"));
         Permission originalPermission = originalInfo.getPermission();

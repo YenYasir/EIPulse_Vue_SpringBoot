@@ -28,20 +28,23 @@ public class ResignRecordService {
     public void addResign(ResignDTO resignDTO){
         Employee emp = empRepo.findById(resignDTO.getEmpId()).orElseThrow(()->new RuntimeException("Employee not found"));
 
-        resignRepo.save(new ResignRecord(emp,resignDTO.getReason(),resignDTO.getLeaveDate(),resignDTO.isQuit(),resignDTO.isTransferForm()));
+
+        resignRepo.save(new ResignRecord(emp,resignDTO.getReason(),resignDTO.getLeaveDate(),
+                resignDTO.isQuit(),resignDTO.isTransferForm()));
     }
 
-    // 查詢單筆
+    // 查詢單筆 (員編、原因、離職日、簽核人、離職證明書、勞健保轉出單)
     public ResignDTO findById(Integer id){
        ResignRecord resign = resignRepo.findById(id).orElseThrow(()-> new RuntimeException("查詢錯誤"));
-       return  new ResignDTO(resign.getId(), resign.getEmp().getEmpId(),resign.getReason(),resign.getLeaveDate(),resign.getApprover());
+       return  new ResignDTO(resign.getId(), resign.getEmp().getEmpId(),resign.getReason(),resign.getLeaveDate(),resign.getApprover()
+       ,resign.isQuit(),resign.isTransferForm());
     }
     // 刪除
     public void deleteResign(Integer id) {
         resignRepo.deleteById(id);
     }
 
-    // 查詢全部職位
+    // 查詢全部
     public List<ResignDTO> findAllResign(){
         List<ResignRecord> resigns = resignRepo.findAll();
         List<ResignDTO> dto =  new ArrayList<>();
@@ -53,7 +56,9 @@ public class ResignRecordService {
                     resignRecord.getReason(),
                     resignRecord.getLeaveDate(),
                     resignRecord.getApprover(),
-                    resignRecord.getEditDate()
+                    resignRecord.getEditDate(),
+                    resignRecord.isQuit(),
+                    resignRecord.isTransferForm()
             );
             dto.add(dtos);
         }

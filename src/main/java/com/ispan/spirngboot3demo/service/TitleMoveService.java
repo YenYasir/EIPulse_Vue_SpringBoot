@@ -44,7 +44,7 @@ public class TitleMoveService {
                 move.getAfterDeptInfo(),move.getReason(),move.getEffectDate(),move.getApprover(),move.getEditDate());
     }
 
-    // find all
+    // find all ，避免將關聯資料都被撈出來，所以先資料放進去DTO裡，再設定建構子 get data
     public List<TitleMoveDTO> findAll(){
         List<TitleMove> move = moveRepo.findAll();
         List<TitleMoveDTO> dtos = new ArrayList<>();

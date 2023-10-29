@@ -32,7 +32,7 @@ public class PermisMoveService {
         moveRepo.save(new PermissionMove(emp,dto.getBeforePermissionName(),dto.getAfterPermissionName(),dto.getReason(),dto.getEffectDate(),dto.getApprover()));
     }
 
-    // find once
+    // find once (資料表編號、員編、修改前權限名稱、修改後權限名稱、原因、生效日、簽核人、編輯日期)
     public PermissionMoveDTO findById(Integer id){
         PermissionMove move = moveRepo.findById(id).orElseThrow(()->new RuntimeException("查詢錯誤"));
         return new PermissionMoveDTO(move.getId(),move.getEmp().getEmpId(),move.getBeforePermissionName(),move.getAfterPermissionName(),

@@ -18,10 +18,12 @@ public class DeptService {
         this.deptRepo = deptRepo;
     }
 
+    // 增加部門(部門名稱、辦公室)
     public void addDept(DeptDTO deptDTO){
         deptRepo.save(new Dept(deptDTO.getDeptName(), deptDTO.getDeptOffice()));
     }
 
+    // 查詢1筆
     public Dept findById(Integer id){
         Optional<Dept> optional = deptRepo.findById(id);
         if (optional.isPresent()){
@@ -30,14 +32,16 @@ public class DeptService {
         return null;
     }
 
+    // 刪除
     public void deleteDept(Integer id) {
         deptRepo.deleteById(id);
     }
-
+    // 查詢全部
     public List<Dept> findAllDept(){
         return deptRepo.findAll();
     }
 
+    // 更新
     public Dept update(Integer id,Dept newDept,Dept newOffice){
         Optional<Dept> optional = deptRepo.findById(id);
         if (optional!=null){

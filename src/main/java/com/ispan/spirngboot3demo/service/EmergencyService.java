@@ -50,7 +50,7 @@ public class EmergencyService {
         return emergencyRepository.findAll();
     }
 
-    // update
+    // update(緊急聯絡人姓名、電話、關係)
     public Emergency updateEmergency(Integer emergencyId, String emergencyName, String phone, String relation) {
         Emergency oldData = emergencyRepository.findById(emergencyId)
                 .orElseThrow(() -> new RuntimeException("Emergency with ID " + emergencyId + " not found."));
