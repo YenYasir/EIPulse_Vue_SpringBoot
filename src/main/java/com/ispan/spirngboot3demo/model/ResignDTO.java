@@ -15,6 +15,8 @@ public class ResignDTO {
     private LocalDate leaveDate;
     private String approver;
     private LocalDate editDate;
+    private boolean quit;
+    private boolean  transferForm;
     public ResignDTO() {
     }
 
@@ -24,9 +26,13 @@ public class ResignDTO {
         this.reason = reason;
     }
 
-    public ResignDTO(Integer empId, String reason) {
+    // add的建構子
+    public ResignDTO(Integer empId, String reason, LocalDate leaveDate, boolean quit, boolean transferForm) {
         this.empId = empId;
         this.reason = reason;
+        this.leaveDate = leaveDate;
+        this.quit = quit;
+        this.transferForm = transferForm;
     }
 
     public ResignDTO(Integer id, Integer empId, String reason, String approver) {

@@ -50,26 +50,43 @@ public class EmployeeService {
 	public List<EmpDTO> findAllEmp(){
 		List<Employee>employees = empRepo.findAll();
 		List<EmpDTO>result = new ArrayList<>();
-		for (Employee employee:employees) {
-			result.add(new EmpDTO(employee));
+		for (Employee emp:employees) {
+			EmpDTO dto = new EmpDTO(
+					emp.getEmpId(),
+					emp.getEmpName(),
+					emp.getBirth(),
+					emp.getEmail(),
+					emp.getIdNumber(),
+					emp.getGender(),
+					emp.getPhone(),
+					emp.getTel(),
+					emp.getPhotoUrl(),
+					emp.getAddress(),
+					emp.getTitle().getTitleName(),
+					emp.getEmpState(),
+					emp.getHireDate(),
+					emp.getLeaveDate(),
+					emp.getEditDate()
+			);
+			result.add(dto);
 		}
 		return result;
 	}
 
 	// update
-//	public Employee updateEmp(EmpDTO empDTO) {
-//		Employee employee = empRepo.findById(empDTO.getEmpId())
-//				.orElseThrow(() -> new RuntimeException("Employee not found with ID: " + empDTO.getId()));
-//
-//		// 更新employee對象的屬性
-//		employee.setEmpName(empDTO.getEmpName());
-//		employee.setPhone(empDTO.getPhone());
-//		employee.setEmail(empDTO.getEmail());
-//		employee.setAddress(empDTO.getAddress());
-//		employee.setTel(empDTO.getTel());
-//
-//		// 保存並返回更新後的employee
-//		return empRepo.save(employee);
-//	}
+	public Employee updateEmp(EmpDTO empDTO) {
+		Employee employee = empRepo.findById(empDTO.getEmpId())
+				.orElseThrow(() -> new RuntimeException("Employee not found with ID: " + empDTO.getEmpId()));
+
+		// 更新employee對象的屬性
+		employee.setEmpName(empDTO.getEmpName());
+		employee.setPhone(empDTO.getPhone());
+		employee.setEmail(empDTO.getEmail());
+		employee.setAddress(empDTO.getAddress());
+		employee.setTel(empDTO.getTel());
+
+		// 保存並返回更新後的employee
+		return empRepo.save(employee);
+	}
 
 }

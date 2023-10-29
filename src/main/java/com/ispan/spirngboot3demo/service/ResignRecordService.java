@@ -26,9 +26,9 @@ public class ResignRecordService {
 
     // 新增
     public void addResign(ResignDTO resignDTO){
-        Employee emp = empRepo.findById(resignDTO.getEmpId()).get();
+        Employee emp = empRepo.findById(resignDTO.getEmpId()).orElseThrow(()->new RuntimeException("Employee not found"));
 
-        resignRepo.save(new ResignRecord(emp,resignDTO.getReason()));
+        resignRepo.save(new ResignRecord(emp,resignDTO.getReason(),resignDTO.getLeaveDate(),resignDTO.isQuit(),resignDTO.isTransferForm()));
     }
 
     // 查詢單筆

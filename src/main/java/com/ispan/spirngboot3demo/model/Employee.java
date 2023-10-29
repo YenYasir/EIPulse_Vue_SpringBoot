@@ -116,7 +116,23 @@ public class Employee {
         this.address = address;
     }
 
-
+    public Employee(Integer empId, String empName, LocalDate birth, String email, String idNumber, String gender, String phone, String tel, String photoUrl, String address, Title title, String empState, LocalDate hireDate, LocalDate leaveDate, LocalDate editDate) {
+        this.empId = empId;
+        this.empName = empName;
+        this.birth = birth;
+        this.email = email;
+        this.idNumber = idNumber;
+        this.gender = gender;
+        this.phone = phone;
+        this.tel = tel;
+        this.photoUrl = photoUrl;
+        this.address = address;
+        this.title = title;
+        this.hireDate = hireDate;
+        this.leaveDate = leaveDate;
+        this.editDate = editDate;
+        this.empState = empState;
+    }
 
     @Override
     public String toString() {

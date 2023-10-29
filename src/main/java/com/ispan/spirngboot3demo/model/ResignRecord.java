@@ -31,7 +31,7 @@ public class ResignRecord {
     @Column(name = "reason", nullable = false)
     private String reason;
 
-    @Column(name = "leave_date",insertable = false,updatable = false)
+    @Column(name = "leave_date",updatable = false)
     private LocalDate leaveDate;
 
     @Column(name = "approver", length = 50)
@@ -40,13 +40,16 @@ public class ResignRecord {
     @Column(name = "edit_date",insertable = false,updatable = false)
     private LocalDate editDate;
 
+    @Column(name = "quit")
+    private boolean quit;
+
+    @Column(name = "transfer_form")
+    private boolean  transferForm;
+
     public ResignRecord() {
     }
 
-    public ResignRecord(Employee emp, String reason) {
-        this.emp = emp;
-        this.reason = reason;
-    }
+
 
     public ResignRecord(Integer id, Employee empId, String approver, String reason) {
         this.id = id;
@@ -69,6 +72,16 @@ public class ResignRecord {
         this.approver = approver;
         this.reason = reason;
     }
+
+    // add的建構子
+    public ResignRecord(Employee emp, String reason, LocalDate leaveDate, boolean quit, boolean transferForm) {
+        this.emp = emp;
+        this.reason = reason;
+        this.leaveDate = leaveDate;
+        this.quit = quit;
+        this.transferForm = transferForm;
+    }
+
 
     @Override
     public String toString() {
