@@ -1,0 +1,10 @@
+# 代碼生成
+gen:
+  # 作者
+  author: eipulse
+  # 默怕生成包路徑 business 需改成自己的模組名稱 如 system monitor tool
+  packageName: com.eipulse.business
+  # 自動去除表前綴，預設是false
+  autoRemovePre: false
+  # 表前綴（生成類名不會包含表前綴，多個用逗號分隔）
+  tablePrefix: sys_

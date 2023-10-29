@@ -1,0 +1,174 @@
+# 項目相關配置
+ruoyi:
+  # 名稱
+  name: RuoYi
+  # 版本
+  version: 3.2.1
+  # 版權年份
+  copyrightYear: 2020
+  # 實例示範開關
+  demoEnabled: true
+  # 文件路徑 範例（ Windows配置D:/ruoyi/uploadPath，Linux配置 /home/ruoyi/uploadPath）
+  profile: /deploy/uploadPath
+  # 獲取ip位址開關
+  addressEnabled: false
+  # 驗證碼類型 math 數組計算 char 字元驗證
+  captchaType: math
+
+# 開發環境配置
+server:
+  # 伺服器的HTTP埠，預設為8080
+  port: 8080
+  servlet:
+    # 應用的訪問路徑
+    context-path: /
+  tomcat:
+    # tomcat的URI編碼
+    uri-encoding: UTF-8
+    # tomcat最大執行緒數，預設為200
+    max-threads: 800
+    # Tomcat啟動初始化的執行緒數，預設值25
+    min-spare-threads: 30
+
+# 日誌配置
+logging:
+  level:
+    com.eipulse: debug
+    org.springframework: warn
+
+# Spring配置
+spring:
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Shanghai
+  jpa:
+    database: mysql
+    generate-ddl: false
+    hibernate:
+      ddlAuto: none
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+        jdbc:
+          #為spring data jpa saveAll方法提供批次插入操作 此處可以隨時更改大小 建議500
+          batch_size: 500
+          batch_versioned_data: true
+        order_inserts: true
+        order_updates: true
+    show-sql: true
+  # 資源資訊
+  messages:
+    # 國際化資源文件路徑
+    basename: i18n/messages
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driverClassName: com.mysql.cj.jdbc.Driver
+    druid:
+      # 主庫數據源
+      master:
+        url: jdbc:mysql://127.0.0.1:13306/ryvue?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+        username: root
+        password:
+      # 從庫數據源
+      slave:
+        # 從數據源開關/默認關閉
+        enabled: false
+        url:
+        username:
+        password:
+      # 初始連接數
+      initialSize: 5
+      # 最小連接池數量
+      minIdle: 10
+      # 最大連接池數量
+      maxActive: 20
+      # 配置獲取連接等待超時的時間
+      maxWait: 60000
+      # 配置間隔多久才進行一次檢測，檢測需要關閉的空閒連接，單位是毫秒
+      timeBetweenEvictionRunsMillis: 60000
+      # 配置一個連接在池中最小生存的時間，單位是毫秒
+      minEvictableIdleTimeMillis: 300000
+      # 配置一個連接在池中最大生存的時間，單位是毫秒
+      maxEvictableIdleTimeMillis: 900000
+      # 配置檢測連接是否有效
+      validationQuery: SELECT 1
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      webStatFilter:
+        enabled: true
+      statViewServlet:
+        enabled: true
+        # 設置白名單，不填則允許所有訪問
+        allow:
+        url-pattern: /druid/*
+        # 控制台管理員工名和密碼
+        login-username:
+        login-password:
+      filter:
+        stat:
+          enabled: true
+          # 慢SQL記錄
+          log-slow-sql: true
+          slow-sql-millis: 1000
+          merge-sql: true
+        wall:
+          config:
+            multi-statement-allow: true
+  # 文件上傳
+  servlet:
+    multipart:
+      # 單個檔案大小
+      max-file-size:  10MB
+      # 設置總上傳的檔案大小
+      max-request-size:  20MB
+  # 服務模組
+  devtools:
+    restart:
+      # 熱部署開關
+      enabled: true
+  # redis 配置
+  redis:
+    # 位址
+    host: 127.0.0.1
+    # 埠，預設為16379
+    port: 6379
+    # 密碼
+    password: dd60605
+    # 連接超時時間
+    timeout: 10s
+    lettuce:
+      pool:
+        # 連接池中的最小空閒連接
+        min-idle: 0
+        # 連接池中的最大空閒連接
+        max-idle: 8
+        # 連接池的最大資料庫連接數
+        max-active: 8
+        # #連接池最大阻塞等待時間（使用負值表示沒有限制）
+        max-wait: -1ms
+
+# token配置
+token:
+  # 令牌自訂標識
+  header: Authorization
+  # 令牌金鑰
+  secret: abcdefghijklmnopqrstuvwxyz
+  # 令牌有效期（默認30分鐘）
+  expireTime: 30
+
+# Swagger配置
+swagger:
+  # 是否開啟swagger
+  enabled: true
+  # 請求前綴
+  pathMapping: /dev-api
+
+# 防止XSS攻擊
+xss:
+  # 過濾開關
+  enabled: true
+  # 排除連結（多個用逗號分隔）
+  excludes: /system/notice/*
+  # 匹配連結
+  urlPatterns: /system/*,/monitor/*,/tool/*

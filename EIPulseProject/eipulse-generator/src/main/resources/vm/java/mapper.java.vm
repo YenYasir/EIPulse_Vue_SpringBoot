@@ -1,0 +1,60 @@
+package ${packageName}.mapper;
+
+import java.util.List;
+import ${packageName}.domain.${ClassName};
+
+/**
+ * ${functionName}Mapper介面
+ *
+ * @author ${author}
+ * @date ${datetime}
+ */
+public interface ${ClassName}Mapper {
+    /**
+     * 查詢${functionName}
+     *
+     * @param ${pkColumn.javaField} ${functionName}ID
+     * @return ${functionName}
+     */
+    ${ClassName} select${ClassName}ById(${pkColumn.javaType} ${pkColumn.javaField});
+
+    /**
+     * 查詢${functionName}列表
+     *
+     * @param ${className} ${functionName}
+     * @return ${functionName}集合
+     */
+    List<${ClassName}> select${ClassName}List(${ClassName} ${className});
+
+    /**
+     * 新增${functionName}
+     *
+     * @param ${className} ${functionName}
+     * @return 結果
+     */
+    public int insert${ClassName}(${ClassName} ${className});
+
+    /**
+     * 修改${functionName}
+     *
+     * @param ${className} ${functionName}
+     * @return 結果
+     */
+    public int update${ClassName}(${ClassName} ${className});
+
+    /**
+     * 刪除${functionName}
+     *
+     * @param ${pkColumn.javaField} ${functionName}ID
+     * @return 結果
+     */
+    public int delete${ClassName}ById(${pkColumn.javaType} ${pkColumn.javaField});
+
+    /**
+     * 批次刪除${functionName}
+     *
+     * @param ${pkColumn.javaField}s 需要刪除的數據ID
+     * @return 結果
+     */
+    public int delete${ClassName}ByIds(${pkColumn.javaType}[] ${pkColumn.javaField}s);
+}
