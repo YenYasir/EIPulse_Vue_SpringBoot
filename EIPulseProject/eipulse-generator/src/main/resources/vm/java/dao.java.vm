@@ -1,0 +1,26 @@
+package ${packageName}.dao;
+
+import ${packageName}.domain.${ClassName};
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.stereotype.Repository;
+
+
+/**
+ * ${functionName}Dao介面
+ *
+ * @author ${author}
+ * @since 1.0 ${datetime}
+ */
+#set($javaType="String")
+#foreach ($column in $columns)
+#if($column.isPk == "1")
+#set($javaType=$column.javaType)
+#end
+#end
+@Repository
+public interface ${ClassName}Dao extends JpaRepository<${ClassName}, ${javaType}>, JpaSpecificationExecutor<${ClassName}> {
+
+
+
+}

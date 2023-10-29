@@ -1,0 +1,210 @@
+package ${packageName}.service.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+#foreach ($column in $columns)
+#if($column.javaField == 'createTime' || $column.javaField == 'updateTime')
+import com.eipulse.common.utils.DateUtils;
+#break
+#end
+#end
+
+import java.util.Date;
+import org.apache.commons.lang3.StringUtils;
+import com.eipulse.common.core.page.PageDomain;
+import com.eipulse.common.core.page.TableSupport;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import ${packageName}.dao.${ClassName}Dao;
+import ${packageName}.domain.${ClassName};
+import ${packageName}.service.I${ClassName}Service;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+
+/**
+ * ${functionName}Service業務層處理
+ *
+ * @author ${author}
+ * @since 1.0 ${datetime}
+ */
+@Transactional(readOnly = true)
+@Service
+public class ${ClassName}ServiceImpl implements I${ClassName}Service {
+
+    @Autowired
+    private ${ClassName}Dao ${className}Dao;
+
+    /**
+     * 查詢${functionName}
+     *
+     * @param ${pkColumn.javaField} ${functionName}ID
+     * @return ${functionName}
+     */
+    @Override
+    public ${ClassName} findById(${pkColumn.javaType} ${pkColumn.javaField}) {
+        return ${className}Dao.findById(${pkColumn.javaField}).get();
+    }
+
+    /**
+     * 分頁查詢${functionName}列表
+     *
+     * @param req ${functionName}
+     * @return ${functionName}
+     */
+    @Override
+    public Page<${ClassName}> find${ClassName}Page(${ClassName} req) {
+        Specification<${ClassName}> example = formatQueryParams(req);
+        PageDomain pageDomain = TableSupport.buildPageRequest();
+        Pageable pageable = PageRequest.of(pageDomain.getPageNo(),
+                Optional.ofNullable(pageDomain.getPageSize()).orElse(PageDomain.DEFAULT_PAGE_SIZE),
+                Sort.Direction.DESC,
+                Optional.ofNullable(pageDomain.getOrderByColumn()).orElse("createTime"));
+        Page<${ClassName}> page = ${className}Dao.findAll(example, pageable);
+        return page;
+    }
+
+    /**
+     * 分頁查詢${functionName}列表
+     *
+     * @param req ${functionName}
+     * @return ${functionName}
+     */
+    @Override
+    public List<${ClassName}> find${ClassName}List(${ClassName} req) {
+        Specification<${ClassName}> example = formatQueryParams(req);
+        List<${ClassName}> list = ${className}Dao.findAll(example, Sort.by(Sort.Direction.DESC,"createTime"));
+        return list;
+    }
+
+    private Specification<${ClassName}> formatQueryParams(${ClassName} req){
+        Specification<${ClassName}> example = new Specification<${ClassName}>() {
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            public Predicate toPredicate(Root<${ClassName}> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                List<Predicate> list = new ArrayList<>();
+#foreach($column in $columns)
+#if(!$table.isSuperColumn($column.javaField))
+#if($column.javaField.length() > 2 && $column.javaField.substring(1,2).matches("[A-Z]"))
+#set($AttrName=$column.javaField)
+#else
+#set($AttrName=$column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})
+#end
+#if($column.javaType == "String" )
+#set($queryCondition="StringUtils.isNotBlank(req.get" + ${AttrName} + "())")
+#else
+#set($queryCondition="null != req.get" + ${AttrName} + "()")
+#end
+#if($column.queryType == "EQ")
+                if (${queryCondition}){
+                    Predicate pre = cb.equal(root.get("${column.javaField}").as(${column.javaType}.class), req.get${AttrName}());
+                    list.add(pre);
+                }
+#elseif($column.queryType == "NE")
+                if (${queryCondition}){
+                    Predicate pre = cb.notEqual(root.get("${column.javaField}").as(${column.javaType}.class), req.get${AttrName}());
+                    list.add(pre);
+                }
+#elseif($column.queryType == "GT")
+                if (${queryCondition}){
+                    Predicate pre = cb.greaterThan(root.get("${column.javaField}").as(${column.javaType}.class), req.get${AttrName}());
+                    list.add(pre);
+                }
+#elseif($column.queryType == "GTE")
+                if (${queryCondition}){
+                    Predicate pre = cb.greaterThanOrEqualTo(root.get("${column.javaField}").as(${column.javaType}.class), req.get${AttrName}());
+                    list.add(pre);
+                }
+#elseif($column.queryType == "LT")
+                if (${queryCondition}){
+                    Predicate pre = cb.lessThan(root.get("${column.javaField}").as(${column.javaType}.class), req.get${AttrName}());
+                    list.add(pre);
+                }
+#elseif($column.queryType == "LTE")
+                if (${queryCondition}){
+                    Predicate pre = cb.lessThanOrEqualTo(root.get("${column.javaField}").as(${column.javaType}.class), req.get${AttrName}());
+                    list.add(pre);
+                }
+#elseif($column.queryType == "LIKE")
+                if (${queryCondition}){
+                    Predicate pre = cb.like(root.get("${column.javaField}").as(${column.javaType}.class), "%" + req.get${AttrName}()+ "%");
+                    list.add(pre);
+                }
+#elseif($column.queryType == "BETWEEN")
+                if (#if($column.javaType == "String" ) StringUtils.isNoneBlank(req.getParams().get("begin$AttrName")) && StringUtils.isNoneBlank(req.getParams().get("end$AttrName")) #else null != req.getParams().get("begin$AttrName") && null != req.getParams().get("end$AttrName") #end ){
+                    Predicate pre = cb.between(root.get("${column.javaField}").as(${column.javaType}.class), req.get${AttrName}(),req.get${AttrName}());
+                    list.add(pre);
+                }
+#else
+                if (${queryCondition}){
+                    Predicate pre = cb.equal(root.get("${column.javaField}").as(${column.javaType}.class), req.get${AttrName}());
+                    list.add(pre);
+                }
+#end
+#end
+#end
+                if (list.isEmpty()) {
+                    return null;
+                }
+                return cb.and(list.toArray(new Predicate[0]));
+            }
+        };
+        return example;
+    }
+
+    /**
+     * 保存（新增/修改）${functionName}
+     *
+     * @param ${className} ${functionName}
+     * @return 結果
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void save(${ClassName} ${className}) {
+#foreach ($column in $columns)
+#if($column.javaField == 'createTime')
+        ${className}.setCreateTime(DateUtils.getNowDate());
+#end
+#end
+        ${className}Dao.save(${className});
+    }
+
+
+    /**
+     * 批次刪除${functionName}
+     *
+     * @param ${pkColumn.javaField}s 需要刪除的${functionName}ID
+     * @return 結果
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void deleteByIds(List<${pkColumn.javaType}> ${pkColumn.javaField}s) {
+        List<${ClassName}> existBeans = ${className}Dao.findAllById(${pkColumn.javaField}s);
+        if(!existBeans.isEmpty()){
+            ${className}Dao.deleteAll(existBeans);
+        }
+    }
+
+    /**
+     * 刪除${functionName}資訊
+     *
+     * @param ${pkColumn.javaField} ${functionName}ID
+     * @return 結果
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void delete${ClassName}ById(${pkColumn.javaType} ${pkColumn.javaField}) {
+         ${className}Dao.deleteById(${pkColumn.javaField});
+    }
+}

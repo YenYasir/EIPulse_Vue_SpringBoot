@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>eipulse</artifactId>
+        <groupId>com.eipulse</groupId>
+        <version>3.2.1</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.eipulse</groupId>
+
+    <artifactId>eipulse-business</artifactId>
+
+    <description>
+        自訂開發業務代碼模組demo，可用作測試、開發業務代碼，與框架模組區分開，方便管理
+    </description>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>com.eipulse</groupId>
+            <artifactId>eipulse-framework</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.eipulse</groupId>
+            <artifactId>eipulse-system</artifactId>
+        </dependency>
+
+    </dependencies>
+
+</project>

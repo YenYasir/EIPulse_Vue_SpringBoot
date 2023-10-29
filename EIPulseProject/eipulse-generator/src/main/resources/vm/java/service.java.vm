@@ -1,0 +1,61 @@
+package ${packageName}.service;
+
+import java.util.List;
+import org.springframework.data.domain.Page;
+import ${packageName}.domain.${ClassName};
+
+/**
+ * ${functionName}Service介面
+ *
+ * @author ${author}
+ * @since 1.0 ${datetime}
+ */
+public interface I${ClassName}Service  {
+    /**
+     * 查詢${functionName}
+     *
+     * @param ${pkColumn.javaField} ${functionName}ID
+     * @return ${functionName}
+     */
+    ${ClassName} findById(${pkColumn.javaType} ${pkColumn.javaField});
+
+    /**
+     * 分頁查詢${functionName}列表
+     *
+     * @param req ${functionName}
+     * @return ${functionName}集合
+     */
+    Page<${ClassName}> find${ClassName}Page(${ClassName} req);
+
+    /**
+     * 查詢${functionName}列表
+     *
+     * @param req ${functionName}
+     * @return ${functionName}集合
+     */
+    List<${ClassName}> find${ClassName}List(${ClassName} req);
+
+    /**
+     * 新增${functionName}
+     *
+     * @param ${className} ${functionName}
+     * @return 結果
+     */
+    void save(${ClassName} ${className});
+
+    /**
+     * 批次刪除${functionName}
+     *
+     * @param ${pkColumn.javaField}s 需要刪除的${functionName}ID
+     * @return 結果
+     */
+    void deleteByIds(List<${pkColumn.javaType}> ${pkColumn.javaField}s);
+
+    /**
+     * 刪除${functionName}資訊
+     *
+     * @param ${pkColumn.javaField} ${functionName}ID
+     * @return 結果
+     */
+    void delete${ClassName}ById(${pkColumn.javaType} ${pkColumn.javaField});
+}

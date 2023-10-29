@@ -1,0 +1,67 @@
+package ${packageName}.domain;
+
+#foreach ($import in $importList)
+import ${import};
+#end
+import com.eipulse.common.annotation.Excel;
+#if($table.crud)
+import com.eipulse.common.core.domain.BaseEntity;
+#elseif($table.tree)
+import com.eipulse.common.core.domain.TreeEntity;
+#end
+import lombok.Data;
+
+import javax.persistence.*;
+import org.hibernate.annotations.GenericGenerator;
+
+/**
+ * ${functionName}对象 ${tableName}
+ *
+ * @author ${author}
+ * @since 1.0 ${datetime}
+ */
+#if($table.crud)
+#set($Entity="BaseEntity")
+#elseif($table.tree)
+#set($Entity="TreeEntity")
+#end
+@Entity
+@Table(name = "${tableName}")
+@Data
+public class ${ClassName} extends ${Entity} {
+
+    private static final long serialVersionUID = 1L;
+
+#foreach ($column in $columns)
+#if(!$table.isSuperColumn($column.javaField))
+    /** $column.columnComment */
+#if($column.list)
+#set($parentheseIndex=$column.columnComment.indexOf("（"))
+#if($parentheseIndex != -1)
+#set($comment=$column.columnComment.substring(0, $parentheseIndex))
+#else
+#set($comment=$column.columnComment)
+#end
+#if($parentheseIndex != -1)
+    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
+#elseif($column.javaType == 'Date')
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @Excel(name = "${comment}", width = 30, dateFormat = "yyyy-MM-dd")
+#else
+    @Excel(name = "${comment}")
+#end
+#end
+#if($column.isPk == "1")
+    @Id
+#if($column.javaType == 'String')
+    @GenericGenerator(name = "idGen", strategy = "uuid")
+    @GeneratedValue(generator = "idGen")
+#end
+#end
+    @Column(name="$column.columnName")
+    private $column.javaType $column.javaField;
+
+#end
+#end
+
+}
