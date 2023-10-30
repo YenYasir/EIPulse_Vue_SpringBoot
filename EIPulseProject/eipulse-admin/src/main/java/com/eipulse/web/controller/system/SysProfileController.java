@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.eipulse.common.annotation.Log;
-import com.eipulse.common.config.RuoYiConfig;
+import com.eipulse.common.config.EipulseConfig;
 import com.eipulse.common.core.controller.BaseController;
 import com.eipulse.common.core.domain.AjaxResult;
 import com.eipulse.common.core.domain.entity.SysUser;
@@ -101,7 +101,7 @@ public class SysProfileController extends BaseController {
 	public AjaxResult avatar(@RequestParam("avatarfile") MultipartFile file) throws IOException {
 		if (!file.isEmpty()) {
 			LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
-			String avatar = FileUploadUtils.upload(RuoYiConfig.getAvatarPath(), file);
+			String avatar = FileUploadUtils.upload(EipulseConfig.getAvatarPath(), file);
 			if (userService.updateUserAvatar(loginUser.getUsername(), avatar)) {
 				AjaxResult ajax = AjaxResult.success();
 				ajax.put("imgUrl", avatar);

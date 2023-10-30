@@ -136,6 +136,11 @@ export default {
     // 即時預覽
     realTime(data) {
       this.previews = data;
+    },
+    // 關閉窗口
+    closeDialog() {
+      this.options.img = store.getters.avatar
+	  this.visible = false;
     }
   }
 };

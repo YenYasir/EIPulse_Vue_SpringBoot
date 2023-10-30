@@ -6,6 +6,7 @@ import 'normalize.css/normalize.css' // a modern alternative to CSS resets
 
 import Element from 'element-ui'
 import './assets/styles/element-variables.scss'
+import locale from 'element-ui/lib/locale/lang/zh-TW' // 中文語言
 
 import '@/assets/styles/index.scss' // global css
 import '@/assets/styles/ruoyi.scss' // ruoyi css
@@ -62,6 +63,7 @@ Vue.use(permission)
  */
 
 Vue.use(Element, {
+  locale: locale,
   size: Cookies.get('size') || 'medium' // set element-ui default size
 })
 

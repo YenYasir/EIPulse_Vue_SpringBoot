@@ -47,7 +47,7 @@ spring:
       ddlAuto: none
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+        dialect: org.hibernate.dialect.MySQLDialect
         jdbc:
           #為spring data jpa saveAll方法提供批次插入操作 此處可以隨時更改大小 建議500
           batch_size: 500
@@ -65,7 +65,7 @@ spring:
     druid:
       # 主庫數據源
       master:
-        url: jdbc:mysql://localhost:3306/eipulse_project?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+        url: jdbc:mysql://localhost:3306/eipulse_project?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=Asia/Taipei
         username: YenYasir
         password: dd60605
       # 從庫數據源
@@ -133,7 +133,7 @@ spring:
     # 埠
     port: 6379
     # 密碼
-    password: dd60605
+    password: 
     # 連接超時時間
     timeout: 10s
     lettuce:

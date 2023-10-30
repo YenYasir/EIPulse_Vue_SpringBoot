@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.eipulse.common.config.RuoYiConfig;
+import com.eipulse.common.config.EipulseConfig;
 
 import io.swagger.annotations.ApiOperation;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -34,7 +34,7 @@ public class SwaggerConfig {
 	 * 系統基礎配置
 	 */
 	@Autowired
-	private RuoYiConfig ruoyiConfig;
+	private EipulseConfig eipulseConfig;
 
 	/**
 	 * 是否開啟swagger
@@ -112,8 +112,8 @@ public class SwaggerConfig {
 				// 描述
 				.description("描述：用於管理集團旗下公司的人員資訊,具體包括XXX,XXX模組...")
 				// 作者資訊
-				.contact(new Contact(ruoyiConfig.getName(), null, null))
+				.contact(new Contact(eipulseConfig.getName(), null, null))
 				// 版本
-				.version("版本號:" + ruoyiConfig.getVersion()).build();
+				.version("版本號:" + eipulseConfig.getVersion()).build();
 	}
 }

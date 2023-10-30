@@ -68,26 +68,26 @@ create table sys_user (
 -- ----------------------------
 -- 初始化-員工資訊表數據
 -- ----------------------------
-insert into sys_user values(1,103, 'admin', '城垣', '00', 'chengyuan@gmail.com', '0978654321', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', sysdate(), 'admin', sysdate(), '', null, '管理員');
-insert into sys_user values(2,105, 'tangyuan',    '湯圓', '00', 'tangyuan@gmail.com',  '0901234567', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', sysdate(), 'admin', sysdate(), '', null, '測試員');
-insert into sys_user values(3,102, 'yanyu',    '諺雨', '00', 'yanyu@gmail.com',  '0912345678', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', sysdate(), 'admin', sysdate(), '', null, '美國分部長');
-insert into sys_user values(4,104, 'xukai',    '敘楷', '00', 'xukai@gmail.com',  '0967890123', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', sysdate(), 'admin', sysdate(), '', null, '行銷部長');
+insert into sys_user values(1,103, 'admin', '城垣', '00', 'chengyuan@gmail.com', '0978654321', '0', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', sysdate(), 'admin', sysdate(), '', null, '管理員');
+insert into sys_user values(2,105, 'tangyuan',    '湯圓', '00', 'tangyuan@gmail.com',  '0901234567', '0', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', sysdate(), 'admin', sysdate(), '', null, '測試員');
+insert into sys_user values(3,102, 'yanyu',    '諺雨', '00', 'yanyu@gmail.com',  '0912345678', '0', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', sysdate(), 'admin', sysdate(), '', null, '美國分部長');
+insert into sys_user values(4,104, 'xukai',    '敘楷', '00', 'xukai@gmail.com',  '0967890123', '0', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', sysdate(), 'admin', sysdate(), '', null, '行銷部長');
 insert into sys_user values(5,106, 'yingjun',    '應君', '00', 'wangjun@gmail.com',  '0943218765', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', sysdate(), 'admin', sysdate(), '', null, '財務部長');
 insert into sys_user values(6,107, 'yijia',    '逸嘉', '00', 'xiaokai@gmail.com',  '0998765432', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', sysdate(), 'admin', sysdate(), '', null, '人資部長');
-insert into sys_user values(7,108, 'JoJo',    'JoJo', '00', 'wuyuan@gmail.com',  '0987654321', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', sysdate(), 'admin', sysdate(), '', null, '美國分部行銷部長');
-insert into sys_user values(8,109, 'Dio',    'Dio', '00', 'liqiang@gmail.com',  '0912345678', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', sysdate(), 'admin', sysdate(), '', null, '美國分部財務部長');
-insert into sys_user values(9, 104, 'mingxun',    '名薰', '00', 'wangmei@gmail.com',  '0923456782', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', sysdate(), 'admin', sysdate(), '', null, '行銷部員工');
-insert into sys_user values(10,104,  'weishen',    '鮪申', '00', 'zhangli@gmail.com',  '0923456783', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', sysdate(), 'admin', sysdate(), '', null, '行銷部員工');
+insert into sys_user values(7,108, 'JoJo',    'JoJo', '00', 'wuyuan@gmail.com',  '0987654321', '0', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', sysdate(), 'admin', sysdate(), '', null, '美國分部行銷部長');
+insert into sys_user values(8,109, 'Dio',    'Dio', '00', 'liqiang@gmail.com',  '0912345678', '0', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', sysdate(), 'admin', sysdate(), '', null, '美國分部財務部長');
+insert into sys_user values(9, 104, 'mingxun',    '名薰', '00', 'wangmei@gmail.com',  '0923456782', '0', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', sysdate(), 'admin', sysdate(), '', null, '行銷部員工');
+insert into sys_user values(10,104,  'weishen',    '鮪申', '00', 'zhangli@gmail.com',  '0923456783', '0', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', sysdate(), 'admin', sysdate(), '', null, '行銷部員工');
 insert into sys_user values(11,104,  'chenhui',    '陳慧', '00', 'chenhui@gmail.com',  '0923456784', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', sysdate(), 'admin', sysdate(), '', null, '行銷部員工');
-insert into sys_user values(12, 104, 'liuwei',    '劉偉', '00', 'liuwei@gmail.com',  '0923456785', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', sysdate(), 'admin', sysdate(), '', null, '行銷部員工');
-insert into sys_user values(13, 104, 'huangkai',    '黃凱', '00', 'huangkai@gmail.com',  '0923456786', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', sysdate(), 'admin', sysdate(), '', null, '行銷部員工');
+insert into sys_user values(12, 104, 'liuwei',    '劉偉', '00', 'liuwei@gmail.com',  '0923456785', '0', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', sysdate(), 'admin', sysdate(), '', null, '行銷部員工');
+insert into sys_user values(13, 104, 'huangkai',    '黃凱', '00', 'huangkai@gmail.com',  '0923456786', '0', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', sysdate(), 'admin', sysdate(), '', null, '行銷部員工');
 insert into sys_user values(14, 104, 'linlian',    '林蓮', '00', 'linlian@gmail.com',  '0923456787', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', sysdate(), 'admin', sysdate(), '', null, '行銷部員工');
-insert into sys_user values(15,103, 'yangjian',    '楊健', '00', 'yangjian@gmail.com',  '0923456788', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', sysdate(), 'admin', sysdate(), '', null, '研發部員工');
-insert into sys_user values(16,103, 'zhouming',    '周明', '00', 'zhouming@gmail.com',  '0923456789', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', sysdate(), 'admin', sysdate(), '', null, '研發部員工');
+insert into sys_user values(15,103, 'yangjian',    '楊健', '00', 'yangjian@gmail.com',  '0923456788', '0', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', sysdate(), 'admin', sysdate(), '', null, '研發部員工');
+insert into sys_user values(16,103, 'zhouming',    '周明', '00', 'zhouming@gmail.com',  '0923456789', '0', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', sysdate(), 'admin', sysdate(), '', null, '研發部員工');
 insert into sys_user values(17,106, 'wuyu',    '吳玉', '00', 'wuyu@gmail.com',  '0923456790', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', sysdate(), 'admin', sysdate(), '', null, '財務部員工');
-insert into sys_user values(18,106, 'xujun',    '許俊', '00', 'xujun@gmail.com',  '0923456791', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', sysdate(), 'admin', sysdate(), '', null, '財務部員工');
+insert into sys_user values(18,106, 'xujun',    '許俊', '00', 'xujun@gmail.com',  '0923456791', '0', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', sysdate(), 'admin', sysdate(), '', null, '財務部員工');
 insert into sys_user values(19,107, 'caili',    '蔡麗', '00', 'caili@gmail.com',  '0923456792', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', sysdate(), 'admin', sysdate(), '', null, '人資部員工');
-insert into sys_user values(20,107, 'zhengjie',    '鄭杰', '00', 'zhengjie@gmail.com',  '0923456793', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', sysdate(), 'admin', sysdate(), '', null, '人資部員工');
+insert into sys_user values(20,107, 'zhengjie',    '鄭杰', '00', 'zhengjie@gmail.com',  '0923456793', '0', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', sysdate(), 'admin', sysdate(), '', null, '人資部員工');
 
 
 
@@ -430,7 +430,7 @@ create table sys_role_dept (
 insert into sys_role_dept values ('2', '100');
 insert into sys_role_dept values ('2', '101');
 insert into sys_role_dept values ('2', '102');
-
+insert into sys_role_dept values ('1', '103');
 insert into sys_role_dept values ('2', '104');
 insert into sys_role_dept values ('2', '105');
 insert into sys_role_dept values ('2', '106');

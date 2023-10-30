@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.eipulse.common.config.RuoYiConfig;
+import com.eipulse.common.config.EipulseConfig;
 import com.eipulse.common.constant.Constants;
 import com.eipulse.common.core.domain.AjaxResult;
 import com.eipulse.common.utils.StringUtils;
@@ -44,7 +44,7 @@ public class CommonController {
 				throw new Exception(StringUtils.format("檔案名稱({})非法，不允許下載。 ", fileName));
 			}
 			String realFileName = System.currentTimeMillis() + fileName.substring(fileName.indexOf("_") + 1);
-			String filePath = RuoYiConfig.getDownloadPath() + fileName;
+			String filePath = EipulseConfig.getDownloadPath() + fileName;
 
 			response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
 			FileUtils.setAttachmentResponseHeader(response, realFileName);
@@ -64,7 +64,7 @@ public class CommonController {
 	public AjaxResult uploadFile(MultipartFile file) throws Exception {
 		try {
 			// 上傳文件路徑
-			String filePath = RuoYiConfig.getUploadPath();
+			String filePath = EipulseConfig.getUploadPath();
 			// 上傳並返回新檔案名稱
 			String fileName = FileUploadUtils.upload(filePath, file);
 			String url = serverConfig.getUrl() + fileName;
@@ -88,7 +88,7 @@ public class CommonController {
 				throw new Exception(StringUtils.format("資源文件({})非法，不允許下載。 ", resource));
 			}
 			// 本地資源路徑
-			String localPath = RuoYiConfig.getProfile();
+			String localPath = EipulseConfig.getProfile();
 			// 資料庫資源位址
 			String downloadPath = localPath + StringUtils.substringAfter(resource, Constants.RESOURCE_PREFIX);
 			// 下載名稱

@@ -6,7 +6,7 @@ import java.io.IOException;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.eipulse.common.config.RuoYiConfig;
+import com.eipulse.common.config.EipulseConfig;
 import com.eipulse.common.constant.Constants;
 import com.eipulse.common.exception.file.FileNameLengthLimitExceededException;
 import com.eipulse.common.exception.file.FileSizeLimitExceededException;
@@ -32,7 +32,7 @@ public class FileUploadUtils {
 	/**
 	 * 默認上傳的位址
 	 */
-	private static String defaultBaseDir = RuoYiConfig.getProfile();
+	private static String defaultBaseDir = EipulseConfig.getProfile();
 
 	public static void setDefaultBaseDir(String defaultBaseDir) {
 		FileUploadUtils.defaultBaseDir = defaultBaseDir;
@@ -126,7 +126,7 @@ public class FileUploadUtils {
 	}
 
 	private static final String getPathFileName(String uploadDir, String fileName) throws IOException {
-		int dirLastIndex = RuoYiConfig.getProfile().length() + 1;
+		int dirLastIndex = EipulseConfig.getProfile().length() + 1;
 		String currentDir = StringUtils.substring(uploadDir, dirLastIndex);
 		String pathFileName = Constants.RESOURCE_PREFIX + "/" + currentDir + "/" + fileName;
 		return pathFileName;

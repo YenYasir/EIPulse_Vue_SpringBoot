@@ -10,7 +10,7 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import com.eipulse.common.config.RuoYiConfig;
+import com.eipulse.common.config.EipulseConfig;
 import com.eipulse.common.constant.Constants;
 import com.eipulse.framework.interceptor.RepeatSubmitInterceptor;
 
@@ -26,7 +26,7 @@ public class ResourcesConfig implements WebMvcConfigurer {
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		/** 本地檔案上傳路徑 */
 		registry.addResourceHandler(Constants.RESOURCE_PREFIX + "/**")
-				.addResourceLocations("file:" + RuoYiConfig.getProfile() + "/");
+				.addResourceLocations("file:" + EipulseConfig.getProfile() + "/");
 
 		/** swagger配置 */
 		registry.addResourceHandler("swagger-ui.html").addResourceLocations("classpath:/META-INF/resources/");

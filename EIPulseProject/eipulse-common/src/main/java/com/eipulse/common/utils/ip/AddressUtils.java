@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.alibaba.fastjson.JSONObject;
-import com.eipulse.common.config.RuoYiConfig;
+import com.eipulse.common.config.EipulseConfig;
 import com.eipulse.common.constant.Constants;
 import com.eipulse.common.utils.StringUtils;
 import com.eipulse.common.utils.http.HttpUtils;
@@ -27,7 +27,7 @@ public class AddressUtils {
 		if (IpUtils.internalIp(ip)) {
 			return "內網IP";
 		}
-		if (RuoYiConfig.isAddressEnabled()) {
+		if (EipulseConfig.isAddressEnabled()) {
 			try {
 				String rspStr = HttpUtils.sendGet(IP_URL, "ip=" + ip + "&json=true", Constants.GBK);
 				if (StringUtils.isEmpty(rspStr)) {

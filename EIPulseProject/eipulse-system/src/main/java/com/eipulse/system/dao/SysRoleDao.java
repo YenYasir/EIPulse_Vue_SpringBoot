@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -30,12 +31,13 @@ public interface SysRoleDao extends JpaRepository<SysRole, Long>, JpaSpecificati
 
 	void deleteByRoleIdIn(List<Long> roleId);
 
+	@Modifying
 	@Query(value = "select distinct r.role_id, r.role_name, r.role_key, r.role_sort, r.data_scope, r.menu_check_strictly"
-			+ "            , r.dept_check_strictly,r.status, r.del_flag, r.create_time, r.remark "
+			+ "            , r.dept_check_strictly,r.status, r.del_flag,r.create_by, r.create_time, r.remark,r.update_by,r.update_time "
 			+ "        from sys_role r " + "        left join sys_user_role ur on ur.role_id = r.role_id"
 			+ "        left join sys_user u on u.user_id = ur.user_id"
 			+ "        left join sys_dept d on u.dept_id = d.dept_id"
-			+ "       where r.del_flag = '0' and u.user_name = ?1 ", nativeQuery = true)
+			+ "       where r.del_flag = '0' and u.user_name =?1  ", nativeQuery = true)
 	List<SysRole> findRolesByUserName(String userName);
 
 	List<SysRole> findByRoleIdIn(List<Long> roleIds);

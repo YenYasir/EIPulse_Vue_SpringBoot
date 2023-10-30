@@ -46,7 +46,7 @@ import com.eipulse.common.annotation.Excel;
 import com.eipulse.common.annotation.Excel.ColumnType;
 import com.eipulse.common.annotation.Excel.Type;
 import com.eipulse.common.annotation.Excels;
-import com.eipulse.common.config.RuoYiConfig;
+import com.eipulse.common.config.EipulseConfig;
 import com.eipulse.common.core.domain.AjaxResult;
 import com.eipulse.common.core.text.Convert;
 import com.eipulse.common.exception.CustomException;
@@ -700,7 +700,7 @@ public class ExcelUtil<T> {
 	 * @param filename 檔案名稱
 	 */
 	public String getAbsoluteFile(String filename) {
-		String downloadPath = RuoYiConfig.getDownloadPath() + filename;
+		String downloadPath = EipulseConfig.getDownloadPath() + filename;
 		File desc = new File(downloadPath);
 		if (!desc.getParentFile().exists()) {
 			desc.getParentFile().mkdirs();
