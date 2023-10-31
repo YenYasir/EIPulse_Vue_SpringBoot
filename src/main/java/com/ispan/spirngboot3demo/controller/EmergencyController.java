@@ -48,9 +48,9 @@ public class EmergencyController {
     // 更新緊急聯絡人
     @Transactional
     @PutMapping("/emergency/update")
-    public ResponseEntity<?> update(@RequestBody Emergency emergency){
+    public ResponseEntity<?> update(@RequestBody EmergencyDTO dto){
         try {
-            return new ResponseEntity<>(emergencyService.updateEmergency(emergency.getEmergencyId(), emergency.getEmergencyName(), emergency.getPhone(), emergency.getRelation()), HttpStatus.OK);
+            return new ResponseEntity<>(emergencyService.updateEmergency(dto),HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
         }

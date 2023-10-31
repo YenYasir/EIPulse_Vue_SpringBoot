@@ -35,21 +35,6 @@ public class EmpDTO {
     public EmpDTO() {
     }
 
-    public EmpDTO(Integer empId,String empName, LocalDate birth, String email, String idNumber, String gender, String phone, String tel, String photoUrl, String address, Integer titleId,LocalDate hireDate, String empState) {
-        this.empId = empId;
-        this.empName = empName;
-        this.birth = birth;
-        this.email = email;
-        this.idNumber = idNumber;
-        this.gender = gender;
-        this.phone = phone;
-        this.tel = tel;
-        this.photoUrl = photoUrl;
-        this.address = address;
-        this.titleId = titleId;
-        this.hireDate = hireDate;
-        this.empState = empState;
-    }
 
     public EmpDTO(String empName, String email, String phone, String tel, String address) {
         this.empName = empName;
@@ -93,7 +78,22 @@ public class EmpDTO {
         this.editDate = editDate;
     }
 
-
-    public EmpDTO(Employee employee) {
+    public EmpDTO (Employee emp){
+        this.empId = emp.getEmpId();
+        this.empName = emp.getEmpName();
+        this.birth = emp.getBirth();
+        this.email = emp.getEmail();
+        this.idNumber = emp.getIdNumber();
+        this.gender = emp.getGender();
+        this.phone = emp.getPhone();
+        this.tel = emp.getTel();
+        this.photoUrl = emp.getPhotoUrl();
+        this.address = emp.getAddress();
+        this.titleName = emp.getTitle().getTitleName();
+        this.empState = emp.getEmpState();
+        this.hireDate = emp.getHireDate();
+        this.leaveDate = emp.getLeaveDate();
+        this.editDate = emp.getEditDate();
     }
+
 }

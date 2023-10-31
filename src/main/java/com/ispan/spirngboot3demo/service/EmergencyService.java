@@ -51,13 +51,13 @@ public class EmergencyService {
     }
 
     // update(緊急聯絡人姓名、電話、關係)
-    public Emergency updateEmergency(Integer emergencyId, String emergencyName, String phone, String relation) {
-        Emergency oldData = emergencyRepository.findById(emergencyId)
-                .orElseThrow(() -> new RuntimeException("Emergency with ID " + emergencyId + " not found."));
+    public Emergency updateEmergency(EmergencyDTO dto) {
+        Emergency oldData = emergencyRepository.findById(dto.getEmpId())
+                .orElseThrow(() -> new RuntimeException("Emergency with ID  not found."));
 
-        oldData.setEmergencyName(emergencyName);
-        oldData.setPhone(phone);
-        oldData.setRelation(relation);
+        oldData.setEmergencyName(dto.getEmergencyName());
+        oldData.setPhone(dto.getPhone());
+        oldData.setRelation(dto.getRelation());
 
         return emergencyRepository.save(oldData);
     }

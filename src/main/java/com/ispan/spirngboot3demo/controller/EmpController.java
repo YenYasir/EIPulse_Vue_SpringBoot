@@ -52,19 +52,19 @@ public class EmpController {
     }
 
     // 更新員工
-//    @Transactional
-//    @PutMapping("/employee/updateEmp")
-//    public ResponseEntity<?> update(@RequestBody EmpDTO empDTO){
-//      try {
-//          return new ResponseEntity<>(employeeService.updateEmp(empDTO),HttpStatus.OK);
-//      }catch (Exception e){
-//          return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
-//      }
-//    }
+    @Transactional
+    @PutMapping("/employee/updateEmp")
+    public ResponseEntity<?> update(@RequestBody EmpDTO empDTO){
+      try {
+          return new ResponseEntity<>(employeeService.updateEmp(empDTO),HttpStatus.OK);
+      }catch (Exception e){
+          return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
+      }
+    }
 
 
     // 刪除員工
-    @DeleteMapping("/employee/deleteEmp{id}")
+    @DeleteMapping("/employee/deleteEmp/{id}")
     public String deleteEmp(@PathVariable("id")Integer empId){
         employeeService.deleteEmp(empId);
         return "delete OK";

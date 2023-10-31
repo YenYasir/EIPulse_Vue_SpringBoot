@@ -72,22 +72,22 @@ public class Employee {
     private String empState;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "emp")
+    @OneToMany(mappedBy = "emp",cascade = CascadeType.ALL)
     private Set<Emergency> emergencies = new LinkedHashSet<>();
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "emp")
+    @OneToMany(mappedBy = "emp",cascade = CascadeType.ALL)
     private Set<PermissionInfo> permissionInfos = new LinkedHashSet<>();
     @JsonManagedReference
-    @OneToMany(mappedBy = "emp")
+    @OneToMany(mappedBy = "emp",cascade = CascadeType.ALL)
     private Set<PermissionMove> permissionMoves = new LinkedHashSet<>();
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "emp")
+    @OneToMany(mappedBy = "emp",cascade = CascadeType.ALL)
     private Set<ResignRecord> resignRecords = new LinkedHashSet<>();
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "emp")
+    @OneToMany(mappedBy = "emp",cascade = CascadeType.ALL)
     private Set<TitleMove> titleMoves = new LinkedHashSet<>();
 
     public Employee() {

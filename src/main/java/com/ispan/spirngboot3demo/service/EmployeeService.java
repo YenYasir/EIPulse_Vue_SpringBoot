@@ -32,13 +32,12 @@ public class EmployeeService {
 	}
 	// find once
 	public EmpDTO findById(Integer id) {
-		Optional<Employee> optional = empRepo.findById(id);
-	
-		if(optional.isPresent()) {
 
-			return new EmpDTO(optional.get());
-			}
-		return null;
+		Employee emp = empRepo.findById(id).orElseThrow(()->new RuntimeException("查無此資料"));
+
+		return new EmpDTO(emp.getEmpId(),emp.getEmpName(),emp.getBirth(),emp.getEmail(), emp.getIdNumber(), emp.getGender(),
+				emp.getPhone(), emp.getTel(), emp.getPhotoUrl(), emp.getAddress(), emp.getTitle().getTitleName(),
+				emp.getEmpState(),emp.getHireDate(),emp.getLeaveDate(),emp.getEditDate());
 	}
 
 	// delete
@@ -74,7 +73,7 @@ public class EmployeeService {
 	}
 
 	// update
-	public Employee updateEmp(EmpDTO empDTO) {
+	public EmpDTO updateEmp(EmpDTO empDTO) {
 		Employee employee = empRepo.findById(empDTO.getEmpId())
 				.orElseThrow(() -> new RuntimeException("Employee not found with ID: " + empDTO.getEmpId()));
 
@@ -86,7 +85,7 @@ public class EmployeeService {
 		employee.setTel(empDTO.getTel());
 
 		// 保存並返回更新後的employee
-		return empRepo.save(employee);
+		return new EmpDTO(empRepo.save(employee));
 	}
 
 }
