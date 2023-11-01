@@ -10,6 +10,10 @@ import com.ispan.spirngboot3demo.model.Title;
 import com.ispan.spirngboot3demo.repository.EmployeeRepository;
 import com.ispan.spirngboot3demo.repository.TitleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -72,6 +76,12 @@ public class EmployeeService {
 		return result;
 	}
 
+	// findByNameLikeSearch
+	public List<EmpDTO> findByNameLikeSearch(String name){
+		List<EmpDTO> list = empRepo.findByNameLikeSearch(name);
+		return list;
+	}
+
 	// update
 	public EmpDTO updateEmp(EmpDTO empDTO) {
 		Employee employee = empRepo.findById(empDTO.getEmpId())
@@ -86,6 +96,22 @@ public class EmployeeService {
 
 		// 保存並返回更新後的employee
 		return new EmpDTO(empRepo.save(employee));
+	}
+
+	// 分頁功能
+	public Page<EmpDTO> findByPage (Integer pageNumber){
+		Pageable pgb = PageRequest.of(pageNumber-1, 5, Sort.Direction.DESC, "empId");
+		Page<Employee> page = empRepo.findByEmpIdPage(pageNumber, pgb);
+		Page<EmpDTO> result = page.map(employee -> new EmpDTO(employee));
+		return result;
+	}
+
+	// 模糊收尋分頁功能
+	public Page<EmpDTO> findByNamePage (Integer pageNumber,String name){
+		Pageable pgb = PageRequest.of(pageNumber-1, 5, Sort.Direction.DESC, "empId");
+		Page<Employee> page = empRepo.findByNamePage(name,pgb);
+		Page<EmpDTO> result = page.map(employee -> new EmpDTO(employee));
+		return result;
 	}
 
 }

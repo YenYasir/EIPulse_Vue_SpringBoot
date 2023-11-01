@@ -5,6 +5,7 @@ import com.ispan.spirngboot3demo.model.EmpDTO;
 import com.ispan.spirngboot3demo.model.Employee;
 import com.ispan.spirngboot3demo.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,6 +52,13 @@ public class EmpController {
         }
     }
 
+    // 模糊收尋名字
+    @GetMapping("/findByName/{name}")
+    public List<EmpDTO> findByName(@PathVariable("name") String name){
+        List<EmpDTO> list = employeeService.findByNameLikeSearch(name);
+        return list;
+    }
+
     // 更新員工
     @Transactional
     @PutMapping("/employee/updateEmp")
@@ -69,4 +77,20 @@ public class EmpController {
         employeeService.deleteEmp(empId);
         return "delete OK";
     }
+
+    @GetMapping("/employee/paged/{pageNumber}")
+    @ResponseStatus(HttpStatus.OK)  // 這裡設置返回的 HTTP 狀態碼為 200
+    public Page<EmpDTO> getEmployeesByPage(@PathVariable Integer pageNumber) {
+        return employeeService.findByPage(pageNumber);
+
+    }
+
+    @GetMapping("/employee/paged/{name}/{pageNumber}")
+    @ResponseStatus(HttpStatus.OK)  // 這裡設置返回的 HTTP 狀態碼為 200
+    public Page<EmpDTO> getByNamePage(@PathVariable String name,@PathVariable Integer pageNumber) {
+        return employeeService.findByNamePage(pageNumber,name);
+
+    }
+
+
 }
