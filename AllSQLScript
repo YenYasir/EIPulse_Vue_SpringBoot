@@ -1,0 +1,377 @@
+create table dept
+(
+    dept_id     int auto_increment
+        primary key,
+    dept_name   varchar(255) not null,
+    dept_office varchar(255) not null
+);
+
+create table form_status
+(
+    status_id   int auto_increment
+        primary key,
+    Description varchar(255) null
+);
+
+create table form_type
+(
+    Type_id   int auto_increment
+        primary key,
+    Type_name varchar(255) null
+);
+
+create table leave_type
+(
+    id     int auto_increment
+        primary key,
+    days   int           null,
+    type   varchar(20)   not null,
+    status int default 1 null,
+    remark varchar(200)  null
+);
+
+create table office_regions
+(
+    regions_id   int auto_increment
+        primary key,
+    latitude     double      not null,
+    longitude    double      not null,
+    regions_name varchar(20) not null
+);
+
+create table overtime_type
+(
+    id   int auto_increment
+        primary key,
+    type varchar(10) not null
+);
+
+create table permission
+(
+    permission_id        int auto_increment
+        primary key,
+    permission_name      varchar(50)  not null,
+    permission_statement varchar(255) not null
+);
+
+create table product_type
+(
+    type_id   int auto_increment
+        primary key,
+    type_name varchar(30) not null
+);
+
+create table sub_type
+(
+    sub_type_id     int auto_increment
+        primary key,
+    product_type_id int         not null,
+    sub_name        varchar(20) not null,
+    constraint sub_type_product_type_type_id_fk
+        foreign key (product_type_id) references product_type (type_id)
+);
+
+create table product
+(
+    product_id     int auto_increment
+        primary key,
+    product_name   varchar(30)                        not null,
+    sub_type_id    int                                not null,
+    description    varchar(50)                        null,
+    price          int                                not null,
+    stock_quantity int                                not null,
+    image_url      varchar(255)                       null,
+    created_at     datetime default CURRENT_TIMESTAMP null,
+    updated_at     datetime default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP,
+    status         varchar(20)                        not null,
+    constraint product_sub_type_sub_type_id_fk
+        foreign key (sub_type_id) references sub_type (sub_type_id)
+);
+
+create table title
+(
+    title_id   int auto_increment
+        primary key,
+    title_name varchar(50) not null,
+    dept_id    int         not null,
+    constraint title_dept_dept_id_fk
+        foreign key (dept_id) references dept (dept_id)
+);
+
+create table employee
+(
+    emp_id     int auto_increment
+        primary key,
+    emp_name   varchar(50)                        not null,
+    birth      date                               not null,
+    password   varchar(255)                       not null,
+    email      varchar(100)                       not null,
+    id_number  varchar(50)                        not null,
+    gender     varchar(10)                        not null,
+    phone      varchar(20)                        not null,
+    tel        varchar(50)                        null,
+    photo_url  varchar(255)                       null,
+    address    varchar(100)                       not null,
+    title_id   int                                not null,
+    hire_date  date                               null,
+    leave_date date                               null,
+    edit_date  datetime default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP,
+    emp_state  varchar(50)                        not null,
+    constraint employee_title_title_id_fk
+        foreign key (title_id) references title (title_id)
+);
+
+create table attendance
+(
+    attendance_id    int auto_increment
+        primary key,
+    date             date                 not null,
+    emp_id           int                  not null,
+    total_hours      decimal(4, 2)        not null,
+    is_late          tinyint(1) default 0 not null,
+    is_early_leave   tinyint(1) default 0 not null,
+    is_hours_not_met tinyint(1) default 0 not null,
+    is_over_time     tinyint(1) default 0 not null,
+    constraint attendance_employee_emp_id_fk
+        foreign key (emp_id) references employee (emp_id)
+);
+
+create table cart
+(
+    cart_id    int auto_increment
+        primary key,
+    emp_id     int                                not null,
+    created_at datetime default CURRENT_TIMESTAMP null,
+    updated_at datetime default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP,
+    constraint shopping_cart_employee_emp_id_fk
+        foreign key (emp_id) references employee (emp_id)
+);
+
+create table cart_item
+(
+    cart_item_id int auto_increment
+        primary key,
+    cart_id      int                                not null,
+    product_id   int                                not null,
+    quantity     int                                not null,
+    created_at   datetime default CURRENT_TIMESTAMP null,
+    updated_at   datetime default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP,
+    constraint cart_item_product_product_id_fk
+        foreign key (product_id) references product (product_id),
+    constraint cart_item_shopping_cart_cart_id_fk
+        foreign key (cart_id) references cart (cart_id)
+);
+
+create table clock_time
+(
+    clock_time_id int auto_increment
+        primary key,
+    emp_id        int         not null,
+    time          datetime    not null,
+    type          varchar(10) not null,
+    regions_id    int         null,
+    constraint clock_time_employee_emp_id_fk
+        foreign key (emp_id) references employee (emp_id),
+    constraint clock_time_office_regions_regions_id_fk
+        foreign key (regions_id) references office_regions (regions_id)
+);
+
+create table form_record
+(
+    form_id          int auto_increment
+        primary key,
+    emp_id           int         null,
+    type_id          int         null,
+    end_date         datetime(6) null,
+    start_date       datetime(6) null,
+    status_id        int         null,
+    termination_date datetime(6) null,
+    constraint form_record_ibfk_1
+        foreign key (type_id) references form_type (Type_id),
+    constraint form_record_ibfk_2
+        foreign key (emp_id) references employee (emp_id),
+    constraint form_record_ibfk_3
+        foreign key (status_id) references form_status (status_id)
+);
+
+create table apply_leave
+(
+    form_id    int          not null
+        primary key,
+    type       int          not null,
+    reason     varchar(200) null,
+    days       int          not null,
+    hours      int          not null,
+    start_time datetime     not null,
+    file       longblob     null,
+    constraint apply_leave_ibfk_1
+        foreign key (form_id) references form_record (form_id),
+    constraint apply_leave_ibfk_2
+        foreign key (type) references leave_type (id)
+);
+
+create index type
+    on apply_leave (type);
+
+create table apply_overtime
+(
+    form_id    int          not null
+        primary key,
+    type       int          not null,
+    reason     varchar(200) null,
+    date       date         not null,
+    start_time time         not null,
+    end_time   time         not null,
+    file       longblob     null,
+    constraint apply_overtime_ibfk_1
+        foreign key (form_id) references form_record (form_id),
+    constraint apply_overtime_ibfk_2
+        foreign key (type) references overtime_type (id)
+);
+
+create index type
+    on apply_overtime (type);
+
+create table form_eventlog
+(
+    event_id   int auto_increment
+        primary key,
+    form_id    int         null,
+    end_date   datetime(6) null,
+    start_date datetime(6) null,
+    head_count int         null,
+    sequence   int         null,
+    status_id  int         null,
+    constraint form_eventlog_ibfk_1
+        foreign key (status_id) references form_status (status_id),
+    constraint form_eventlog_ibfk_2
+        foreign key (form_id) references form_record (form_id)
+);
+
+create table form_audit_eventlog
+(
+    event_id    int auto_increment
+        primary key,
+    eventLog_id int          null,
+    auditor     int          null,
+    message     varchar(255) null,
+    end_date    datetime(6)  null,
+    status_id   int          null,
+    constraint form_audit_eventlog_ibfk_1
+        foreign key (status_id) references form_status (status_id),
+    constraint form_audit_eventlog_ibfk_2
+        foreign key (auditor) references employee (emp_id),
+    constraint form_audit_eventlog_ibfk_3
+        foreign key (eventLog_id) references form_eventlog (event_id)
+);
+
+create index auditor
+    on form_audit_eventlog (auditor);
+
+create index eventLog_id
+    on form_audit_eventlog (eventLog_id);
+
+create index status_id
+    on form_audit_eventlog (status_id);
+
+create index form_id
+    on form_eventlog (form_id);
+
+create index status_id
+    on form_eventlog (status_id);
+
+create index emp_id
+    on form_record (emp_id);
+
+create index status_id
+    on form_record (status_id);
+
+create index type_id
+    on form_record (type_id);
+
+create table `order`
+(
+    order_id    int auto_increment
+        primary key,
+    emp_id      int                                not null,
+    total_price int                                null,
+    status      varchar(10)                        null,
+    created_at  datetime default CURRENT_TIMESTAMP null,
+    updated_at  datetime default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP,
+    constraint order_employee_emp_id_fk
+        foreign key (emp_id) references employee (emp_id)
+);
+
+create table order_item
+(
+    order_item_id int auto_increment
+        primary key,
+    order_id      int not null,
+    product_id    int not null,
+    quantity      int not null,
+    total_price   int not null,
+    constraint order_item_order_order_id_fk
+        foreign key (order_id) references `order` (order_id),
+    constraint order_item_product_product_id_fk
+        foreign key (product_id) references product (product_id)
+);
+
+create table permission_info
+(
+    id            int auto_increment
+        primary key,
+    emp_id        int not null,
+    permission_id int not null,
+    constraint permission_info_employee_emp_id_fk
+        foreign key (emp_id) references employee (emp_id),
+    constraint permission_info_permission_permission_id_fk
+        foreign key (permission_id) references permission (permission_id)
+);
+
+create table permission_move
+(
+    id                     int auto_increment
+        primary key,
+    emp_id                 int                                not null,
+    before_permission_name varchar(50)                        not null,
+    after_permission_name  varchar(50)                        not null,
+    reason                 varchar(255)                       not null,
+    effect_date            date                               null,
+    approver               varchar(50)                        null,
+    edit_date              datetime default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP,
+    constraint permission_move_employee_emp_id_fk
+        foreign key (emp_id) references employee (emp_id)
+);
+
+create table resign_record
+(
+    resign_id     int auto_increment
+        primary key,
+    emp_id        int                                not null,
+    reason        varchar(255)                       not null,
+    leave_date    date                               null,
+    approver      varchar(50)                        null,
+    edit_date     datetime default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP,
+    quit          tinyint(1)                         null,
+    transfer_form tinyint(1)                         null,
+    constraint emp_id
+        unique (emp_id),
+    constraint resign_record_employee_emp_id_fk
+        foreign key (emp_id) references employee (emp_id)
+);
+
+create table title_move
+(
+    id               int auto_increment
+        primary key,
+    emp_id           int                                not null,
+    before_dept_info varchar(255)                       not null,
+    after_dept_info  varchar(255)                       not null,
+    reason           varchar(50)                        not null,
+    effect_date      date                               null,
+    approver         varchar(20)                        null,
+    edit_date        datetime default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP,
+    constraint title_move_employee_emp_id_fk
+        foreign key (emp_id) references employee (emp_id)
+);
+
