@@ -1,4 +1,4 @@
-create table dept
+create table if not exists dept
 (
     dept_id     int auto_increment
         primary key,
@@ -6,21 +6,21 @@ create table dept
     dept_office varchar(255) not null
 );
 
-create table form_status
+create table if not exists form_status
 (
     status_id   int auto_increment
         primary key,
     Description varchar(255) null
 );
 
-create table form_type
+create table if not exists form_type
 (
     Type_id   int auto_increment
         primary key,
     Type_name varchar(255) null
 );
 
-create table leave_type
+create table if not exists leave_type
 (
     id     int auto_increment
         primary key,
@@ -30,7 +30,7 @@ create table leave_type
     remark varchar(200)  null
 );
 
-create table office_regions
+create table if not exists office_regions
 (
     regions_id   int auto_increment
         primary key,
@@ -39,14 +39,14 @@ create table office_regions
     regions_name varchar(20) not null
 );
 
-create table overtime_type
+create table if not exists overtime_type
 (
     id   int auto_increment
         primary key,
     type varchar(10) not null
 );
 
-create table permission
+create table if not exists permission
 (
     permission_id        int auto_increment
         primary key,
@@ -54,14 +54,14 @@ create table permission
     permission_statement varchar(255) not null
 );
 
-create table product_type
+create table if not exists product_type
 (
     type_id   int auto_increment
         primary key,
     type_name varchar(30) not null
 );
 
-create table sub_type
+create table if not exists sub_type
 (
     sub_type_id     int auto_increment
         primary key,
@@ -71,7 +71,7 @@ create table sub_type
         foreign key (product_type_id) references product_type (type_id)
 );
 
-create table product
+create table if not exists product
 (
     product_id     int auto_increment
         primary key,
@@ -88,7 +88,7 @@ create table product
         foreign key (sub_type_id) references sub_type (sub_type_id)
 );
 
-create table title
+create table if not exists title
 (
     title_id   int auto_increment
         primary key,
@@ -98,7 +98,7 @@ create table title
         foreign key (dept_id) references dept (dept_id)
 );
 
-create table employee
+create table if not exists employee
 (
     emp_id     int auto_increment
         primary key,
@@ -121,7 +121,7 @@ create table employee
         foreign key (title_id) references title (title_id)
 );
 
-create table attendance
+create table if not exists attendance
 (
     attendance_id    int auto_increment
         primary key,
@@ -136,7 +136,7 @@ create table attendance
         foreign key (emp_id) references employee (emp_id)
 );
 
-create table cart
+create table if not exists cart
 (
     cart_id    int auto_increment
         primary key,
@@ -147,7 +147,7 @@ create table cart
         foreign key (emp_id) references employee (emp_id)
 );
 
-create table cart_item
+create table if not exists cart_item
 (
     cart_item_id int auto_increment
         primary key,
@@ -162,7 +162,7 @@ create table cart_item
         foreign key (cart_id) references cart (cart_id)
 );
 
-create table clock_time
+create table if not exists clock_time
 (
     clock_time_id int auto_increment
         primary key,
@@ -176,7 +176,7 @@ create table clock_time
         foreign key (regions_id) references office_regions (regions_id)
 );
 
-create table form_record
+create table if not exists form_record
 (
     form_id          int auto_increment
         primary key,
@@ -194,7 +194,7 @@ create table form_record
         foreign key (status_id) references form_status (status_id)
 );
 
-create table apply_leave
+create table if not exists apply_leave
 (
     form_id    int          not null
         primary key,
@@ -213,7 +213,7 @@ create table apply_leave
 create index type
     on apply_leave (type);
 
-create table apply_overtime
+create table if not exists apply_overtime
 (
     form_id    int          not null
         primary key,
@@ -232,7 +232,7 @@ create table apply_overtime
 create index type
     on apply_overtime (type);
 
-create table form_eventlog
+create table if not exists form_eventlog
 (
     event_id   int auto_increment
         primary key,
@@ -248,7 +248,7 @@ create table form_eventlog
         foreign key (form_id) references form_record (form_id)
 );
 
-create table form_audit_eventlog
+create table if not exists form_audit_eventlog
 (
     event_id    int auto_increment
         primary key,
@@ -289,7 +289,7 @@ create index status_id
 create index type_id
     on form_record (type_id);
 
-create table `order`
+create table if not exists `order`
 (
     order_id    int auto_increment
         primary key,
@@ -302,7 +302,7 @@ create table `order`
         foreign key (emp_id) references employee (emp_id)
 );
 
-create table order_item
+create table if not exists order_item
 (
     order_item_id int auto_increment
         primary key,
@@ -316,7 +316,7 @@ create table order_item
         foreign key (product_id) references product (product_id)
 );
 
-create table permission_info
+create table if not exists permission_info
 (
     id            int auto_increment
         primary key,
@@ -328,7 +328,7 @@ create table permission_info
         foreign key (permission_id) references permission (permission_id)
 );
 
-create table permission_move
+create table if not exists permission_move
 (
     id                     int auto_increment
         primary key,
@@ -343,7 +343,7 @@ create table permission_move
         foreign key (emp_id) references employee (emp_id)
 );
 
-create table resign_record
+create table if not exists resign_record
 (
     resign_id     int auto_increment
         primary key,
@@ -360,7 +360,7 @@ create table resign_record
         foreign key (emp_id) references employee (emp_id)
 );
 
-create table title_move
+create table if not exists title_move
 (
     id               int auto_increment
         primary key,
@@ -374,4 +374,3 @@ create table title_move
     constraint title_move_employee_emp_id_fk
         foreign key (emp_id) references employee (emp_id)
 );
-
