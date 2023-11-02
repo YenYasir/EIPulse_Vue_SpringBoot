@@ -119,7 +119,7 @@ create table if not exists employee
     emp_state  varchar(50)                        not null,
     constraint employee_title_title_id_fk
         foreign key (title_id) references title (title_id)
-);
+)auto_increment=1000;
 
 create table if not exists attendance
 (
