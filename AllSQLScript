@@ -1,4 +1,4 @@
-#合併專用 code 11/2 OK
+#合併專用 code 11/4 OK
 create table if not exists dept
 (
     dept_id     int auto_increment
@@ -521,3 +521,120 @@ values  (1001, '允許管理員工資料', '允許簽核資料', '升職為部�
         ( 1008, '允許讀取個人資料', '允許讀取個人資料', '轉職為生產專員', '2022-03-20', '研發經理'),
         ( 1009, '允許讀取個人資料', '允許簽核資料', '升職為部門主管', '2022-02-10', '品保經理'),
         (1010, '允許讀取個人資料', '允許管理員工資料', '轉職為人事專員', '2022-01-05', '人事經理');
+
+
+CREATE TABLE emp_salary_info
+(
+    emp_id                       INT           NOT NULL PRIMARY KEY,
+    basic_salary                 INT           NOT NULL,
+    labor_insurance_grade        INT           NOT NULL,
+    labor_volunteer_pension_rate DECIMAL(5, 2) NOT NULL,
+    health_insurance_grade       INT           NOT NULL,
+    family_dependants_num        INT           NOT NULL,
+    welfare_benefits_deduction   VARCHAR(5)    NOT NULL,
+    CONSTRAINT emp_salary_info_ibfk_1
+        FOREIGN KEY (emp_id) REFERENCES employee (emp_id)
+);
+
+INSERT INTO emp_salary_info (`emp_id`, `basic_salary`, `labor_insurance_grade`, `labor_volunteer_pension_rate`, `health_insurance_grade`, `family_dependants_num`, `welfare_benefits_deduction`)
+VALUES
+    (1012, 27000, 26400, 0, 26400, 0, '0'),
+    (1013, 30000, 30300, 0.06, 30300, 1, '1'),
+    (1014, 55000, 45800, 0.06, 57800, 2, '1'),
+    (1015, 28000, 28800, 0, 28800, 0, '1'),
+    (1016, 32000, 33000, 0, 33000, 0, '1');
+
+create table if not exists salary_history
+(
+    id              int auto_increment
+        primary key,
+    emp_id          int                                not null,
+    original_salary int                                null,
+    adjust_salary   int                                null,
+    remark          varchar(50)                        null,
+    adjusted_date   datetime default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP,
+    constraint SalaryHistory_employee_emp_id_fk
+        foreign key (emp_id) references employee (emp_id)
+);
+
+INSERT INTO salary_history (`emp_id`, `original_salary`, `adjust_salary`, `remark`)
+VALUES
+    (1012, 25250, 26000, '年度調薪'),
+    (1013, 26000, 27000, '老闆開心'),
+    (1014, 29000, 30000, '年度調薪'),
+    (1015, 45000, 55000, '年度調薪'),
+    (1016, 29000, 32000, '年度調薪');
+
+CREATE TABLE subject_type
+(
+    subject_id     INT AUTO_INCREMENT PRIMARY KEY,
+    subject_name   VARCHAR(30) NOT NULL,
+    calculate_type VARCHAR(10) NOT NULL,
+    frequency      VARCHAR(10) NOT NULL,
+    amount_default INT NULL,
+    status         VARCHAR(10) NOT NULL
+)auto_increment=1000;
+
+INSERT INTO subject_type (`subject_name`, `calculate_type`, `frequency`, `amount_default`, `status`)
+VALUES
+    ('基本薪資', 'P', '1', NULL, '1'),  -- 1000
+    ('伙食津貼', 'P', '1', '2400', '1'), -- 1001
+    ('加班費', 'P', '1', NULL, '1'),     -- 1002
+    ('年終獎金', 'P', '0', NULL, '1'),    -- 1003
+    ('勞保費', 'M', '1', NULL, '1'),     -- 1004
+    ('健保費', 'M', '1', NULL, '1'),     -- 1005
+    ('勞退自提退休金', 'M', '1', NULL, '1'), -- 1006
+    ('福利金', 'M', '1', NULL, '1'),     -- 1007
+    ('扣薪假', 'M', '1', NULL, '1');     -- 1008
+
+create table if not exists salary_month_record
+(
+    id           int auto_increment
+        primary key,
+    sl_year      int                                not null,
+    sl_month     int                                not null,
+    emp_id       int                                not null,
+    add_sum      int                                not null,
+    dedu_sum     int                                not null,
+    net_salary   int                                not null,
+    created_date datetime default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP,
+    constraint salary_month_record_ibfk_1
+        foreign key (emp_id) references employee (emp_id)
+);
+
+create table if not exists salary_detail
+(
+    id           int auto_increment
+        primary key,
+    emp_id       int                                not null,
+    subject_id   int                                not null,
+    amount       int                                not null,
+    created_date datetime default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP,
+    record_id    int                                not null,
+    constraint salary_detail_ibfk_1
+        foreign key (emp_id) references employee (emp_id),
+    constraint salary_detail_ibfk_2
+        foreign key (subject_id) references subject_type (subject_id),
+    constraint salary_detail_ibfk_3
+        foreign key (record_id) references salary_month_record (id)
+);
+
+INSERT INTO salary_month_record (`sl_year`, `sl_month`, `emp_id`, `add_sum`, `dedu_sum`, `net_salary`)
+VALUES
+    (2023, 2, 1012, 35000, 1225, 33775),
+    (2023, 2, 1013, 37500, 1348, 36152 );
+
+INSERT INTO salary_detail ( `emp_id`, `subject_id`, `amount`,  `record_id`)
+VALUES
+    ( 1012, 1001, 27000,  1), -- 薪資
+    ( 1012, 1002, 3000, 1), -- 加班費
+    ( 1012, 1003, 5000,  1), -- 年終獎金
+    ( 1012, 1004, 662, 1),  -- 勞保費
+    ( 1012, 1005, 428, 1),  -- 健保費
+    ( 1012, 1007, 135,  1),  -- 福利金
+    ( 1013, 1001, 30000,2), -- 薪資
+    ( 1013, 1002, 2000,  2), -- 加班費
+    ( 1013, 1003, 5500, 2), -- 年終獎金
+    ( 1013, 1004, 728, 2),  -- 勞保費
+    ( 1013, 1005, 470,  2),  -- 健保費
+    ( 1013, 1007, 150, 2);  -- 福利金
