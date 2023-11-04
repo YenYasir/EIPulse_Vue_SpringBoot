@@ -44,17 +44,24 @@ const clockTimeSave = async () => {
   }
 }
 //獲得用戶位置
-const getUserMaps = async () => {
-  try {
-    await userLocation.getCurrentPosition(position => {
-      timeInfo.latitude = position.coords.latitude;
-      timeInfo.longitude = position.coords.longitude;
-      center.lat = timeInfo.latitude
-      center.lng = timeInfo.longitude
+const getUserMaps = () => {
+  userLocation.getCurrentPosition(position => {
+    timeInfo.latitude = position.coords.latitude;
+    timeInfo.longitude = position.coords.longitude;
+    center.lat = timeInfo.latitude
+    center.lng = timeInfo.longitude
+  }, () => {
+    Swal.fire({
+      title: '無法獲取位置',
+      text: '請確認是否開啟定位',
+      icon: 'error',
     })
-  } catch (e) {
-    console.log(e)
-  }
+  },{
+    //高精度定位， wi-fi with maps
+    enableHighAccuracy:true,
+    timeout:5000,
+    maximumAge:0
+  })
 }
 //獲得用戶最後時間，用於前端按鈕渲染
 const getLastTime = () => {

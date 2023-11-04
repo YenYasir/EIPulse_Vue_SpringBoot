@@ -3,6 +3,7 @@ import {onBeforeMount, reactive, ref} from "vue";
 import {empStore} from "../../stores/employee.js";
 import axios from "axios";
 import Swal from "sweetalert2";
+
 const URL = import.meta.env.VITE_API_JAVAURL;
 const center = reactive({lat: 22.99297785113601, lng: 120.18681223016014})
 const emp = empStore();
@@ -11,7 +12,7 @@ const timeInfo = reactive({
   empId: emp.empId,
   empName: emp.empName,
   lastTime: '今日無紀錄',
-  type:'上班',
+  type: '上班',
   latitude: null,
   longitude: null,
 })
@@ -44,26 +45,34 @@ const clockTimeSave = async () => {
   }
 }
 //獲得用戶位置
-const getUserMaps = async () => {
-  try {
-    await userLocation.getCurrentPosition(position => {
-      timeInfo.latitude = position.coords.latitude;
-      timeInfo.longitude = position.coords.longitude;
-      center.lat = timeInfo.latitude
-      center.lng = timeInfo.longitude
+const getUserMaps = () => {
+
+  userLocation.getCurrentPosition(position => {
+    timeInfo.latitude = position.coords.latitude;
+    timeInfo.longitude = position.coords.longitude;
+    center.lat = timeInfo.latitude
+    center.lng = timeInfo.longitude
+  }, () => {
+    Swal.fire({
+      title: '無法獲取位置',
+      text: '請確認是否開啟定位',
+      icon: 'error',
     })
-  } catch (e) {
-    console.log(e)
-  }
+  },{
+    //高精度定位， wi-fi with maps
+    enableHighAccuracy:true,
+    timeout:5000,
+    maximumAge:0
+  })
 }
 //獲得用戶最後時間，用於前端按鈕渲染
 const getLastTime = () => {
-  axios.get(`http://localhost:8090/eipulse/clockTime/last/${timeInfo.empId}`).then((res)=>{
-    let formattedTime = res.data.time.replace("T"," ");
-    if(res.data.type!='上班'){
+  axios.get(`http://localhost:8090/eipulse/clockTime/last/${timeInfo.empId}`).then((res) => {
+    let formattedTime = res.data.time.replace("T", " ");
+    if (res.data.type != '上班') {
       timeInfo.type = '上班'
-    }else {
-      timeInfo.type='下班'
+    } else {
+      timeInfo.type = '下班'
     }
     timeInfo.lastTime = formattedTime
   })
@@ -82,9 +91,9 @@ onBeforeMount(() => {
 
 <template>
   <div class="row mx-2 ">
-    <div class="card row  h-auto p-3 border-0 shadow-sm" style="width: 24rem; " >
+    <div class="card row  h-auto p-3 border-0 shadow-sm" style="width: 24rem; ">
       <h5>{{ emp.empId }}{{ emp.empName }}，您好</h5>
-        <p class="text-center">現在時間:{{ clock }}</p>
+      <p class="text-center">現在時間:{{ clock }}</p>
       <!-- 調整 Google Maps 的高度和寬度 -->
       <GMapMap
           :center="center"
@@ -97,7 +106,7 @@ onBeforeMount(() => {
         </GMapCluster>
       </GMapMap>
       <br/>
-      <p>最近一次打卡時間：{{timeInfo.lastTime}}</p>
+      <p>最近一次打卡時間：{{ timeInfo.lastTime }}</p>
       <br/>
       <button href="#" class="btn btn-primary mt-2" @click="clockTimeSave">{{ timeInfo.type }}</button>
     </div>
