@@ -2,6 +2,7 @@
 import axios from "axios";
 import Swal from "sweetalert2";
 import {empStore} from "../stores/employee.js";
+const URL = import.meta.env.VITE_API_JAVAURL;
 
 export default {
   setup() {
@@ -21,7 +22,7 @@ export default {
   methods:{
     async sendOtp(){
       try {
-        const response = await axios.post("http://localhost:8090/eipulse/login/newPassword",{
+        const response = await axios.post(`${URL}login/newPassword`,{
           empId:this.empId,
           newPassword:this.newPassword,
           otpCheck:this.otpCheck,
@@ -34,7 +35,7 @@ export default {
           timerProgressBar:true,
           icon:'success'
         })
-        this.$router.push({name:'index'})
+        this.$router.push({name:'login'})
         this.$emit('new-password-success')
       }catch (e){
         await Swal.fire({

@@ -3,16 +3,15 @@ package com.eipulse.teamproject.service.clocktimeservice;
 import com.eipulse.teamproject.dto.clocktimedto.AttendanceDTO;
 import com.eipulse.teamproject.entity.clocktimeentity.Attendance;
 import com.eipulse.teamproject.entity.clocktimeentity.ClockTime;
-import com.eipulse.teamproject.entity.Employee;
+import com.eipulse.teamproject.entity.employee.Employee;
 import com.eipulse.teamproject.repository.clocktimerepository.AttendanceRepository;
 import com.eipulse.teamproject.repository.clocktimerepository.ClockTimeRepository;
-import com.eipulse.teamproject.repository.EmpRepository;
+import com.eipulse.teamproject.repository.employeerepository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.repository.query.Param;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +22,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 //遲到、早退、曠班、請假、正常、超時
 @Service
@@ -37,14 +35,15 @@ public class AttendanceService {
     }
     private AttendanceRepository attendanceRepository;
     private ClockTimeRepository clockTimeRepository;
-    private EmpRepository empRepository;
-
+    private EmployeeRepository empRepository;
     @Autowired
-    public AttendanceService(AttendanceRepository attendanceRepository, ClockTimeRepository clockTimeRepository, EmpRepository empRepository) {
+    public AttendanceService(AttendanceRepository attendanceRepository, ClockTimeRepository clockTimeRepository, EmployeeRepository empRepository) {
         this.attendanceRepository = attendanceRepository;
         this.clockTimeRepository = clockTimeRepository;
         this.empRepository = empRepository;
     }
+
+
 
     //秒 分 時 每月的日期 每月的月份 星期幾 此設定為每天23:00將執行
     @Scheduled(cron = "0 12 20 * * *")
@@ -124,7 +123,7 @@ public class AttendanceService {
 
     //依區間抓取單員工出勤狀況，最大為單月
     public Page<AttendanceDTO> findByDateBetweenEmpAttendance(LocalDate startDate, LocalDate endDate , Integer empId,Integer pageNumber){
-        Pageable pageable = PageRequest.of(pageNumber-1,10, Sort.Direction.ASC,"date");
+        Pageable pageable = PageRequest.of(pageNumber-1,8, Sort.Direction.ASC,"date");
         Page<Attendance> attendancePage = attendanceRepository.findByDateBetweenEmpAttendance(startDate, endDate,empId,pageable);
         Page<AttendanceDTO>result = attendancePage.map(attendance -> new AttendanceDTO(attendance));
         return result;
@@ -132,7 +131,7 @@ public class AttendanceService {
 
     //依區間抓取全員工出勤狀況，最大為單月
     public Page<AttendanceDTO>findByMonthAllEmpAttendance(LocalDate startDate, LocalDate endDate,Integer pageNumber ){
-        Pageable pageable = PageRequest.of(pageNumber-1,10, Sort.Direction.ASC,"date");
+        Pageable pageable = PageRequest.of(pageNumber-1,8, Sort.Direction.ASC,"date");
         Page<Attendance> attendancePage = attendanceRepository.findByDateBetweenAllEmpAttendance(startDate, endDate,pageable);
         Page<AttendanceDTO> result = attendancePage.map(attendance -> new AttendanceDTO(attendance));
 

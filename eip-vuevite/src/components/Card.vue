@@ -11,7 +11,7 @@ const props=defineProps({
 </script>
 
 <template>
-  <div class="card  h-auto">
+  <div class="card  h-auto border-0 shadow-sm">
     <div class="card-header">
       <p>{{title}}</p>
       <slot name="findSearch"></slot>

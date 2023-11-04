@@ -1,8 +1,7 @@
 package com.eipulse.teamproject.entity.clocktimeentity;
 
-import com.eipulse.teamproject.entity.Employee;
+import com.eipulse.teamproject.entity.employee.Employee;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,21 +25,16 @@ public class ClockTime {
     private String type;
 
 
-    @JsonBackReference
+    @JsonBackReference(value = "officeRegions")
     @ManyToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,
             CascadeType.PERSIST,CascadeType.REFRESH})
     @JoinColumn(name = "regions_id")
     private OfficeRegions officeRegions;
 
-    @JsonBackReference
+    @JsonBackReference(value = "employee-clockTime")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "emp_id",referencedColumnName = "emp_id")
     private Employee employee;
-
-//    public String getEmployee() {
-////                    三元運算子 if !=null return  else  return null
-//        return (this.employee !=null) ? this.employee.getEmpId() + this.employee.getEmpName():null;
-//    }
 
     public ClockTime() {
 

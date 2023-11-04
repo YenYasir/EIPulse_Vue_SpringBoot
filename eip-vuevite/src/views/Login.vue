@@ -1,36 +1,45 @@
 <script>
 import axios from "axios";
 import Swal from "sweetalert2";
-import index from "./Index.vue";
+import index from "./manage/Index.vue";
 import {empStore} from "../stores/employee.js";
+const URL = import.meta.env.VITE_API_JAVAURL;
 
 export default {
+  // 全局員工資料
   setup(){
     const store = empStore();
     return{
       empId:store.empId,
       password:store.password,
       isLogin: store.isLogin,
-      setLoginStatus:store.setLoginStatus
+      setLoginStatus:store.setLoginStatus,
+      permission: store.permission
     }
   },
   methods: {
+    //登入 function
     async handleSubmit() {
       try {
-        const response = await axios.post('http://localhost:8090/eipulse/login', {
+        const response = await axios.post(`${URL}login`, {
           empId: this.empId,
           password: this.password,
         }, {
           withCredentials: true
         });
+        await this.setLoginStatus(true,response.data);
         await Swal.fire({
           title: '登入成功',
           timer: 1000,
           timerProgressBar: true,
           icon:'success'
         })
-        this.setLoginStatus(true,response.data);
-        this.$router.push({name:'index'})
+        //判別權限導向不同畫面
+        if(sessionStorage.getItem('permission') ==='6' || this.permission==='6'){
+          this.$router.push({name:'manage-index',params:{empId:this.empId}})
+        }else {
+          this.$router.push({name:'user-index',params:{empId:this.empId}})
+        }
       } catch (e) {
         await Swal.fire({
           title: '登入失敗',
@@ -41,6 +50,7 @@ export default {
         console.error('error:' + e);
       }
     },
+    //導向忘記密碼
     toggleForgetPassword(){
       this.$router.push({name:'forget'})
     }

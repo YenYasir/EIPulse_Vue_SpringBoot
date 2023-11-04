@@ -1,13 +1,13 @@
-<script>
-export default {
-  name: "NavBar"
-}
+<script setup>
+
 </script>
 
 <template>
-  <nav class="navbar navbar-light bg-light  ">
+  <nav class="navbar bg-body-tertiary mb-2 bg-white  shadow-sm" >
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">Navbar</a>
+    <span class="navbar-text ">
+      EIPulse
+    </span>
     </div>
   </nav>
 </template>

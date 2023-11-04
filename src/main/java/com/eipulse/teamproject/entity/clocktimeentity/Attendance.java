@@ -1,6 +1,6 @@
 package com.eipulse.teamproject.entity.clocktimeentity;
 
-import com.eipulse.teamproject.entity.Employee;
+import com.eipulse.teamproject.entity.employee.Employee;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -24,7 +24,7 @@ public class Attendance {
     @Column(name = "date", nullable = false)
     private LocalDate date;
 
-    @JsonBackReference
+    @JsonBackReference(value = "employee-attendance")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "emp_id", nullable = false)
     private Employee employee;

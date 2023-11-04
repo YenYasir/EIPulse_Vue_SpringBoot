@@ -3,14 +3,13 @@ package com.eipulse.teamproject.service.clocktimeservice;
 import com.eipulse.teamproject.dto.clocktimedto.ClockTimeDTO;
 import com.eipulse.teamproject.entity.clocktimeentity.Attendance;
 import com.eipulse.teamproject.entity.clocktimeentity.ClockTime;
-import com.eipulse.teamproject.entity.Employee;
 import com.eipulse.teamproject.entity.clocktimeentity.OfficeRegions;
+import com.eipulse.teamproject.entity.employee.Employee;
 import com.eipulse.teamproject.repository.clocktimerepository.AttendanceRepository;
 import com.eipulse.teamproject.repository.clocktimerepository.ClockTimeRepository;
-import com.eipulse.teamproject.repository.EmpRepository;
+import com.eipulse.teamproject.repository.employeerepository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -23,12 +22,12 @@ import java.util.Optional;
 @Service
 public class ClockTimeService {
     private ClockTimeRepository clockTimeRepository;
-    private EmpRepository empRepository;
+    private EmployeeRepository empRepository;
     private AttendanceRepository attendanceRepository;
     private OfficeRegionsService officeRegionsService;
 
     @Autowired
-    public ClockTimeService(ClockTimeRepository clockTimeRepository, EmpRepository empRepository, AttendanceRepository attendanceRepository, OfficeRegionsService officeRegionsService) {
+    public ClockTimeService(ClockTimeRepository clockTimeRepository, EmployeeRepository empRepository, AttendanceRepository attendanceRepository, OfficeRegionsService officeRegionsService) {
         this.clockTimeRepository = clockTimeRepository;
         this.empRepository = empRepository;
         this.attendanceRepository = attendanceRepository;
@@ -95,7 +94,7 @@ public class ClockTimeService {
 
     //選擇要查詢日期的單員工的打卡記錄
     public Page<ClockTimeDTO>findClockTimeByEmpByDate(Integer empId,LocalDate startDate, LocalDate endDate,Integer pageNumber){
-        Pageable pageable = PageRequest.of(pageNumber-1,10,Sort.Direction.ASC,"time");
+        Pageable pageable = PageRequest.of(pageNumber-1,8,Sort.Direction.ASC,"time");
         Page<ClockTime> clockTimePage = clockTimeRepository.findByTimeBetweenAndEmployee(empId,startDate,endDate,pageable);
         Page<ClockTimeDTO> dtoPage = clockTimePage.map(clocktime -> new ClockTimeDTO(clocktime));
 
@@ -105,7 +104,7 @@ public class ClockTimeService {
 
     //選擇要查詢日期的所有員工的打卡記錄
     public Page<ClockTimeDTO>findClockTimeByDate(LocalDate startDate,LocalDate endDate,Integer pageNumber){
-        Pageable pageable = PageRequest.of(pageNumber-1,10,Sort.Direction.ASC,"time");
+        Pageable pageable = PageRequest.of(pageNumber-1,8,Sort.Direction.ASC,"time");
         Page<ClockTime> clockTimePage = clockTimeRepository.findClockTimesByDate(startDate,endDate,pageable);
         List<ClockTimeDTO>result = new ArrayList<>();
         for (ClockTime clocktime:clockTimePage.getContent()) {

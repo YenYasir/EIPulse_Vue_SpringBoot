@@ -2,6 +2,7 @@
 import axios from "axios";
 import Swal from "sweetalert2";
 import {empStore} from "../stores/employee.js";
+const URL = import.meta.env.VITE_API_JAVAURL;
 
 export default {
   setup() {
@@ -15,7 +16,7 @@ export default {
   },
   methods:{
     async sendEmail() {
-      axios.post('http://localhost:8090/eipulse/login/forgetPassword', {
+      axios.post(`${URL}login/forgetPassword`, {
         email: this.email
       }, {
         withCredentials: true
@@ -37,22 +38,6 @@ export default {
           icon: 'error'
         })
       });
-      // try {
-      //   const response = await axios.post('http://localhost:8090/eipulse/login/forgetPassword',{
-      //     email:this.email
-      //   },{
-      //     withCredentials:true
-      //   });
-      //   console.log(response.status)
-      //   console.log(response.data)
-      //   this.empId = response.data
-      //   alert('已寄送驗證碼至信箱請確認');
-      //   this.showIsForget=false;
-      //   this.$emit('email-verified',this.empId)
-      // }catch (e){
-      //   console.log('errMessage'+e)
-      //   alert('信箱不存在請重新確認')
-      // }
     }
   },
 }

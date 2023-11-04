@@ -1,7 +1,7 @@
 package com.eipulse.teamproject.repository.clocktimerepository;
 
 import com.eipulse.teamproject.entity.clocktimeentity.ClockTime;
-import com.eipulse.teamproject.entity.Employee;
+import com.eipulse.teamproject.entity.employee.Employee;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
