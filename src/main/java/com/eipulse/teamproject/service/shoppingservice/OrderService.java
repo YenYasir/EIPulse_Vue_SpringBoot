@@ -129,8 +129,6 @@ public class OrderService {
         String tradeNo  = orderTrade+order.getOrderId()+((int)Math.random()*100);
         aioCheckOutOneTime.setMerchantTradeNo(tradeNo);
 
-
-
         //設定訂單日期
         DateTimeFormatter dateTimeFormatter  =DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
         String orderDate = localDateTime.format(dateTimeFormatter);
