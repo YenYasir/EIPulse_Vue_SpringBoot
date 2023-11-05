@@ -1,3 +1,22 @@
+<template>
+  <window-modal :button-name="timeInfo.type" title-name="出勤" @submit="clockTimeSave" class="modal-m">
+    <h3>{{ emp.empId }}{{ emp.empName }}，您好</h3>
+    <!-- 調整 Google Maps 的高度和寬度 -->
+    <GMapMap
+        :center="center"
+        :zoom="18"
+        map-type-id="terrain"
+        :options="{ draggable: false, disableDefaultUI: true,clickableIcons:false }"
+        style="height: 300px; width: 100%;">
+      <GMapCluster>
+        <GMapMarker/>
+      </GMapCluster>
+    </GMapMap>
+    <br/>
+    <p>最近一次打卡時間：{{timeInfo.lastTime}}</p>
+    <br/>
+  </window-modal>
+</template>
 <script setup>
 import WindowModal from "../mall/WindowModal.vue";
 import {nextTick, onBeforeMount, onMounted, reactive, ref} from "vue";
@@ -83,25 +102,7 @@ onBeforeMount(() => {
 
 </script>
 
-<template>
-  <window-modal :button-name="timeInfo.type" title-name="出勤" @submit="clockTimeSave" class="modal-m">
-    <h3>{{ emp.empId }}{{ emp.empName }}，您好</h3>
-    <!-- 調整 Google Maps 的高度和寬度 -->
-    <GMapMap
-        :center="center"
-        :zoom="18"
-        map-type-id="terrain"
-        :options="{ draggable: false, disableDefaultUI: true,clickableIcons:false }"
-        style="height: 300px; width: 100%;">
-      <GMapCluster>
-        <GMapMarker/>
-      </GMapCluster>
-    </GMapMap>
-    <br/>
-    <p>最近一次打卡時間：{{timeInfo.lastTime}}</p>
-    <br/>
-  </window-modal>
-</template>
+
 <style scoped>
 
 </style>

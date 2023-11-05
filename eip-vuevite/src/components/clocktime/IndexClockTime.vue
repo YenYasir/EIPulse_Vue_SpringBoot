@@ -1,3 +1,27 @@
+<template>
+  <div class="row mx-2 ">
+    <div class="card row  h-auto p-3 border-0 shadow-sm" style="width: 24rem; ">
+      <h5>{{ emp.empId }}{{ emp.empName }}，您好</h5>
+      <p class="text-center">現在時間:{{ clock }}</p>
+      <!-- 調整 Google Maps 的高度和寬度 -->
+      <GMapMap
+          :center="center"
+          :zoom="18"
+          map-type-id="terrain"
+          :options="{ draggable: false, disableDefaultUI: true,clickableIcons:false }"
+          style="height: 300px; width: 100%;">
+        <GMapCluster>
+          <GMapMarker/>
+        </GMapCluster>
+      </GMapMap>
+      <br/>
+      <p>最近一次打卡時間：{{ timeInfo.lastTime }}</p>
+      <br/>
+      <button href="#" class="btn btn-primary mt-2" @click="clockTimeSave">{{ timeInfo.type }}</button>
+    </div>
+  </div>
+</template>
+
 <script setup>
 import {onBeforeMount, reactive, ref} from "vue";
 import {empStore} from "../../stores/employee.js";
@@ -89,29 +113,6 @@ onBeforeMount(() => {
 
 </script>
 
-<template>
-  <div class="row mx-2 ">
-    <div class="card row  h-auto p-3 border-0 shadow-sm" style="width: 24rem; ">
-      <h5>{{ emp.empId }}{{ emp.empName }}，您好</h5>
-      <p class="text-center">現在時間:{{ clock }}</p>
-      <!-- 調整 Google Maps 的高度和寬度 -->
-      <GMapMap
-          :center="center"
-          :zoom="18"
-          map-type-id="terrain"
-          :options="{ draggable: false, disableDefaultUI: true,clickableIcons:false }"
-          style="height: 300px; width: 100%;">
-        <GMapCluster>
-          <GMapMarker/>
-        </GMapCluster>
-      </GMapMap>
-      <br/>
-      <p>最近一次打卡時間：{{ timeInfo.lastTime }}</p>
-      <br/>
-      <button href="#" class="btn btn-primary mt-2" @click="clockTimeSave">{{ timeInfo.type }}</button>
-    </div>
-  </div>
-</template>
 
 <style scoped>
 

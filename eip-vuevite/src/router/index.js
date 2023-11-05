@@ -60,6 +60,11 @@ const router = createRouter({
                     component: () => import('@/views/form/Audit.vue'),
                     name: 'audit',
                 },
+                {
+                    path: '/manage/:empId/profile',
+                    component: () => import('@/views/manage/Profile.vue'),
+            
+                }
             ]
         },
 

@@ -1,20 +1,3 @@
-<script setup>
-const props=defineProps({
-  titleName:{
-    type:String,
-    required:true,
-  },
-  buttonName:{
-    type:String,
-    required:true,
-    default:'送出'
-  }
-})
-const emit = defineEmits(['submit']);
-const submit=()=>{
-  emit('submit')
-}
-</script>
 
 <template>
   <div class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -35,6 +18,25 @@ const submit=()=>{
     </div>
   </div>
 </template>
+
+<script setup>
+const props=defineProps({
+  titleName:{
+    type:String,
+    required:true,
+  },
+  buttonName:{
+    type:String,
+    required:true,
+    default:'送出'
+  }
+})
+const emit = defineEmits(['submit']);
+const submit=()=>{
+  emit('submit')
+}
+</script>
+
 
 <style >
 

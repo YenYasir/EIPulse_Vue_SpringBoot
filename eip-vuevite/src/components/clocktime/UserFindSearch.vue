@@ -1,18 +1,3 @@
-<script setup>
-import {ref} from "vue";
-let date = new Date();
-let formattedDate = date.toISOString().split('T')[0]; // 這將給你 "2023-10-20" 這樣的格式
-const startDate = ref(formattedDate);
-const endDate = ref(formattedDate);
-const emit = defineEmits(['sendSearchDate'])
-const getSearchDate=()=>{
-  console.log(startDate.value)
-  emit('sendSearchDate',{
-    startDate:startDate.value,
-    endDate:endDate.value,
-  })
-}
-</script>
 
 <template>
 
@@ -34,6 +19,23 @@ const getSearchDate=()=>{
   </div>
 
 </template>
+
+
+<script setup>
+import {ref} from "vue";
+let date = new Date();
+let formattedDate = date.toISOString().split('T')[0]; // 這將給你 "2023-10-20" 這樣的格式
+const startDate = ref(formattedDate);
+const endDate = ref(formattedDate);
+const emit = defineEmits(['sendSearchDate'])
+const getSearchDate=()=>{
+  console.log(startDate.value)
+  emit('sendSearchDate',{
+    startDate:startDate.value,
+    endDate:endDate.value,
+  })
+}
+</script>
 
 <style scoped>
 

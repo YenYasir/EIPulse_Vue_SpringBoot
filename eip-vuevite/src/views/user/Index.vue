@@ -1,16 +1,3 @@
-<script setup>
-
-import DropDown from "../../components/DropDown.vue";
-import AsideBar from "../../components/AsideBar.vue";
-import NavBar from "../../components/NavBar.vue";
-import {empStore} from "../../stores/employee.js";
-import IndexClockTime from "../../components/clocktime/IndexClockTime.vue";
-import {reactive} from "vue";
-const emp = empStore();
-const center = reactive({lat: 22.99297785113601, lng: 120.18681223016014})
-const userLocation = navigator.geolocation;
-
-</script>
 
 <template>
   <div class="d-flex">
@@ -39,6 +26,17 @@ const userLocation = navigator.geolocation;
     </section>
   </div>
 </template>
+
+<script setup>
+
+import DropDown from "../../components/DropDown.vue";
+import AsideBar from "../../components/AsideBar.vue";
+import NavBar from "../../components/NavBar.vue";
+import {empStore} from "../../stores/employee.js";
+import IndexClockTime from "../../components/clocktime/IndexClockTime.vue"
+const emp = empStore();
+
+</script>
 
 <style scoped>
 section{

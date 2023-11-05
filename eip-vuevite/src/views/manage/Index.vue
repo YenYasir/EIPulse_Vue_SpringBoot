@@ -1,29 +1,4 @@
-<script setup>
-import AsideBar from "../../components/AsideBar.vue";
-import {empStore} from "../../stores/employee.js";
-import DropDown from "../../components/DropDown.vue";
-import NavBar from "../../components/NavBar.vue";
-import {nextTick, onBeforeMount, reactive, ref} from "vue";
-import ProductType from "../../components/mall/ProdcutType.vue";
-import axios from "axios";
-import Swal from "sweetalert2";
-import IndexClockTime from "../../components/clocktime/IndexClockTime.vue";
 
-const emp = empStore();
-const showModal = ref(null)
-const center = reactive({lat: 22.99297785113601, lng: 120.18681223016014})
-const userLocation = navigator.geolocation;
-
-const showSaveType = () => {
-  nextTick(() => {
-    let modalElemnt = showModal.value.$el;
-    let modal = new bootstrap.Modal(modalElemnt, {});
-    modal.show();
-  })
-}
-
-
-</script>
 
 <template>
   <div class="d-flex">
@@ -65,7 +40,7 @@ const showSaveType = () => {
         </li>
       </drop-down>
     </aside-bar>
-    <section style="flex: 3" class="border-0 shadow-sm ">
+    <section style="flex: 3" class="shadow-sm">
       <nav-bar></nav-bar>
 
       <index-clock-time v-if="emp.showClock" class="d-flex justify-content-end"></index-clock-time>
@@ -75,9 +50,36 @@ const showSaveType = () => {
   <product-type ref="showModal"></product-type>
 </template>
 
+<script setup>
+import AsideBar from "../../components/AsideBar.vue";
+import {empStore} from "../../stores/employee.js";
+import DropDown from "../../components/DropDown.vue";
+import NavBar from "../../components/NavBar.vue";
+import {nextTick, onBeforeMount, reactive, ref} from "vue";
+import ProductType from "../../components/mall/ProdcutType.vue";
+import axios from "axios";
+import Swal from "sweetalert2";
+import IndexClockTime from "../../components/clocktime/IndexClockTime.vue";
+
+const emp = empStore();
+const showModal = ref(null)
+const center = reactive({lat: 22.99297785113601, lng: 120.18681223016014})
+const userLocation = navigator.geolocation;
+
+
+
+
+
+const showSaveType = () => {
+  nextTick(() => {
+    let modalElemnt = showModal.value.$el;
+    let modal = new bootstrap.Modal(modalElemnt, {});
+    modal.show();
+  })
+}
+</script>
 <style scoped>
 section{
   background-color: #f0f0f0;
 }
-
 </style>

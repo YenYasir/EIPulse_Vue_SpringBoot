@@ -1,15 +1,3 @@
-<script setup>
-
-import { watch, defineProps } from 'vue';
-
-const props = defineProps(['editProduct']);
-let product = props.editProduct;
-
-watch(() => props.editProduct, (newValue, oldValue) => {
-      product = newValue;
-    }
-);
-</script>
 
 <template>
   <div class="row">
@@ -49,6 +37,19 @@ watch(() => props.editProduct, (newValue, oldValue) => {
     </div>
   </div>
 </template>
+<script setup>
+
+import { watch, defineProps } from 'vue';
+
+const props = defineProps(['editProduct']);
+let product = props.editProduct;
+
+watch(() => props.editProduct, (newValue, oldValue) => {
+      product = newValue;
+    }
+);
+</script>
+
 
 <style scoped>
 

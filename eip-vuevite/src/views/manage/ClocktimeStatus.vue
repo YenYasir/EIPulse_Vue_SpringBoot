@@ -1,42 +1,3 @@
-<script setup>
-
-import Card from "../../components/Card.vue";
-import FindSearch from "../../components/clocktime/FindSearch.vue";
-import axios from "axios";
-import {ref, watch} from "vue";
-import Page from "../../components/Page.vue";
-const URL = import.meta.env.VITE_API_JAVAURL;
-
-const totalPages = ref(0);
-const currentPage = ref(1);
-const getTime = ref([]);
-const currentSearchDate = ref(null); // 用於保存當前的搜索條件
-const getDate = (date) => {
-  currentSearchDate.value = date;
-  let url = `${URL}clockTimes/${date.startDate}/${date.endDate}/${currentPage.value}`;
-  if (date.empId) {
-    url = `${URL}clockTimes/${date.empId}/${date.startDate}/${date.endDate}/${currentPage.value}`;
-  }
-  axios.get(url).then((res) => {
-    getTime.value = res.data.content;
-    totalPages.value = res.data.totalPages;
-
-  }).catch((e) => {
-  });
-};
-
-// watch(currentPage, (newPage) => {
-//   if (currentSearchDate.value) {
-//     getDate(currentSearchDate.value)
-//   }
-// })
-const updateCurrentPage = (newPage) => {
-  currentPage.value = newPage;
-  getDate(currentSearchDate.value)
-  // 這裡加載新頁面的數據
-};
-
-</script>
 
 <template>
   <card title="打卡查詢">
@@ -71,6 +32,46 @@ const updateCurrentPage = (newPage) => {
   </card>
 
 </template>
+
+<script setup>
+
+import Card from "../../components/Card.vue";
+import FindSearch from "../../components/clocktime/FindSearch.vue";
+import axios from "axios";
+import {ref, watch} from "vue";
+import Page from "../../components/Page.vue";
+
+const totalPages = ref(0);
+const currentPage = ref(1);
+const getTime = ref([]);
+const currentSearchDate = ref(null); // 用於保存當前的搜索條件
+const getDate = (date) => {
+  currentSearchDate.value = date;
+  let url = `http://localhost:8090/eipulse/clockTimes/${date.startDate}/${date.endDate}/${currentPage.value}`;
+  if (date.empId) {
+    url = `http://localhost:8090/eipulse/clockTimes/${date.empId}/${date.startDate}/${date.endDate}/${currentPage.value}`;
+  }
+  axios.get(url).then((res) => {
+    getTime.value = res.data.content;
+    totalPages.value = res.data.totalPages;
+
+  }).catch((e) => {
+  });
+};
+
+// watch(currentPage, (newPage) => {
+//   if (currentSearchDate.value) {
+//     getDate(currentSearchDate.value)
+//   }
+// })
+const updateCurrentPage = (newPage) => {
+  currentPage.value = newPage;
+  getDate(currentSearchDate.value)
+  // 這裡加載新頁面的數據
+};
+
+</script>
+
 <style scoped>
 
 </style>

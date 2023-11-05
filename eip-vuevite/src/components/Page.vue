@@ -1,13 +1,3 @@
-<script setup>
-import { ref, defineProps, defineEmits } from "vue";
-
-const { totalPages, currentPage } = defineProps(['totalPages', 'currentPage']);
-const emit = defineEmits(['selectPage']);
-
-const selectPage = (page) => {
-  emit('selectPage', page);
-};
-</script>
 
 <template>
   <nav aria-label="Page navigation">
@@ -24,6 +14,17 @@ const selectPage = (page) => {
     </ul>
   </nav>
 </template>
+<script setup>
+import { ref, defineProps, defineEmits } from "vue";
+
+const { totalPages, currentPage } = defineProps(['totalPages', 'currentPage']);
+const emit = defineEmits(['selectPage']);
+
+const selectPage = (page) => {
+  emit('selectPage', page);
+};
+</script>
+
 
 <style scoped>
 /* 你的樣式 */

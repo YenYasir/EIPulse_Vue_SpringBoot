@@ -1,79 +1,3 @@
-<script setup>
-import {onMounted, reactive, ref} from "vue";
-import axios from "axios";
-import Card from "../../components/Card.vue";
-import WindowModal from "../../components/mall/WindowModal.vue";
-import Swal from "sweetalert2";
-const URL = import.meta.env.VITE_API_JAVAURL;
-
-const orders = reactive({});
-const orderModal =ref(null);
-const order = reactive({});
-const status=ref("");
-//獲取全部訂單
-const getOrders=()=>{
-  axios.get(`${URL}orders`).then((res)=>{
-    Object.assign(orders,res.data)
-    console.log(orders)
-  }).catch((e)=>{
-
-  })
-}
-//獲取單個訂單明細
-const getOrderItem=(orderId)=>{
-  axios.get(`${URL}order/item/${orderId}`).then((res)=>{
-    Object.assign(order,res.data)
-    showModal();
-  }).catch((e)=>{
-
-  })
-}
-
-const showModal=()=>{
-  let modelEl = orderModal.value.$el;
-  let  bootstrapModal = new bootstrap.Modal(modelEl, {});
-  bootstrapModal.show();
-}
-
-const changeStatus=async ()=>{
-  if(order.status ==='已付款'){
-    status.value='可取貨'
-  }else if(order.status ==='未付款'){
-    status.value='已付款'
-  }else {
-    status.value='完成訂單'
-  }
- try {
-   const result = await Swal.fire({
-     title: `目前狀態為${order.status},確定要更改為${status.value}嗎?`,
-     icon: 'warning',
-     showCancelButton: true,
-     confirmButtonText: '確定',
-     cancelButtonText: '取消'
-   })
-   if(result.isConfirmed) {
-     order.status = status.value;
-     const res =await axios.put(`${URL}order`,order)
-     getOrders();
-     Swal.fire({
-       title: '狀態更改成功',
-       timer: 1000,
-       timerProgressBar: true,
-       icon: 'success'
-     })
-   }
-
- }catch (e){
-   Swal.fire('錯誤!', '狀態更改失敗。', 'error');
- }
-
-}
-
-onMounted(()=>{
-  getOrders();
-})
-
-</script>
 
 <template>
   <window-modal ref="orderModal" button-name="更改狀態" @submit="changeStatus" title-name="訂單明細">
@@ -129,6 +53,81 @@ onMounted(()=>{
     </template>
   </card>
 </template>
+
+<script setup>
+import {onMounted, reactive, ref} from "vue";
+import axios from "axios";
+import Card from "../../components/Card.vue";
+import WindowModal from "../../components/mall/WindowModal.vue";
+import Swal from "sweetalert2";
+const orders = reactive({});
+const orderModal =ref(null);
+const order = reactive({});
+const status=ref("");
+//獲取全部訂單
+const getOrders=()=>{
+  axios.get('http://localhost:8090/eipulse/orders').then((res)=>{
+    Object.assign(orders,res.data)
+    console.log(orders)
+  }).catch((e)=>{
+
+  })
+}
+//獲取單個訂單明細
+const getOrderItem=(orderId)=>{
+  axios.get(`http://localhost:8090/eipulse/order/item/${orderId}`).then((res)=>{
+    Object.assign(order,res.data)
+    showModal();
+  }).catch((e)=>{
+
+  })
+}
+
+const showModal=()=>{
+  let modelEl = orderModal.value.$el;
+  let  bootstrapModal = new bootstrap.Modal(modelEl, {});
+  bootstrapModal.show();
+}
+
+const changeStatus=async ()=>{
+  if(order.status ==='已付款'){
+    status.value='可取貨'
+  }else if(order.status ==='未付款'){
+    status.value='已付款'
+  }else {
+    status.value='完成訂單'
+  }
+ try {
+   const result = await Swal.fire({
+     title: `目前狀態為${order.status},確定要更改為${status.value}嗎?`,
+     icon: 'warning',
+     showCancelButton: true,
+     confirmButtonText: '確定',
+     cancelButtonText: '取消'
+   })
+   if(result.isConfirmed) {
+     order.status = status.value;
+     const res =await axios.put('http://localhost:8090/eipulse/order',order)
+     getOrders();
+     Swal.fire({
+       title: '狀態更改成功',
+       timer: 1000,
+       timerProgressBar: true,
+       icon: 'success'
+     })
+   }
+
+ }catch (e){
+   Swal.fire('錯誤!', '狀態更改失敗。', 'error');
+ }
+
+}
+
+onMounted(()=>{
+  getOrders();
+})
+
+</script>
 
 <style scoped>
 

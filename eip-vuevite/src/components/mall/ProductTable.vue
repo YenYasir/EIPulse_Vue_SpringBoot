@@ -1,10 +1,26 @@
+
+<template>
+  <div class="row mx-4">
+    <div class="card row mx-2 mb-2 h-auto p-3" style="width: 14rem;" v-for="product in filteredProducts">
+      <img :src="product.imageUrl" class="card-img-top" alt="...">
+      <div class="card-body">
+        <h5 class="card-title">{{ product.productName }}</h5>
+        <p class="card-text">{{ product.description }}</p>
+      </div>
+      <p class="card-text">價格：{{ product.price }}元</p>
+      數量：<input class="input-group-text" type="number" :value="1" min="1" max="5" @keydown.prevent
+                  @change="updateQuantity($event)">
+      <button href="#" class="btn btn-primary mt-2" @click="addCartItem(product)">加入購物車</button>
+    </div>
+  </div>
+</template>
+
 <script setup>
 import {computed, onMounted, reactive} from "vue";
 import axios from "axios";
 import {empStore} from "../../stores/employee.js";
 import {mallStore} from "../../stores/mallStore.js";
 import Swal from "sweetalert2";
-const URL = import.meta.env.VITE_API_JAVAURL;
 
 const emp = empStore();
 const mall =mallStore();
@@ -17,7 +33,7 @@ const cartItem = reactive({
 const loadProducts = async () => {
 
   try {
-    const res = await axios.get(`${URL}products`)
+    const res = await axios.get('http://localhost:8090/eipulse/products')
     products.length = 0
     products.push(res.data)
     console.log(products)
@@ -35,7 +51,7 @@ const addCartItem = async (product) => {
   console.log(cartItem)
   // cartItem.quantity
   try {
-    await axios.post(`${URL}cartItem`,
+    await axios.post('http://localhost:8090/eipulse/cartItem',
         cartItem
     )
     mall.setAddCartItem(true);
@@ -64,24 +80,7 @@ onMounted(() => {
 })
 </script>
 
-<template>
-  <div class="row mx-4">
-    <div class="card row mx-2 mb-2 h-auto p-3 " style="width: 14rem;" v-for="product in filteredProducts">
-      <img :src="product.imageUrl" class="card-img-top" alt="...">
-      <div class="card-body">
-        <h5 class="card-title">{{ product.productName }}</h5>
-        <p class="card-text">{{ product.description }}</p>
-      </div>
-      <p class="card-text">價格：{{ product.price }}元</p>
-      數量：<input class="input-group-text" type="number" :value="1" min="1" max="5" @keydown.prevent
-                  @change="updateQuantity($event)">
-      <button href="#" class="btn btn-primary mt-2" @click="addCartItem(product)">加入購物車</button>
-    </div>
-  </div>
-</template>
-
 <style scoped>
-
 img {
   width: 100px;
   object-fit: cover;

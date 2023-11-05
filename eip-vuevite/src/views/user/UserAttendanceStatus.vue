@@ -1,43 +1,3 @@
-<script setup>
-
-import Card from "../../components/Card.vue";
-import FindSearch from "../../components/clocktime/FindSearch.vue";
-import axios from "axios";
-import {computed, reactive, ref} from "vue";
-import Page from "../../components/Page.vue";
-import UserFindSearch from "../../components/clocktime/UserFindSearch.vue";
-import {empStore} from "../../stores/employee.js";
-const URL = import.meta.env.VITE_API_JAVAURL;
-
-const empAttendances = ref([]);
-const totalPages = ref(0);
-const currentPage = ref(1);
-const emp = empStore()
-const currentSearchDate = ref({
-  startDate: null,
-  endDate: null,
-  empId: emp.empId // 從你的 empStore 獲取
-});const getDate = (date) => {
-  currentSearchDate.value =date;
-  axios.get(`${URL}attendance/${emp.empId}/${date.startDate}/${date.endDate}/${currentPage.value}`).then((res) => {
-    empAttendances.value = res.data.content;
-    totalPages.value=res.data.totalPages;
-  }).catch((e)=>{
-  })
-}
-const getLightColor = (item) => {
-  if (item.isLate || item.isEarlyLeave || item.isHoursNotMet || item.isOverTime ||item.totalHours==0) {
-    return 'red';
-  }
-  return 'green';
-};
-const updateCurrentPage = (newPage) => {
-  currentPage.value = newPage;
-  getDate(currentSearchDate.value)
-  // 這裡加載新頁面的數據
-};
-
-</script>
 
 <template>
   <card title="出勤查詢">
@@ -73,6 +33,47 @@ const updateCurrentPage = (newPage) => {
   </card>
 
 </template>
+
+<script setup>
+
+import Card from "../../components/Card.vue";
+import FindSearch from "../../components/clocktime/FindSearch.vue";
+import axios from "axios";
+import {computed, reactive, ref} from "vue";
+import Page from "../../components/Page.vue";
+import UserFindSearch from "../../components/clocktime/UserFindSearch.vue";
+import {empStore} from "../../stores/employee.js";
+
+const empAttendances = ref([]);
+const totalPages = ref(0);
+const currentPage = ref(1);
+const emp = empStore()
+const currentSearchDate = ref({
+  startDate: null,
+  endDate: null,
+  empId: emp.empId // 從你的 empStore 獲取
+});const getDate = (date) => {
+  currentSearchDate.value =date;
+  axios.get(`http://localhost:8090/eipulse/attendance/${emp.empId}/${date.startDate}/${date.endDate}/${currentPage.value}`).then((res) => {
+    empAttendances.value = res.data.content;
+    totalPages.value=res.data.totalPages;
+  }).catch((e)=>{
+  })
+}
+const getLightColor = (item) => {
+  if (item.isLate || item.isEarlyLeave || item.isHoursNotMet || item.isOverTime ||item.totalHours==0) {
+    return 'red';
+  }
+  return 'green';
+};
+const updateCurrentPage = (newPage) => {
+  currentPage.value = newPage;
+  getDate(currentSearchDate.value)
+  // 這裡加載新頁面的數據
+};
+
+</script>
+
 <style scoped>
 
 </style>

@@ -1,3 +1,100 @@
+
+<template>
+  <div class="card text-center div1">
+    <div class="a1">
+      <label>表單名稱</label>
+      <select v-model="form.name" @change="fileClear">
+        <option value="加班">加班申請</option>
+        <option value="請假">請假申請</option>
+        <option value="離職">離職申請</option>
+      </select>
+      <div v-if="form.name === '請假'">
+        <select
+          v-model="form.type"
+          placeholder="請選擇請假類別"
+          @change="getRemaining(form.type)"
+        >
+          <option value="-1">請選擇請假類別</option>
+          <option value="1">半年特休</option>
+          <option value="2">一年特休</option>
+          <option value="3">半薪病假</option>
+          <option value="4">生理假</option>
+          <option value="5">事假</option>
+          <option value="6">婚假</option>
+          <option value="7">喪假</option>
+          <option value="8">產假</option>
+        </select>
+        <span v-if="form.type >= 1"
+          >目前還可以請 : {{ Math.floor(remainingDays / 24) }} 天
+          {{ remainingDays % 24 }} 小時</span
+        ><br />
+
+        <label for="startDateTime">開始日期時間：</label>
+        <input type="date" v-model="startDate" @change="dayCount" /><input
+          type="time"
+          v-model="startTime"
+          @change="dayCount"
+          step="3600000"
+        />
+        <label for="endDateTime">結束日期時間：</label>
+        <input type="date" v-model="endDate" @change="dayCount" /><input
+          type="time"
+          v-model="endTime"
+          @change="dayCount"
+        />
+        <span v-if="difference != ''">
+          共:{{ difference.days }}天{{ difference.hours }}小時
+        </span>
+        <label>請假原因</label>
+        <textarea rows="5" v-model="form.reason" placeholder="請填寫請假原因"></textarea>
+      </div>
+      <div v-if="form.name === '加班'">
+        <label>加班日期</label>
+        <input type="date" v-model="date" />
+        <label>加班時段</label>
+        <input type="time" v-model="startDateTime" />
+        到
+        <input type="time" v-model="endDateTime" />
+        <select v-model="form.type" placeholder="請選擇加班日別">
+          <option value="-1">請選擇加班類別</option>
+          <option value="1">平日</option>
+          <option value="2">休息日</option>
+          <option value="3">國定假日或特別休假</option>
+          <option value="4">例假</option>
+        </select>
+        <label>加班理由</label>
+        <textarea rows="5" v-model="form.reason" placeholder="請填寫加班理由"></textarea>
+      </div>
+      <div v-if="form.name === '離職'">
+        <label>離職日期</label>
+        <input type="date" v-model="date" />
+        <label>離職原因</label>
+        <textarea rows="5" v-model="form.reason"></textarea><br />
+        是否需要申請<br />
+        離職證明書:<input type="checkbox" v-model="file.file1" />
+        勞健保轉出單:<input type="checkbox" v-model="file.file2" />
+      </div>
+      <br />附檔:
+      <input
+        type="file"
+        @change="fileChange"
+        multiple
+        :accept="fileType"
+        ref="fileInput"
+      />
+      <label>審核者ID
+      <select v-model="aduit">
+        <option value="" disabled>請選擇審核人</option>
+        <option v-for="deptEmp in sameDeptEmp" :value="deptEmp.empId">
+          {{deptEmp.empName}}
+        </option>
+      </select></label>
+      <button @click="applyForm">提交</button>
+      <button @click="onReset">重置</button>
+    </div>
+  </div>
+</template>
+
 <script setup>
 import axios from "axios";
 import {ref, reactive, watch, onMounted} from "vue";
@@ -12,18 +109,15 @@ const sameDeptEmp=reactive({});
 const aduit = ref("");
 const startDate = ref(formattedDate);
 const endDate = ref(formattedDate);
-const startTime = ref("08:00");
-const endTime = ref("17:00");
+const startTime = ref("");
+const endTime = ref("");
 const updateTime = (value, target) => {
   const newHour = value.split(":")[0];
   target.value = `${newHour}:00`;
 };
-const startDateTime = ref();
-const endDateTime = ref();
+
 watch(startTime, (newValue) => updateTime(newValue, startTime));
 watch(endTime, (newValue) => updateTime(newValue, endTime));
-watch(startDateTime, (newValue) => updateTime(newValue, startDateTime));
-watch(endDateTime, (newValue) => updateTime(newValue, endDateTime));
 
 const date = ref(formattedDate);
 
@@ -34,7 +128,7 @@ const file = ref({
 });
 const fileInput = ref(null);
 const fileType = ref(
-    ".txt, .doc, .docx, .pdf, .jpg, .jpeg, .png, .gif, .xlsx, .csv"
+  ".txt, .doc, .docx, .pdf, .jpg, .jpeg, .png, .gif, .xlsx, .csv"
 );
 
 const fileChange = (e) => {
@@ -56,6 +150,10 @@ const fileChange = (e) => {
       file.value.push(selectedFiles[i]);
     }
   }
+};
+const fileClear = () => {
+  fileInput.value.value = "";
+  file.value = [];
 };
 function getFileName(files) {
   const fileNames = [];
@@ -128,18 +226,20 @@ const getRemaining = async (id) => {
 
 // 計算天數
 const difference = ref({ hours: 0, days: 0 });
+const startDateTime = ref();
+const endDateTime = ref();
 const dayCount = () => {
   startDateTime.value = startDate.value + " " + startTime.value;
   endDateTime.value = endDate.value + " " + endTime.value;
   if (
-      startTime.value != "" &&
-      startDate.value != "" &&
-      endTime.value != "" &&
-      endDate.value != ""
+    startTime.value != "" &&
+    startDate.value != "" &&
+    endTime.value != "" &&
+    endDate.value != ""
   )
     difference.value = calculateTimeDifference(
-        startDateTime.value,
-        endDateTime.value
+      startDateTime.value,
+      endDateTime.value
     );
 };
 //送出
@@ -154,8 +254,8 @@ const applyForm = async () => {
   if (form.name == "請假") {
     let dateTime = difference.value.days * 24 + difference.value.hours;
     if (
-        dateTime > remainingDays.value ||
-        remainingDays.value == "本月已無天數"
+      dateTime > remainingDays.value ||
+      remainingDays.value == "本月已無天數"
     ) {
       Swal.fire({
         icon: "error",
@@ -285,18 +385,18 @@ function calculateTimeDifference(startDateTime, endDateTime) {
     }
     // 建立開始和結束時間日期物件
     const start = new Date(
-        day.getFullYear(),
-        day.getMonth(),
-        day.getDate(),
-        startHour,
-        startMinute
+      day.getFullYear(),
+      day.getMonth(),
+      day.getDate(),
+      startHour,
+      startMinute
     );
     const end = new Date(
-        day.getFullYear(),
-        day.getMonth(),
-        day.getDate(),
-        endHour,
-        endMinute
+      day.getFullYear(),
+      day.getMonth(),
+      day.getDate(),
+      endHour,
+      endMinute
     );
     // 計算當天工作時數
     let dayHours = (end - start) / (1000 * 60 * 60);
@@ -327,124 +427,7 @@ onMounted(()=>{
     Object.assign(sameDeptEmp,res.data);
   })
 })
-
-const onReset = () => {
-  if(form.name === '請假'){
-    form.type = -1;
-    startDate.value = formattedDate;
-    startTime.value = "08:00";
-    endTime.value = "17:00";
-    difference.value = { hours: 0, days: 0 };
-    dayCount();
-  }else if(form.name === '加班'){
-    startDateTime.value = "";
-    endDateTime.value = "";
-    form.type = -1;
-  }else{
-    file.value = {
-      file1: false,
-      file2: false,
-    };
-  }
-  fileInput.value.value = "";
-  date.value = formattedDate;
-  form.reason = "";
-}
 </script>
-<template>
-  <div class="card text-center border-0 " style="background-color: #f0f0f0">
-    <div class="a1">
-      <label>表單名稱</label>
-      <select v-model="form.name" @change="onReset">
-        <option value="加班">加班申請</option>
-        <option value="請假">請假申請</option>
-        <option value="離職">離職申請</option>
-      </select>
-      <div v-if="form.name === '請假'">
-        <select
-          v-model="form.type"
-          placeholder="請選擇請假類別"
-          @change="getRemaining(form.type)"
-        >
-          <option value="-1">請選擇請假類別</option>
-          <option value="1">半年特休</option>
-          <option value="2">一年特休</option>
-          <option value="3">半薪病假</option>
-          <option value="4">生理假</option>
-          <option value="5">事假</option>
-          <option value="6">婚假</option>
-          <option value="7">喪假</option>
-          <option value="8">產假</option>
-        </select>
-        <span v-if="form.type >= 1"
-          >目前還可以請 : {{ Math.floor(remainingDays / 24) }} 天
-          {{ remainingDays % 24 }} 小時</span
-        ><br />
-
-        <label for="startDateTime">開始日期時間：</label>
-        <input type="date" v-model="startDate" @change="dayCount" /><input
-          type="time"
-          v-model="startTime"
-          @change="dayCount"
-          step="3600000"
-        />
-        <label for="endDateTime">結束日期時間：</label>
-        <input type="date" v-model="endDate" @change="dayCount" /><input
-          type="time"
-          v-model="endTime"
-          @change="dayCount"
-        />
-        <span v-if="difference != ''">
-          共:{{ difference.days }}天{{ difference.hours }}小時
-        </span>
-        <label>請假原因</label>
-        <textarea rows="5" v-model="form.reason" placeholder="請填寫請假原因"></textarea>
-      </div>
-      <div v-if="form.name === '加班'">
-        <label>加班日期</label>
-        <input type="date" v-model="date" />
-        <label>加班時段</label>
-        <input type="time" v-model="startDateTime" />
-        到
-        <input type="time" v-model="endDateTime" />
-        <select v-model="form.type" placeholder="請選擇加班日別">
-          <option value="-1">請選擇加班類別</option>
-          <option value="1">平日</option>
-          <option value="2">休息日</option>
-          <option value="3">國定假日或特別休假</option>
-          <option value="4">例假</option>
-        </select>
-        <label>加班理由</label>
-        <textarea rows="5" v-model="form.reason" placeholder="請填寫加班理由"></textarea>
-      </div>
-      <div v-if="form.name === '離職'">
-        <label>離職日期</label>
-        <input type="date" v-model="date" />
-        <label>離職原因</label>
-        <textarea rows="5"  v-model="form.reason"></textarea><br />
-        是否需要申請<br />
-        離職證明書:<input type="checkbox" v-model="file.file1" />
-        勞健保轉出單:<input type="checkbox" v-model="file.file2" />
-      </div>
-      附檔:
-      <div class="input-group">
-        <input type="file" @change="fileChange"
-               multiple
-               :accept="fileType" class="form-control" aria-describedby="inputGroupFileAddon04" placeholder="" aria-label="Upload">
-      </div>
-      <label>審核者ID
-      <select v-model="aduit">
-        <option value="" disabled>請選擇審核人</option>
-        <option v-for="deptEmp in sameDeptEmp" :value="deptEmp.empId">
-          {{deptEmp.empName}}
-        </option>
-      </select></label>
-      <button @click="applyForm" class="btn btn-secondary mx-2">提交</button>
-      <button @click="onReset" class="btn btn-secondary mx-2">重置</button>
-    </div>
-  </div>
-</template>
-
 <style scoped>
 .a1 {
   max-width: 100%;
@@ -452,9 +435,6 @@ const onReset = () => {
   padding: 20px;
   border: 1px solid #ddd;
   border-radius: 5px;
-  background-color: white;
-  overflow: auto;
-  height: 90vh;
 }
 
 label {
@@ -471,16 +451,32 @@ textarea {
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
-  resize: none;
 }
 
 input[type="date"] {
   appearance: none; /* 清除默认样式 */
 }
 
+div {
+  display: inline-block;
+  margin-right: 10px;
+}
 
+.line {
+  padding: 0 10px;
+}
 
+button {
+  display: inline-block;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  background: #007bff;
+  color: #fff;
+  cursor: pointer;
+}
 
-
-
+button:hover {
+  background: #0062cc;
+}
 </style>

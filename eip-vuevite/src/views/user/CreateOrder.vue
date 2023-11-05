@@ -1,66 +1,3 @@
-<script setup>
-const URL = import.meta.env.VITE_API_JAVAURL;
-
-import {empStore} from "../../stores/employee.js";
-import axios from "axios";
-import {onMounted, reactive, ref, watchEffect} from "vue";
-import Card from "../../components/Card.vue";
-import Swal from "sweetalert2";
-
-const totalPrice = ref(0);
-const emp = empStore();
-const orderDetails = reactive({});
-const cart = reactive({});
-const getCart = () => {
-  axios.get(`${URL}cart/${emp.empId}`).then((res) => {
-    Object.assign(cart, res.data)
-    console.log(cart)
-  })
-}
-const getOrderDetails = () => {
-  axios.get(`${URL}order/details/${emp.empId}`).then((res) => {
-    Object.assign(orderDetails, res.data);
-    console.log(orderDetails)
-  })
-}
-
-onMounted(() => {
-  getCart();
-  getOrderDetails();
-})
-
-const ecPlayPage = async () => {
-  try {
-    const res = await axios.post(`${URL}order/ecPlay`, {empId: cart.empId})
-    await Swal.fire({
-      title: '訂單已建即將跳轉至付款畫面',
-      timer: 3000,
-      timerProgressBar: true,
-      icon: 'success'
-    })
-    let wrapper = document.createElement('div');
-    wrapper.innerHTML = res.data;
-    document.body.appendChild(wrapper);
-    let form = wrapper.querySelector('form');
-    if (form) {
-      form.submit();
-    }
-  } catch (e) {
-    Swal.fire('錯誤!', '訂單建立失敗', 'error');
-    console.log(e)
-  }
-}
-
-watchEffect(() => {
-  let total = 0;
-  if (Array.isArray(cart.cartItems)) {
-    cart.cartItems.forEach(item => {
-      total += item.product.price * item.quantity;
-    });
-  }
-  totalPrice.value = total;
-});
-</script>
 
 <template>
   <card title="訂單建立" class="w-75 mx-auto ">
@@ -98,6 +35,69 @@ watchEffect(() => {
 
   </card>
 </template>
+
+<script setup>
+
+import {empStore} from "../../stores/employee.js";
+import axios from "axios";
+import {onMounted, reactive, ref, watchEffect} from "vue";
+import Card from "../../components/Card.vue";
+import Swal from "sweetalert2";
+
+const totalPrice = ref(0);
+const emp = empStore();
+const orderDetails = reactive({});
+const cart = reactive({});
+const getCart = () => {
+  axios.get(`http://localhost:8090/eipulse/cart/${emp.empId}`).then((res) => {
+    Object.assign(cart, res.data)
+    console.log(cart)
+  })
+}
+const getOrderDetails = () => {
+  axios.get(`http://localhost:8090/eipulse/order/details/${emp.empId}`).then((res) => {
+    Object.assign(orderDetails, res.data);
+    console.log(orderDetails)
+  })
+}
+
+onMounted(() => {
+  getCart();
+  getOrderDetails();
+})
+
+const ecPlayPage = async () => {
+  try {
+    const res = await axios.post('http://localhost:8090/eipulse/order/ecPlay', {empId: cart.empId})
+    await Swal.fire({
+      title: '訂單已建即將跳轉至付款畫面',
+      timer: 3000,
+      timerProgressBar: true,
+      icon: 'success'
+    })
+    let wrapper = document.createElement('div');
+    wrapper.innerHTML = res.data;
+    document.body.appendChild(wrapper);
+    let form = wrapper.querySelector('form');
+    if (form) {
+      form.submit();
+    }
+  } catch (e) {
+    Swal.fire('錯誤!', '訂單建立失敗', 'error');
+    console.log(e)
+  }
+}
+
+watchEffect(() => {
+  let total = 0;
+  if (Array.isArray(cart.cartItems)) {
+    cart.cartItems.forEach(item => {
+      total += item.product.price * item.quantity;
+    });
+  }
+  totalPrice.value = total;
+});
+</script>
 
 <style scoped>
 img {

@@ -1,74 +1,3 @@
-<script setup>
-import Card from "../../components/Card.vue";
-import axios from "axios";
-import {empStore} from "../../stores/employee.js";
-import {onMounted, reactive,ref} from "vue";
-import index from "../manage/Index.vue";
-import WindowModal from "../../components/mall/WindowModal.vue";
-import Swal from "sweetalert2";
-const URL = import.meta.env.VITE_API_JAVAURL;
-
-const emp = empStore()
-const orders = reactive({});
-const order = reactive({});
-const orderModal =ref(null);
-const getEmpOrder=()=>{
-  axios.get(`${URL}order/${emp.empId}`).then((res)=>{
-    Object.assign(orders,res.data)
-    console.log(orders)
-  }).catch((e)=>{
-
-  })
-}
-const getOrderItem=(orderId)=>{
-  axios.get(`${URL}order/item/${orderId}`).then((res)=>{
-    Object.assign(order,res.data)
-    showModal();
-  }).catch((e)=>{
-
-  })
-}
-const showModal=()=>{
-  let modelEl = orderModal.value.$el;
-  let  bootstrapModal = new bootstrap.Modal(modelEl, {});
-  bootstrapModal.show();
-}
-const pickUpOrder= async (order)=>{
-
-  try {
-    if(order.status ==='可取貨'){
-      const result = await Swal.fire({
-        title: `請確認已至福委課領取商品`,
-        text:'按下後將完成訂單',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: '確定',
-        cancelButtonText: '取消'
-      })
-      if(result.isConfirmed) {
-        order.status ='已取貨'
-        const res =await axios.put(`${URL}order`,order)
-        Swal.fire({
-          title: '取貨成功',
-          timer: 1000,
-          timerProgressBar: true,
-          icon: 'success'
-        })
-      }
-    }else if(order.status ==='已取貨'){
-      Swal.fire('錯誤!', '已取貨，等待福委課完成訂單', 'error');
-    }else {
-      Swal.fire('錯誤!', '未付款、訂單未準備完成', 'error');
-    }
-  }catch (e){
-    Swal.fire('錯誤!', '訂單異常，請聯絡福委課。', 'error');
-  }
-}
-
-onMounted(()=>{
-  getEmpOrder();
-})
-</script>
 
 <template>
   <window-modal ref="orderModal" button-name="取貨" @submit="pickUpOrder(order)" title-name="訂單明細">
@@ -122,6 +51,77 @@ onMounted(()=>{
   </card>
 
 </template>
+
+<script setup>
+import Card from "../../components/Card.vue";
+import axios from "axios";
+import {empStore} from "../../stores/employee.js";
+import {onMounted, reactive,ref} from "vue";
+import index from "../manage/Index.vue";
+import WindowModal from "../../components/mall/WindowModal.vue";
+import Swal from "sweetalert2";
+
+const emp = empStore()
+const orders = reactive({});
+const order = reactive({});
+const orderModal =ref(null);
+const getEmpOrder=()=>{
+  axios.get(`http://localhost:8090/eipulse/order/${emp.empId}`).then((res)=>{
+    Object.assign(orders,res.data)
+    console.log(orders)
+  }).catch((e)=>{
+
+  })
+}
+const getOrderItem=(orderId)=>{
+  axios.get(`http://localhost:8090/eipulse/order/item/${orderId}`).then((res)=>{
+    Object.assign(order,res.data)
+    showModal();
+  }).catch((e)=>{
+
+  })
+}
+const showModal=()=>{
+  let modelEl = orderModal.value.$el;
+  let  bootstrapModal = new bootstrap.Modal(modelEl, {});
+  bootstrapModal.show();
+}
+const pickUpOrder= async (order)=>{
+
+  try {
+    if(order.status ==='可取貨'){
+      const result = await Swal.fire({
+        title: `請確認已至福委課領取商品`,
+        text:'按下後將完成訂單',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: '確定',
+        cancelButtonText: '取消'
+      })
+      if(result.isConfirmed) {
+        order.status ='已取貨'
+        const res =await axios.put('http://localhost:8090/eipulse/order',order)
+        Swal.fire({
+          title: '取貨成功',
+          timer: 1000,
+          timerProgressBar: true,
+          icon: 'success'
+        })
+      }
+    }else if(order.status ==='已取貨'){
+      Swal.fire('錯誤!', '已取貨，等待福委課完成訂單', 'error');
+    }else {
+      Swal.fire('錯誤!', '未付款、訂單未準備完成', 'error');
+    }
+  }catch (e){
+    Swal.fire('錯誤!', '訂單異常，請聯絡福委課。', 'error');
+  }
+}
+
+onMounted(()=>{
+  getEmpOrder();
+})
+</script>
 
 <style scoped>
 

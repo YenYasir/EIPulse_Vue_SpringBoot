@@ -1,5 +1,37 @@
+
+<template>
+  <window-modal  button-name="去結帳" title-name="購物車" class="modal-xl" @submit="getOrderPage">
+    <div class="col">
+      <div class="card mx-2 mb-2 h-auto p-3" v-for="cartItem in cart.cartItems">
+        <div class="row align-items-center"> <!-- 使用 align-items-center 讓內容垂直置中 -->
+          <!-- 圖片區塊 -->
+          <div class="col-3">
+            <img :src="cartItem.product.imageUrl" class="card-img-top" alt="...">
+          </div>
+
+          <!-- 產品名稱區塊 -->
+          <div class="col-6">
+            <h5 class="card-title">{{ cartItem.product.productName }}</h5>
+          </div>
+
+          <!-- 數量輸入框區塊 -->
+          <div class="col-3"> <!-- text-end 讓內容靠右 -->
+            數量：<input class="input-group-text w-25 " type="number" v-model="cartItem.quantity"
+                        @input="updateQuantity(cartItem)" min="1"
+                        @keydown.prevent>
+          </div>
+
+          <div class="col-12 text-end">
+            <button class="btn btn-secondary mx-1" @click="removeItem(cartItem.cartItemId)">移除</button>
+          </div>
+        </div>
+      </div>
+      <p>總價額${{ totalPrice }}</p>
+    </div>
+  </window-modal>
+</template>
+
 <script setup>
-const URL = import.meta.env.VITE_API_JAVAURL;
 
 import WindowModal from "./WindowModal.vue";
 import {empStore} from "../../stores/employee.js";
@@ -15,14 +47,14 @@ const emp = empStore();
 const cart = reactive({});
 const emit = defineEmits(['goToCreateOrder'])
 const getCart = () => {
-  axios.get(`${URL}cart/${emp.empId}`).then((res) => {
+  axios.get(`http://localhost:8090/eipulse/cart/${emp.empId}`).then((res) => {
     Object.assign(cart, res.data)
     console.log(cart)
   })
 }
 const removeItem = async (cartItemId) => {
   try {
-    const res = await axios.delete(`${URL}cartItem/${cartItemId}`)
+    const res = await axios.delete(`http://localhost:8090/eipulse/cartItem/${cartItemId}`)
     Swal.fire({
       title: '刪除成功',
       timer: 1000,
@@ -42,7 +74,7 @@ watch(() => mall.addCartItem, (newVal, oldVal) => {
 })
 
 const updateQuantity = (cartItem) => {
-  axios.put(`${URL}cartItem`, cartItem);
+  axios.put('http://localhost:8090/eipulse/cartItem', cartItem);
 }
 onMounted(() => {
   getCart();
@@ -77,38 +109,6 @@ const getOrderPage =async () => {
 }
 
 </script>
-
-<template>
-  <window-modal  button-name="去結帳" title-name="購物車" class="modal-xl" @submit="getOrderPage">
-    <div class="col">
-      <div class="card mx-2 mb-2 h-auto p-3" v-for="cartItem in cart.cartItems">
-        <div class="row align-items-center"> <!-- 使用 align-items-center 讓內容垂直置中 -->
-          <!-- 圖片區塊 -->
-          <div class="col-3">
-            <img :src="cartItem.product.imageUrl" class="card-img-top" alt="...">
-          </div>
-
-          <!-- 產品名稱區塊 -->
-          <div class="col-6">
-            <h5 class="card-title">{{ cartItem.product.productName }}</h5>
-          </div>
-
-          <!-- 數量輸入框區塊 -->
-          <div class="col-3"> <!-- text-end 讓內容靠右 -->
-            數量：<input class="input-group-text w-25 " type="number" v-model="cartItem.quantity"
-                        @input="updateQuantity(cartItem)" min="1"
-                        @keydown.prevent>
-          </div>
-
-          <div class="col-12 text-end">
-            <button class="btn btn-secondary mx-1" @click="removeItem(cartItem.cartItemId)">移除</button>
-          </div>
-        </div>
-      </div>
-      <p>總價額${{ totalPrice }}</p>
-    </div>
-  </window-modal>
-</template>
 
 
 <style scoped>

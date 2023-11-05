@@ -1,20 +1,3 @@
-<script setup>
-import {ref} from "vue";
-let date = new Date();
-let formattedDate = date.toISOString().split('T')[0]; // 這將給你 "2023-10-20" 這樣的格式
-const startDate = ref(formattedDate);
-const endDate = ref(formattedDate);
-const empId =ref(null);
-const emit = defineEmits(['sendSearchDate'])
-const getSearchDate=()=>{
-  console.log(startDate.value)
-emit('sendSearchDate',{
-  startDate:startDate.value,
-  endDate:endDate.value,
-  empId:empId.value
-})
-}
-</script>
 
 <template>
 
@@ -34,7 +17,7 @@ emit('sendSearchDate',{
     <div class="row w-25 ">
       <div class="form-floating  ">
         <input v-model="empId" class="form-control " id="empId" placeholder="工號" >
-        <label for="empId">工號</label>
+        <label for="empId">員工代號</label>
       </div>
     </div>
       <button class="btn btn-secondary  w-25" @click="getSearchDate">查詢
@@ -42,6 +25,25 @@ emit('sendSearchDate',{
   </div>
 
 </template>
+
+<script setup>
+import {ref} from "vue";
+let date = new Date();
+let formattedDate = date.toISOString().split('T')[0]; // 這將給你 "2023-10-20" 這樣的格式
+const startDate = ref(formattedDate);
+const endDate = ref(formattedDate);
+const empId =ref(null);
+const emit = defineEmits(['sendSearchDate'])
+const getSearchDate=()=>{
+  console.log(startDate.value)
+emit('sendSearchDate',{
+  startDate:startDate.value,
+  endDate:endDate.value,
+  empId:empId.value
+})
+}
+</script>
+
 
 <style scoped>
 

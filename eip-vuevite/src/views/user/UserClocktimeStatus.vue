@@ -1,38 +1,4 @@
-<script setup>
 
-import Card from "../../components/Card.vue";
-import axios from "axios";
-import {ref, watch} from "vue";
-import Page from "../../components/Page.vue";
-import UserFindSearch from "../../components/clocktime/UserFindSearch.vue";
-import {empStore} from "../../stores/employee.js";
-const URL = import.meta.env.VITE_API_JAVAURL;
-
-const totalPages = ref(0);
-const currentPage = ref(1);
-const getTime = ref([]);
-const emp = empStore()
-const currentSearchDate = ref({
-  startDate: null,
-  endDate: null,
-  empId: emp.empId // 從你的 empStore 獲取
-});
-const getDate = (date) => {
-  currentSearchDate.value = date;
-  axios.get(`${URL}clockTimes/${emp.empId}/${date.startDate}/${date.endDate}/${currentPage.value}`).then((res) => {
-    getTime.value = res.data.content;
-    totalPages.value = res.data.totalPages;
-  }).catch((e) => {
-  });
-};
-
-const updateCurrentPage = (newPage) => {
-  currentPage.value = newPage;
-  getDate(currentSearchDate.value)
-  // 這裡加載新頁面的數據
-};
-
-</script>
 
 <template>
   <card title="打卡查詢">
@@ -65,6 +31,41 @@ const updateCurrentPage = (newPage) => {
   </card>
 
 </template>
+
+<script setup>
+
+import Card from "../../components/Card.vue";
+import axios from "axios";
+import {ref, watch} from "vue";
+import Page from "../../components/Page.vue";
+import UserFindSearch from "../../components/clocktime/UserFindSearch.vue";
+import {empStore} from "../../stores/employee.js";
+
+const totalPages = ref(0);
+const currentPage = ref(1);
+const getTime = ref([]);
+const emp = empStore()
+const currentSearchDate = ref({
+  startDate: null,
+  endDate: null,
+  empId: emp.empId // 從你的 empStore 獲取
+});
+const getDate = (date) => {
+  currentSearchDate.value = date;
+  axios.get(`http://localhost:8090/eipulse/clockTimes/${emp.empId}/${date.startDate}/${date.endDate}/${currentPage.value}`).then((res) => {
+    getTime.value = res.data.content;
+    totalPages.value = res.data.totalPages;
+  }).catch((e) => {
+  });
+};
+
+const updateCurrentPage = (newPage) => {
+  currentPage.value = newPage;
+  getDate(currentSearchDate.value)
+  // 這裡加載新頁面的數據
+};
+
+</script>
 <style scoped>
 
 </style>

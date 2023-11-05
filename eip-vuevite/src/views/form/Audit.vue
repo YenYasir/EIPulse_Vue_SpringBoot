@@ -1,9 +1,79 @@
+
+<template>
+  <h2>查看需要審核的表單</h2>
+  <br />
+  未完成表單
+  <table class="table table-light">
+    <thead>
+      <tr>
+        <th scope="col" data-sortable="true">表單編號</th>
+        <th scope="col">申請者</th>
+        <th scope="col">表單類型</th>
+        <th scope="col">申請時間</th>
+        <th scope="col">狀態</th>
+        <th scope="col">操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr v-for="(data, index) in uncompletedDatas">
+        <td>{{ data.formId }}</td>
+        <td>{{ data.empId }}</td>
+        <td>{{ data.typeName }}</td>
+        <td>{{ data.startDate }}</td>
+        <td>{{ data.statusName }}</td>
+        <td>
+          <button @click="audit(data.auditEventId)" v-if="data.statusId == 1">
+            審核
+          </button>
+          <ShowFormObj :datas="data" :formType="data.typeId" />
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <FormPage
+    :total-pages="page.unTotalPages"
+    :current-page="page.unCurrentPage"
+    @page-change="loadUncompletedProducts"
+  />
+  <table class="table table-light">
+    <thead>
+      <tr>
+        <th scope="col" data-sortable="true">表單編號</th>
+        <th scope="col">申請者</th>
+        <th scope="col">表單類型</th>
+        <th scope="col">申請時間</th>
+        <th scope="col">結束時間</th>
+        <th scope="col">狀態</th>
+        <th scope="col">操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr v-for="(data, index) in completedDatas">
+        <td>{{ data.formId }}</td>
+        <td>{{ data.empId }}</td>
+        <td>{{ data.typeName }}</td>
+        <td>{{ formatStartDate(data.startDate) }}</td>
+        <td>{{ formatStartDate(data.endDate) }}</td>
+        <td>{{ data.statusName }}</td>
+        <td>
+          <ShowFormObj :datas="data" :formType="data.typeId" />
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <FormPage
+    :total-pages="page.totalPages"
+    :current-page="page.currentPage"
+    @page-change="loadCompletedProducts"
+  />
+</template>
+
 <script setup>
 import {ref, reactive, onMounted} from "vue";
 import axios from "axios";
 import Swal from "sweetalert2";
-import FormPage from "../../components/form/FormPage.vue";
-import ShowFormObj from "../../components/form/ShowFormObj.vue";
+import FormPage from "@/components/form/FormPage.vue";
+import ShowFormObj from "@/components/form/ShowFormObj.vue";
 import {empStore} from "../../stores/employee.js";
 const uncompletedDatas = ref([]);
 const completedDatas = ref([]);
@@ -26,7 +96,7 @@ const loadUncompletedProducts = async (nowpage) => {
     nowpage = 1;
   }
   let URLAPI = `${URL}form/uncompletedAuditForm?id=${user.value}&pageNumber=${
-      nowpage - 1
+    nowpage - 1
   }&pageSize=5`;
   let response = await axios.get(URLAPI);
   uncompletedDatas.value = response.data.content;
@@ -38,7 +108,7 @@ const loadCompletedProducts = async (nowpage) => {
     nowpage = 1;
   }
   let URLAPI = `${URL}form/completedAuditForm?id=${user.value}&pageNumber=${
-      nowpage - 1
+    nowpage - 1
   }&pageSize=5`;
   let response = await axios.get(URLAPI);
   completedDatas.value = response.data.content;
@@ -108,74 +178,4 @@ onMounted(()=>{
   loadProducts();
 })
 </script>
-<template>
-  <section class="card border-0 shadow-sm ">
-    <div class="card-header text-center mb-2">待審核表單</div>
-    <p class="text-center mb-2"> 未完成表單</p>
-    <table class="table table-light">
-      <thead>
-      <tr>
-        <th scope="col" data-sortable="true">表單編號</th>
-        <th scope="col">申請者</th>
-        <th scope="col">表單類型</th>
-        <th scope="col">申請時間</th>
-        <th scope="col">狀態</th>
-        <th scope="col">操作</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr v-for="(data, index) in uncompletedDatas">
-        <td>{{ data.formId }}</td>
-        <td>{{ data.empId }}</td>
-        <td>{{ data.typeName }}</td>
-        <td>{{ data.startDate }}</td>
-        <td>{{ data.statusName }}</td>
-        <td>
-          <button @click="audit(data.auditEventId)" v-if="data.statusId == 1">
-            審核
-          </button>
-          <ShowFormObj :datas="data" :formType="data.typeId" />
-        </td>
-      </tr>
-      </tbody>
-    </table>
-    <FormPage
-        :total-pages="page.unTotalPages"
-        :current-page="page.unCurrentPage"
-        @page-change="loadUncompletedProducts"
-    />
-    <table class="table table-light">
-      <thead>
-      <tr>
-        <th scope="col" data-sortable="true">表單編號</th>
-        <th scope="col">申請者</th>
-        <th scope="col">表單類型</th>
-        <th scope="col">申請時間</th>
-        <th scope="col">結束時間</th>
-        <th scope="col">狀態</th>
-        <th scope="col">操作</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr v-for="(data, index) in completedDatas">
-        <td>{{ data.formId }}</td>
-        <td>{{ data.empId }}</td>
-        <td>{{ data.typeName }}</td>
-        <td>{{ formatStartDate(data.startDate) }}</td>
-        <td>{{ formatStartDate(data.endDate) }}</td>
-        <td>{{ data.statusName }}</td>
-        <td>
-          <ShowFormObj :datas="data" :formType="data.typeId" />
-        </td>
-      </tr>
-      </tbody>
-    </table>
-  </section>
-  <FormPage
-    :total-pages="page.totalPages"
-    :current-page="page.currentPage"
-    @page-change="loadCompletedProducts"
-  />
-</template>
-
 <style scoped></style>

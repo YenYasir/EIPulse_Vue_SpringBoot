@@ -1,41 +1,3 @@
-<script setup>
-
-import {onMounted, reactive, ref} from "vue";
-import axios from "axios";
-const URL = import.meta.env.VITE_API_JAVAURL;
-const props = defineProps({
-  datas: Object,
-  formType: Number,
-})
-const images = ref([]);
-const formatStartDate = (dateString) => {
-  const options = {
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit'
-  };
-  const date = new Date(dateString);
-  return date.toLocaleDateString('zh-TW', options);
-};
-
-const downloadFile = async () => {
-  const URLAPI = `${URL}download/${props.datas.empId}/${props.datas.form.file}`;
-  const response = await axios.get(URLAPI)
-  images.value = response.data;
-}
-const getImageUrl = (imageData) => {
-  return `data:image/jpeg;base64,${imageData.body}`;
-}
-
-if (props.datas.form.file == null) {
-  downloadFile();
-}
-
-
-</script>
-
 <template>
   <button type="button" class="btn btn-primary" data-bs-toggle="modal" :data-bs-target="'#exampleModal'+datas.form.formId" data-bs-whatever="@mdo">詳細資料</button>
 
@@ -85,7 +47,7 @@ if (props.datas.form.file == null) {
 
 
           <div v-if="datas.form.file!=null">
-            <img v-for="(image, index) in images" :key="index" :src="getImageUrl(image)" alt="Image">
+                <img v-for="(image, index) in images" :key="index" :src="getImageUrl(image)" alt="Image">
           </div>
         </div>
 
@@ -97,6 +59,45 @@ if (props.datas.form.file == null) {
     </div>
   </div>
 </template>
+<script setup>
+
+import {onMounted, reactive, ref} from "vue";
+import axios from "axios";
+const URL = import.meta.env.VITE_API_JAVAURL;
+const props = defineProps({
+  datas: Object,
+  formType: Number,
+})
+const images = ref([]);
+const formatStartDate = (dateString) => {
+  const options = {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit'
+  };
+  const date = new Date(dateString);
+  return date.toLocaleDateString('zh-TW', options);
+};
+
+const downloadFile = async () => {
+  const URLAPI = `${URL}download/${props.datas.empId}/${props.datas.form.file}`;
+  const response = await axios.get(URLAPI)
+  images.value = response.data;
+
+}
+const getImageUrl = (imageData) => {
+  return `data:image/jpeg;base64,${imageData.body}`;
+}
+if (props.datas.form.file != null) {
+  downloadFile();
+}
+
+
+</script>
+
+
 
 <style scoped>
 .modal-body img {
