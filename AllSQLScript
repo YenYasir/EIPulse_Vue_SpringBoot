@@ -1,4 +1,4 @@
-#合併專用 code 11/4 OK
+#合併專用 code 11/5 OK
 create table if not exists dept
 (
     dept_id     int auto_increment
@@ -638,3 +638,42 @@ VALUES
     ( 1013, 1004, 728, 2),  -- 勞保費
     ( 1013, 1005, 470,  2),  -- 健保費
     ( 1013, 1007, 150, 2);  -- 福利金
+
+
+create table chats
+(
+    chats_id   int auto_increment
+        primary key,
+    Created_at datetime(6)  null,
+    Emp_id     varchar(255) null,
+    File       varchar(255) null,
+    Message    varchar(255) null,
+    Room_id    int          null,
+    user_ip    varchar(255) null
+);
+
+create table message_entity
+(
+    message_id int auto_increment
+        primary key,
+    chat       varchar(255) null,
+    Created_at datetime(6)  null,
+    file       varchar(255) null,
+    receiver   int          null,
+    sender     int          null,
+    user1      int          null,
+    user2      int          null
+);
+
+create table apply_resignation
+(
+    file          varchar(255) null,
+    leave_date    date         null,
+    quit          bit          null,
+    reason        varchar(255) not null,
+    transfer_form bit          null,
+    form_id       int          not null
+        primary key,
+    constraint FKgsu7ecqqp4lk59t57f7npw6sn
+        foreign key (form_id) references form_record (form_id)
+);
