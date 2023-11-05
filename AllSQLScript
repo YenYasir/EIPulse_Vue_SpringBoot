@@ -1,4 +1,4 @@
-#合併專用 code 11/5 OK
+#合併專用 code 11/4 OK
 create table if not exists dept
 (
     dept_id     int auto_increment
@@ -107,6 +107,7 @@ create table if not exists employee
     birth      date                               not null,
     password   varchar(255)                       not null,
     email      varchar(100)                       not null,
+		emp_line_id varchar(255).                     null,
     id_number  varchar(50)                        not null,
     gender     varchar(10)                        not null,
     phone      varchar(20)                        not null,
