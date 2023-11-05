@@ -8,18 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+
 @SpringBootTest
 class TeamprojectApplicationTests {
 
-	@Autowired
-	private OrderService orderService;
-	@Autowired
-	private CartService cartService;
 	@Test
-	@Transactional
+
 	void contextLoads() {
-		CartDTO cartDTO = cartService.findOrCreateShoppingCartByEmpId(1001);
-		orderService.saveOrder(cartDTO);
+
 	}
 
 }

@@ -158,7 +158,7 @@ public class OrderService {
         aioCheckOutOneTime.setNeedExtraPaidInfo("Y");
         aioCheckOutOneTime.setRedeem("Y");
         //跳轉至綠界完成畫面由按鈕跳回頁面
-        aioCheckOutOneTime.setClientBackURL("http://localhost:5173/#/mall");
+        aioCheckOutOneTime.setClientBackURL("http://localhost:5173/mall/order");
 
         //呼叫綠界支付頁面，將回傳form表單至前端
         String form =  allInOne.aioCheckOut(aioCheckOutOneTime,null);

@@ -46,7 +46,7 @@ public class AttendanceService {
 
 
     //秒 分 時 每月的日期 每月的月份 星期幾 此設定為每天23:00將執行
-    @Scheduled(cron = "0 12 20 * * *")
+    @Scheduled(cron = "0 20 19 * * *")
     //自動更新出勤狀態
     public boolean updateAttendance() {
         List<Employee> employees = empRepository.findAll();
