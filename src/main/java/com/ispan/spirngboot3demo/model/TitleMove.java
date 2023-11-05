@@ -26,6 +26,9 @@ public class TitleMove {
     @JoinColumn(name = "emp_id", nullable = false)
     private Employee emp;
 
+    @Column(name= "emp_name",nullable = false)
+    private String empName;
+
     @Column(name = "before_dept_info", nullable = false)
     private String beforeDeptInfo;
 
@@ -55,4 +58,27 @@ public class TitleMove {
         this.effectDate = effectDate;
         this.approver = approver;
     }
+
+
+    public TitleMove(Employee emp, String empName, String beforeDeptInfo, String afterDeptInfo, String reason, LocalDate effectDate, String approver) {
+        this.emp = emp;
+        this.empName = empName;
+        this.beforeDeptInfo = beforeDeptInfo;
+        this.afterDeptInfo = afterDeptInfo;
+        this.reason = reason;
+        this.effectDate = effectDate;
+        this.approver = approver;
+    }
+
+    public TitleMove(Employee emp,TitleMoveDTO moveDTO) {
+        this.emp = emp;
+        this.empName = emp.getEmpName();
+        this.beforeDeptInfo = moveDTO.getBeforeDeptInfo();
+        this.afterDeptInfo = moveDTO.getAfterDeptInfo();
+        this.reason = moveDTO.getReason();
+        this.effectDate = moveDTO.getEffectDate();
+        this.approver = moveDTO.getApprover();
+    }
+
+
 }

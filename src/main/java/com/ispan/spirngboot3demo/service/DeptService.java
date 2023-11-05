@@ -2,8 +2,15 @@ package com.ispan.spirngboot3demo.service;
 
 import com.ispan.spirngboot3demo.model.Dept;
 import com.ispan.spirngboot3demo.model.DeptDTO;
+import com.ispan.spirngboot3demo.model.EmpDTO;
+import com.ispan.spirngboot3demo.model.Employee;
 import com.ispan.spirngboot3demo.repository.DeptRepository;
+import org.hibernate.dialect.PgJdbcHelper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -42,15 +49,29 @@ public class DeptService {
     }
 
     // 更新
-    public Dept update(Integer id,Dept newDept,Dept newOffice){
-        Optional<Dept> optional = deptRepo.findById(id);
-        if (optional!=null){
-            Dept oldDept = optional.get();
-            if (oldDept != newDept){
-                deptRepo.save(newDept);
-                deptRepo.save(newOffice);
-            }
-        }
-            return null;
+    public DeptDTO update(DeptDTO dto){
+        Dept dept = deptRepo.findById(dto.getDeptId())
+                .orElseThrow(()-> new RuntimeException("ID not found"));
+        // 更新部門名稱及辦公室
+        dept.setDeptName(dto.getDeptName());
+        dept.setDeptOffice(dto.getDeptOffice());
+
+        // save data and return result
+        return new DeptDTO(deptRepo.save(dept));
+    }
+    // 分頁功能 by name
+    public Page<DeptDTO> findByNamePage (Integer pageNumber,String name){
+        Pageable pgb = PageRequest.of(pageNumber-1, 5, Sort.Direction.DESC, "deptId");
+        Page<Dept> page = deptRepo.findByDeptNamePage(name,pgb);
+        Page<DeptDTO> result = page.map(dept -> new DeptDTO(dept));
+        return result;
+    }
+
+    //  select all 分頁功能
+    public Page<DeptDTO> findByPage (Integer pageNumber){
+        Pageable pgb = PageRequest.of(pageNumber-1, 5, Sort.Direction.DESC, "deptId");
+        Page<Dept> page = deptRepo.findByPage(pageNumber,pgb);
+        Page<DeptDTO> result = page.map(dept -> new DeptDTO(dept));
+        return result;
     }
 }

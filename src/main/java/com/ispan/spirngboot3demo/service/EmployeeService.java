@@ -4,10 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import com.ispan.spirngboot3demo.model.EmpDTO;
-import com.ispan.spirngboot3demo.model.Employee;
-import com.ispan.spirngboot3demo.model.Title;
+import com.ispan.spirngboot3demo.model.*;
 import com.ispan.spirngboot3demo.repository.EmployeeRepository;
+import com.ispan.spirngboot3demo.repository.TitleMoveRepository;
 import com.ispan.spirngboot3demo.repository.TitleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,6 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class EmployeeService {
@@ -22,11 +22,17 @@ public class EmployeeService {
 
 	private TitleRepository titleRepository;
 	private EmployeeRepository empRepo;
+	private TitleMoveService titleMoveService;
+	private TitleMoveRepository moveRepo;
 	@Autowired
-	public EmployeeService(EmployeeRepository empRepo,TitleRepository titleRepository) {
+	public EmployeeService(TitleRepository titleRepository, EmployeeRepository empRepo, TitleMoveService titleMoveService, TitleMoveRepository moveRepo) {
+		this.titleRepository = titleRepository;
 		this.empRepo = empRepo;
-		this.titleRepository= titleRepository;
+		this.titleMoveService = titleMoveService;
+		this.moveRepo = moveRepo;
 	}
+
+
 
 	// add
 	public void addEmp(EmpDTO empDTO) {
@@ -94,8 +100,32 @@ public class EmployeeService {
 		employee.setAddress(empDTO.getAddress());
 		employee.setTel(empDTO.getTel());
 
+
+
 		// 保存並返回更新後的employee
 		return new EmpDTO(empRepo.save(employee));
+	}
+
+	// 變更員工職位
+	@Transactional
+	public EmpDTO updateEmpTitle (TitleMoveDTO moveDTO){
+		// 查詢員工
+		Employee emp = empRepo.findById(moveDTO.getEmpId())
+				.orElseThrow(()-> new RuntimeException("無此員工"));
+		// 查詢新職位
+		Title newTitle = titleRepository.findById(moveDTO.getTitleId())
+				.orElseThrow(() -> new RuntimeException("無此職位"));
+
+		// 判斷是否輸入一樣的職位
+		if (emp.getTitle().getId() != newTitle.getId()){
+			// 如果成功會自動增加職位異動紀錄
+			moveRepo.save(new TitleMove(emp,emp.getEmpName(),emp.getTitle().getTitleName(),newTitle.getTitleName(),moveDTO.getReason(),moveDTO.getEffectDate(),moveDTO.getApprover()));
+			// 再把新的職位更新到員工的職位
+			emp.setTitle(newTitle);
+		}else {
+			return null;
+		}
+		return  new EmpDTO(empRepo.save(emp));
 	}
 
 	// 分頁功能

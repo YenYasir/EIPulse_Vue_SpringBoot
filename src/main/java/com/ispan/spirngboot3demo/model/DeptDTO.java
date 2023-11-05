@@ -23,4 +23,11 @@ public class DeptDTO {
         this.deptName = deptName;
         this.deptOffice = deptOffice;
     }
+    public DeptDTO(Dept dept) {
+        this.deptId = dept.getDeptId();
+        this.deptName = dept.getDeptName();
+        this.deptOffice = dept.getDeptOffice();
+    }
+
+
 }

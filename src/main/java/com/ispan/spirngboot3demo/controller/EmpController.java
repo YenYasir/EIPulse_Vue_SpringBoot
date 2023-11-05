@@ -3,6 +3,8 @@ package com.ispan.spirngboot3demo.controller;
 
 import com.ispan.spirngboot3demo.model.EmpDTO;
 import com.ispan.spirngboot3demo.model.Employee;
+import com.ispan.spirngboot3demo.model.TitleDTO;
+import com.ispan.spirngboot3demo.model.TitleMoveDTO;
 import com.ispan.spirngboot3demo.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -70,6 +72,16 @@ public class EmpController {
       }
     }
 
+    // 變更員工職位
+    @PutMapping("/employee/updateTitle")
+    public ResponseEntity<?> updateEmpTitle(@RequestBody TitleMoveDTO dto){
+        try {
+            return new ResponseEntity<>(employeeService.updateEmpTitle(dto),HttpStatus.OK);
+
+        }catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
+        }
+    }
 
     // 刪除員工
     @DeleteMapping("/employee/deleteEmp/{id}")
@@ -78,13 +90,14 @@ public class EmpController {
         return "delete OK";
     }
 
+    // 普通分頁
     @GetMapping("/employee/paged/{pageNumber}")
     @ResponseStatus(HttpStatus.OK)  // 這裡設置返回的 HTTP 狀態碼為 200
     public Page<EmpDTO> getEmployeesByPage(@PathVariable Integer pageNumber) {
         return employeeService.findByPage(pageNumber);
 
     }
-
+    // 模糊收尋的分頁
     @GetMapping("/employee/paged/{name}/{pageNumber}")
     @ResponseStatus(HttpStatus.OK)  // 這裡設置返回的 HTTP 狀態碼為 200
     public Page<EmpDTO> getByNamePage(@PathVariable String name,@PathVariable Integer pageNumber) {
