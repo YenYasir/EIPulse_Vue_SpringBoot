@@ -1,16 +1,20 @@
 package com.eipulse.teamproject.controller.employeecontroller;
 
 import com.eipulse.teamproject.dto.employeedto.EmpDTO;
+import com.eipulse.teamproject.dto.employeedto.TitleMoveDTO;
 import com.eipulse.teamproject.entity.employee.Employee;
 import com.eipulse.teamproject.repository.employeerepository.EmployeeRepository;
 import com.eipulse.teamproject.service.employeeservice.EmployeeService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -92,5 +96,54 @@ public class EmpController {
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+
+    // 模糊收尋名字
+    @GetMapping("/findByName/{name}")
+    public List<EmpDTO> findByName(@PathVariable("name") String name){
+        List<EmpDTO> list = employeeService.findByNameLikeSearch(name);
+        return list;
+    }
+
+    // 更新員工
+    @Transactional
+    @PutMapping("/employee/updateEmp")
+    public ResponseEntity<?> update(@RequestBody EmpDTO empDTO){
+        try {
+            return new ResponseEntity<>(employeeService.updateEmp(empDTO),HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    // 變更員工職位
+    @PutMapping("/employee/updateTitle")
+    public ResponseEntity<?> updateEmpTitle(@RequestBody TitleMoveDTO dto){
+        try {
+            return new ResponseEntity<>(employeeService.updateEmpTitle(dto),HttpStatus.OK);
+
+        }catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
+
+    // 普通分頁
+    @GetMapping("/employee/paged/{pageNumber}")
+    @ResponseStatus(HttpStatus.OK)  // 這裡設置返回的 HTTP 狀態碼為 200
+    public Page<EmpDTO> getEmployeesByPage(@PathVariable Integer pageNumber) {
+        return employeeService.findByPage(pageNumber);
+
+    }
+    // 模糊收尋的分頁
+    @GetMapping("/employee/paged/{name}/{pageNumber}")
+    @ResponseStatus(HttpStatus.OK)  // 這裡設置返回的 HTTP 狀態碼為 200
+    public Page<EmpDTO> getByNamePage(@PathVariable String name,@PathVariable Integer pageNumber) {
+        return employeeService.findByNamePage(pageNumber,name);
+
+    }
+
+
 
 }

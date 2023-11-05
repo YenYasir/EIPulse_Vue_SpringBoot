@@ -44,4 +44,9 @@ public class ClockTimeDTO {
         }
     }
 
+    public ClockTimeDTO( Integer empId, String type, String officeRegions) {
+        this.empId = empId;
+        this.type = type;
+        this.officeRegions = officeRegions;
+    }
 }

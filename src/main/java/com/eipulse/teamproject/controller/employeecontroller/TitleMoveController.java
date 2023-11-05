@@ -2,6 +2,7 @@ package com.eipulse.teamproject.controller.employeecontroller;
 import com.eipulse.teamproject.dto.employeedto.TitleMoveDTO;
 import com.eipulse.teamproject.service.employeeservice.TitleMoveService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -46,5 +47,19 @@ public class TitleMoveController {
     @PutMapping("/TitleMove/update")
     public ResponseEntity<?> update(@RequestBody TitleMoveDTO moveDTO) {
         return new ResponseEntity<>(moveService.update(moveDTO),HttpStatus.OK);
+    }
+
+    // 普通分頁
+    @GetMapping("/TitleMove/paged/{pageNumber}")
+    @ResponseStatus(HttpStatus.OK)
+    public Page<TitleMoveDTO> getMoveByPage(@PathVariable Integer pageNumber){
+        return moveService.findByPage(pageNumber);
+    }
+
+    // 模糊收尋的分頁
+    @GetMapping("/TitleMove/paged/{name}/{pageNumber}")
+    @ResponseStatus(HttpStatus.OK)
+    public Page<TitleMoveDTO> getMoveByNamePage(@PathVariable Integer pageNumber,@PathVariable String name){
+        return moveService.findByNamePage( pageNumber , name);
     }
 }

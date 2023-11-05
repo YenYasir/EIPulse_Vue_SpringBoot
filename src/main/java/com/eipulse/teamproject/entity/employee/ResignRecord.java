@@ -44,15 +44,6 @@ public class ResignRecord {
     public ResignRecord() {
     }
 
-    public ResignRecord(FormRecord form){
-        this.emp = form.getEmployee();
-        this.reason = form.getResignation().getReason();
-        this.approver = form.getFormEventLog().get(0).getFormAuditEventLog().get(0).getEmployee().getEmpName();
-        this.editDate = form.getEndDate().toLocalDate();
-        this.quit = form.getResignation().isQuit();
-        this.transferForm = form.getResignation().isTransferForm();
-    }
-
 
     public ResignRecord(Integer id, Employee empId, String approver, String reason) {
         this.id = id;
@@ -85,4 +76,13 @@ public class ResignRecord {
         this.transferForm = transferForm;
     }
 
+    public ResignRecord(FormRecord form){
+        this.emp = form.getEmployee();
+        this.reason = form.getResignation().getReason();
+        this.approver = form.getFormEventLog().get(0).getFormAuditEventLog().get(0).getEmployee().getEmpName();
+        this.editDate = form.getEndDate().toLocalDate();
+        this.leaveDate = form.getResignation().getLeaveDate();
+        this.quit = form.getResignation().isQuit();
+        this.transferForm = form.getResignation().isTransferForm();
+    }
 }

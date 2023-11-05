@@ -5,6 +5,7 @@ import com.eipulse.teamproject.dto.employeedto.DeptDTO;
 import com.eipulse.teamproject.entity.employee.Dept;
 import com.eipulse.teamproject.service.employeeservice.DeptService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,17 +45,12 @@ public class DeptController {
 
     @Transactional
     @PutMapping("/dept/update")
-    public String update(@RequestParam("deptName") String deptName,
-                         @RequestParam("deptOffice") String deptOffice,
-                         @RequestParam("id") Integer deptId) {
-        Optional<Dept> optional = Optional.ofNullable(deptService.findById(deptId));
-        if (optional != null) {
-            Dept dept = optional.get();
-            dept.setDeptName(deptName);
-            dept.setDeptOffice(deptOffice);
-            return "update OK";
+    public ResponseEntity<?> update(@RequestBody DeptDTO dto){
+        try {
+            return new ResponseEntity<>(deptService.update(dto),HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
         }
-        return "update False";
     }
 
     // 刪除員工
@@ -64,4 +60,16 @@ public class DeptController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+   // 分頁功能 by name
+    @GetMapping("/dept/paged/{name}/{pageNumber}")
+    @ResponseStatus(HttpStatus.OK)  // 這裡設置返回的 HTTP 狀態碼為 200
+    public Page<DeptDTO> getByNamePage(@PathVariable String name, @PathVariable Integer pageNumber) {
+        return deptService.findByNamePage(pageNumber,name);
+    }
+    // 普通分頁
+    @GetMapping("/dept/paged/{pageNumber}")
+    @ResponseStatus(HttpStatus.OK)  // 這裡設置返回的 HTTP 狀態碼為 200
+    public Page<DeptDTO> getEmployeesByPage(@PathVariable Integer pageNumber) {
+        return deptService.findByPage(pageNumber);
+    }
 }

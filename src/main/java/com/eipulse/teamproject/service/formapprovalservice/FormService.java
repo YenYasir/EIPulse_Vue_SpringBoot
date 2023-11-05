@@ -151,9 +151,14 @@ public class FormService {
 			FormRecord upfr = eventLog.getFormRecord();
 			upfr.setEndDate(date);
 			upfr.setStatusId(eventLog.getStatusId());
-			if(upfr.getTypeId()==3){
+
+			//表單結束後執行
+			if(upfr.getTypeId()==3 & upfr.getFormStatus().getStatusId()==3){
 				setResign(upfr);
 			}
+
+
+
 			frRepo.save(upfr);
 			return auditLog;
 		} else if(eventLog.getStatusId() == 3) {

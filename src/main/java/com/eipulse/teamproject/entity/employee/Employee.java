@@ -60,8 +60,6 @@ public class Employee {
     @Column(name="address")
     private String address;
 
-
-
     @JsonBackReference(value = "emp-title")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "title_id", nullable = false)
@@ -77,6 +75,9 @@ public class Employee {
 
     @Column(name = "emp_state", nullable = false, length = 50)
     private String empState;
+
+    @Column(name="emp_line_id")
+    private String empLineId;
 
     @JsonManagedReference(value = "emp-emergencies")
     @OneToMany(mappedBy = "emp")
