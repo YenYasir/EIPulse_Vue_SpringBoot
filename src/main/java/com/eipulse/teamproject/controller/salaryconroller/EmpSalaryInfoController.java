@@ -1,8 +1,7 @@
 package com.eipulse.teamproject.controller.salaryconroller;
-import com.eipulse.teamproject.dto.salarydto.CheckEmpIdResponse;
+
+import com.eipulse.teamproject.dto.salarydto.CheckEmpDto;
 import com.eipulse.teamproject.dto.salarydto.SalaryInfoDto;
-import com.eipulse.teamproject.entity.employee.Employee;
-import com.eipulse.teamproject.entity.salaryentity.EmpSalaryInfo;
 import com.eipulse.teamproject.service.salaryservice.EmpSalaryInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -10,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -23,36 +21,26 @@ public class EmpSalaryInfoController {
         this.empSlService = empSlService;
     }
 
-    // 輸入empid確認是否已建立該筆員工基本資料 ok(前端已測試,但查無資料的錯誤訊息尚無法拿到)
+    // 檢查員工基本資料是否建立
     @GetMapping("/payroll/checkEmpId")
-    public ResponseEntity<?> checkEmp(@RequestParam Integer empId) {
-        CheckEmpIdResponse checkResult = new CheckEmpIdResponse();
-        Employee emp = empSlService.findById(empId);
-        Boolean isExist = empSlService.existsById(empId);
-        if (emp != null & (!isExist)) {
-            checkResult.setEmpId(empId);
-            checkResult.setEmpName(emp.getEmpName());
-
-            return new ResponseEntity<CheckEmpIdResponse>(checkResult, null, HttpStatus.OK);
-        } else if (isExist)
-            return new ResponseEntity<String>("已建立薪資資訊", null, HttpStatus.ACCEPTED);
-        else {
-            return new ResponseEntity<String>("尚未建立員工資料", null, HttpStatus.BAD_REQUEST);
-        }
-
+    public ResponseEntity<?> checkEmp(@RequestParam Integer empId){
+    	CheckEmpDto findById = empSlService.findById(empId);
+    	  return new ResponseEntity<>(findById, HttpStatus.OK);
+    }
+    
+    // 檢查員工薪資資料是否建立
+    @GetMapping("/payroll/checkInfo")
+    public ResponseEntity<?> checkInfo(@RequestParam Integer empId){
+  	  return new ResponseEntity<>(empSlService.existsById(empId), HttpStatus.OK);
     }
 
     //新增 ok
     @PostMapping("/payroll/newSalaryInfo")
     public ResponseEntity<?> saveOrUpdate(@RequestBody SalaryInfoDto salaryInfoDto) {
-        SalaryInfoDto result = empSlService.createNewEmpSalayInfo(salaryInfoDto);
-        System.out.println(result.getEmpName());
-        if (result != null) {
+        String status = empSlService.createNewEmpSalayInfo(salaryInfoDto);
             return ResponseEntity.status(HttpStatus.OK).body("成功");
         }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("失敗");
-
-    }
+       
 
     // 查詢單一員工 OK
     @GetMapping("/payroll/{empId}")
@@ -83,6 +71,12 @@ public class EmpSalaryInfoController {
     @GetMapping("/payroll/page/{number}")
     public Page<SalaryInfoDto> page(@PathVariable Integer number) {
         return empSlService.findByPage(number);
+    }
+    
+    // 分頁byName
+    @GetMapping("/payroll/page/{name}/{pageNumber}")
+    public Page<SalaryInfoDto> page(@PathVariable String name,@PathVariable Integer pageNumber) {
+        return empSlService.findNameLikeByPage(name,pageNumber);
 
     }
 

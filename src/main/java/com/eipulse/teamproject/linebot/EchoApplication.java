@@ -11,6 +11,8 @@ import com.linecorp.bot.model.event.message.TextMessageContent;
 import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
+import io.netty.handler.codec.http.HttpRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,13 +39,15 @@ public class EchoApplication {
     @EventMapping
     public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
         String responseMessage="";
+        String userMessage = event.getMessage().getText();
+
         Employee  employee=employeeService.getEmpLineId(event.getSource().getUserId());
         if(employee ==null){
-            return new TextMessage("尚未註冊LineID");
+            return new TextMessage("尚未註冊LineID，請依序輸入員工Id，信箱");
         }else if(employee!=null){
 //            clockTimeService.saveClockTime(new ClockTimeDTO(employee.getEmpId(),))
         }
-        String userMessage = event.getMessage().getText();
+
         System.out.println("收到的訊息:"+userMessage);
         String userId = event.getSource().getUserId();
         System.out.println("員工LineId: " +userId);

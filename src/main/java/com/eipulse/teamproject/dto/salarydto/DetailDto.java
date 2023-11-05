@@ -15,6 +15,7 @@ public class DetailDto {
 	private String empName;
 	private Integer amount;
 	private Integer recordId;
+//	private LocalDateTime createdDate;
 	
 	public DetailDto(Integer empId,Integer subjectId,Integer amount) {
 	this.empId=empId;
@@ -31,6 +32,7 @@ public class DetailDto {
 		this.calculateType = salaryDetail.getSubjectType().getCalculateType();
 		this.amount = salaryDetail.getAmount();
 		this.recordId = salaryDetail.getSalaryMonthRecord().getRecordId();
+//		this.createdDate=salaryDetail.getCreatedDate();
 	}
 
 	public DetailDto() {

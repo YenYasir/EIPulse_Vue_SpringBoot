@@ -1,4 +1,4 @@
-package com.eipulse.teamproject.webSocket;
+package com.eipulse.teamproject.webSocket.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
@@ -12,12 +12,14 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
 	@Override
 	public void configureMessageBroker(MessageBrokerRegistry config) {
-		config.enableSimpleBroker("/queue", "/topic");
-		config.setApplicationDestinationPrefixes("/app");
+		config.enableSimpleBroker("/chat", "/topic");
 	}
 
 	@Override
 	public void registerStompEndpoints(StompEndpointRegistry registry) {
-		registry.addEndpoint("/ws").setAllowedOrigins("*");;
+		registry.addEndpoint("/ws")
+				.setAllowedOrigins("*");
+		registry.addEndpoint("/ws/{id}").setHandshakeHandler(new CustomHandshakeHandler())
+				.setAllowedOrigins("*");
 	}
 }

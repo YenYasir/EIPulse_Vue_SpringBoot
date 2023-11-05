@@ -1,15 +1,19 @@
 package com.eipulse.teamproject.controller.formapprovalcontroller;
+
 import com.eipulse.teamproject.entity.formapproval.Chats;
 import com.eipulse.teamproject.repository.formapprovalrepository.ChatsRepository;
+import com.eipulse.teamproject.webSocket.SubscriptionEventListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:5173")
@@ -17,21 +21,19 @@ import java.util.List;
 //        (origins = "https://maximum-llama-rightly.ngrok-free.app/")
 public class ChatsController {
 
+    @Autowired
     private ChatsRepository chatsRepo;
+    @Autowired
     private SimpMessagingTemplate messagingTemplate;
     @Value("${upload.path}")
     private String uploadPath;
-
-
     @Autowired
-    public ChatsController(ChatsRepository chatsRepo, SimpMessagingTemplate messagingTemplate) {
-        this.chatsRepo = chatsRepo;
-        this.messagingTemplate = messagingTemplate;
-    }
+    private SubscriptionEventListener subscriptionEventListener;
 
     @GetMapping("/Chats")
-    public List<Chats> getRoom(@RequestParam int roomId){
-        return chatsRepo.findRoom(roomId);
+    public Page<Chats> getRoom(@RequestParam int roomId, @RequestParam Integer pageNumber, @RequestParam Integer pageSize){
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        return chatsRepo.findRoom(roomId,pageable);
     }
 
     @PostMapping ("/Chats")

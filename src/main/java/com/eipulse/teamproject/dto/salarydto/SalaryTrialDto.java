@@ -1,14 +1,13 @@
 package com.eipulse.teamproject.dto.salarydto;
 
-import java.util.List;
-
-import java.util.ArrayList;
-
 import com.eipulse.teamproject.entity.salaryentity.SalaryDetail;
 import com.eipulse.teamproject.entity.salaryentity.SalaryMonthRecord;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter

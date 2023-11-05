@@ -1,10 +1,10 @@
 package com.eipulse.teamproject.dto.salarydto;
 
-import java.time.LocalDate;
-
 import com.eipulse.teamproject.entity.salaryentity.EmpSalaryInfo;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -43,9 +43,9 @@ public class SalaryInfoDto {
 	}
 
 
-	public SalaryInfoDto(EmpSalaryInfo info,String EmpName,LocalDate hiredate) {	
+	public SalaryInfoDto(EmpSalaryInfo info,String empName,LocalDate hiredate) {	
 		this.empId =info.getEmpId();
-		this.empName = EmpName;
+		this.empName = empName;
 		this.hireDate =hiredate;
 		this.basicSalary = info.getBasicSalary();
 		this.laborInsuranceGrade=info.getLaborInsuranceGrade();

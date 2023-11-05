@@ -15,7 +15,6 @@ import java.util.List;
 @Component
 public class SubscriptionEventListener {
 
-//    List<Map<String, String>> connectedUsers = new ArrayList<>();
     List<String> connectedUsers = new ArrayList<>();
     private final SimpUserRegistry userRegistry;
     @Autowired
@@ -46,11 +45,6 @@ public class SubscriptionEventListener {
                             .count();
                     messagingTemplate.convertAndSend("/topic/"+roomId+"/connectedUsers",count);
                 }
-
-//                System.out.println("roomId = "+roomId);
-//                System.out.println("count = "+connectedUsers.size());
-//                System.out.println("User subscribed to " + destination);
-//                System.out.println("User id to " + accessor.getSessionId());
             }
         }
     }
@@ -59,8 +53,6 @@ public class SubscriptionEventListener {
     @EventListener
     public void handleDisconnectEvent(SessionDisconnectEvent event) {
         String sessionId = event.getSessionId();
-//        System.out.println("-----------------------------++++++++++++++++++++++++++++++++++----------" );
-//        System.out.println(event.getSessionId());
         String roomId = connectedUsers.stream()
                 .filter(s -> s.contains(sessionId))
                 .findFirst()

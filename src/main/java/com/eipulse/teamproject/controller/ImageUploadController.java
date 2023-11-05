@@ -31,7 +31,6 @@ public class ImageUploadController {
         BlobContainerClient containerClient = blobServiceClient.getBlobContainerClient("images");
         // 獲取 Blob 的引用
         BlobClient blobClient = containerClient.getBlobClient(file.getOriginalFilename());
-
         try {
             // 上傳文件到 Blob
             blobClient.upload(file.getInputStream(), file.getSize(), true);

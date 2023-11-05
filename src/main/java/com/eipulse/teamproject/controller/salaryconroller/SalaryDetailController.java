@@ -1,6 +1,5 @@
 package com.eipulse.teamproject.controller.salaryconroller;
 
-import com.eipulse.teamproject.dto.salarydto.SalaryDetailDto;
 import com.eipulse.teamproject.service.salaryservice.SalaryDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

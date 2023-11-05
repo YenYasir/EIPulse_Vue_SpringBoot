@@ -1,10 +1,12 @@
 package com.eipulse.teamproject.controller.salaryconroller;
+
 import com.eipulse.teamproject.dto.salarydto.SalaryTrialDto;
 import com.eipulse.teamproject.service.salaryservice.SalaryMonthRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.time.LocalDate;
 
 
@@ -21,7 +23,7 @@ public class SalaryMonthRecordController {
 	// 產生試算&存入資料庫
 	@GetMapping("/payroll/salaryTrial/generate")
 	public ResponseEntity<?> generateSalaryTrial(@RequestParam LocalDate date) {
-		return new ResponseEntity<>(slMonthService.saveMonthRecordAndDetail(), HttpStatus.OK);
+		return new ResponseEntity<>(slMonthService.saveMonthRecordAndDetail(date), HttpStatus.OK);
 
 	}
 	// 找當月份紀錄與明細單
