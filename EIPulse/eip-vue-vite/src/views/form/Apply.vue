@@ -82,9 +82,11 @@
       <label>審核者ID
         <select v-model="aduit">
           <option value="" disabled>請選擇審核人</option>
-          <option v-for="deptEmp in sameDeptEmp" :value="deptEmp.empId">
+          <template v-for="deptEmp in sameDeptEmp">
+          <option v-if="deptEmp.empId!=user" :value="deptEmp.empId">
             {{deptEmp.empName}}
           </option>
+          </template>
         </select></label>
       <button @click="applyForm" class="btn btn-secondary mx-2">提交</button>
       <button @click="onReset" class="btn btn-secondary mx-2">重置</button>

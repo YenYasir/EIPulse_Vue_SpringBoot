@@ -66,4 +66,16 @@ public class FileController {
 
         return fileData;
     }
+
+    @GetMapping("/privateChats/{folder}/{sender}/{fileName}")
+    public ResponseEntity<?> getPrivateImages(@PathVariable Integer folder, @PathVariable String sender, @PathVariable String fileName) throws IOException {
+        String filePath = uploadPath + "/privateChats/" + folder + "/" + sender + "/" + fileName;
+        byte[] photoFile = getFileAsByteArray(filePath);
+        String base64Image = Base64.getEncoder().encodeToString(photoFile);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.IMAGE_JPEG);
+
+        return new ResponseEntity<>(base64Image, headers, HttpStatus.OK);
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.eipulse.teamproject.dto.employeedto;
 
+import com.eipulse.teamproject.entity.employee.Dept;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,5 +23,10 @@ public class DeptDTO {
     public DeptDTO(String deptName, String deptOffice) {
         this.deptName = deptName;
         this.deptOffice = deptOffice;
+    }
+    public DeptDTO(Dept dept) {
+        this.deptId = dept.getDeptId();
+        this.deptName = dept.getDeptName();
+        this.deptOffice = dept.getDeptOffice();
     }
 }

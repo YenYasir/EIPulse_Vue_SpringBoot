@@ -1,7 +1,7 @@
 package com.eipulse.teamproject.webSocket.service;
 
-import com.eipulse.teamproject.webSocket.repository.MessageRepository;
 import com.eipulse.teamproject.webSocket.entity.MessageEntity;
+import com.eipulse.teamproject.webSocket.repository.MessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

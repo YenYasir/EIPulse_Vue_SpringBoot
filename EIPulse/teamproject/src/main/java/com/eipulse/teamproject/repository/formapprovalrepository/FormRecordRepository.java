@@ -31,7 +31,7 @@ public interface FormRecordRepository extends JpaRepository<FormRecord, Integer>
 	@Query("from FormRecord fr JOIN fr.overtime overtime where (:empId is null or fr.empId = :empId) and fr.typeId = 2 and (:statusId is null or fr.statusId = :statusId) and (:startTime is null or fr.startDate >= :startTime) and (:endTime is null or fr.startDate <= :endTime) and (:ovtype is null or overtime.overtimeType.typeId = :ovtype)")
 	Page<FormRecord> findOvertime(Integer empId, Integer statusId, LocalDateTime startTime, LocalDateTime endTime, Integer ovtype, Pageable pageable);
 
-	@Query("from FormRecord fr JOIN fr.overtime overtime where (:empId is null or fr.empId = :empId) and fr.typeId = 2 and (:statusId is null or fr.statusId = :statusId) and (:startTime is null or fr.startDate >= :startTime) and (:endTime is null or fr.startDate <= :endTime)")
+	@Query("from FormRecord fr where (:empId is null or fr.empId = :empId) and fr.typeId = 3 and (:statusId is null or fr.statusId = :statusId) and (:startTime is null or fr.startDate >= :startTime) and (:endTime is null or fr.startDate <= :endTime)")
 	Page<FormRecord> findResignation(Integer empId, Integer statusId, LocalDateTime startTime, LocalDateTime endTime, Pageable pageable);
 
 	//過期表單
@@ -44,7 +44,7 @@ public interface FormRecordRepository extends JpaRepository<FormRecord, Integer>
 
 
 	//查詢是否有重複表單?
-	@Query("select count(*)>0 from FormRecord where empId = :empId and statusId IN (1, 2)")
+	@Query("select count(*)>0 from FormRecord where empId = :empId and statusId IN (1, 2) and typeId = 3")
 	boolean findCountResignation(Integer empId);
 
 	@Query("from FormRecord fr join fr.resignation res where res.leaveDate = :leDate and fr.statusId = 2")

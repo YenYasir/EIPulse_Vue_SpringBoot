@@ -1,83 +1,3 @@
-<template>
-  <div class="card text-center div1">
-    現在使用者:{{emp.empName}}
-    <select v-model="formSelect.formType">
-      <option v-for="(type, index) in types" :value="index">{{ type }}</option>
-    </select>
-    <select
-        v-model="formSelect.type"
-        v-if="(formSelect.formType != 0) & (formSelect.formType != 3)"
-    >
-      <option
-          v-for="(type, index) in leave"
-          :value="index"
-          v-if="formSelect.formType == 1"
-      >
-        {{ type }}
-      </option>
-      <option
-          v-for="(type, index) in overtime"
-          :value="index"
-          v-if="formSelect.formType == 2"
-      >
-        {{ type }}
-      </option>
-    </select>
-    <select v-model="formSelect.stustId">
-      <option v-for="(stust, index) in stusts" :value="index">
-        {{ stust }}
-      </option>
-    </select>
-    <label>
-      <input type="checkbox" v-model="startDate" value="option1" />
-      日期搜尋
-    </label>
-    <template v-if="startDate == true">
-      開始日期
-      <input type="date" v-model="formSelect.startTime" />
-      結束日期
-      <input type="date" v-model="formSelect.endTime" />
-    </template>
-    <button @click="savevalue">進階搜尋</button>
-    <div class="card-header"></div>
-    <div class="card-body">
-      <table class="table">
-        <tr>
-          <th data-sortable="true">表單ID</th>
-          <th>表單類型</th>
-          <th>創建時間</th>
-          <th>更新日期</th>
-          <th>審核人</th>
-          <th>審核狀態</th>
-          <th>操作</th>
-        </tr>
-        <tr v-for="(form, index) in forms" :key="form.formId">
-          <td>{{ form.formId }}</td>
-          <td>{{ form.typeName }}</td>
-          <td>{{ formatStartDate(form.startDate) }}</td>
-          <td>{{ formatStartDate(form.endDate) }}</td>
-          <td>{{ form.auditor }}</td>
-          <td>{{ form.statusName }}</td>
-          <td>
-            <ShowFormObj :datas="form" :formType="form.typeId" />
-            <button
-                @click="revokeForm(form.empId, form.formId)"
-                v-if="form.statusId == 1"
-            >
-              撤回
-            </button>
-          </td>
-        </tr>
-      </table>
-      <FormPage
-          :total-pages="page.totalPages"
-          :current-page="page.currentPage"
-          @page-change="selectForm"
-      />
-    </div>
-  </div>
-</template>
-
 <script setup>
 import axios from "axios";
 import { computed, reactive, ref } from "vue";
@@ -210,6 +130,85 @@ const formatStartDate = (dateString) => {
   return date.toLocaleDateString("zh-TW", options);
 };
 </script>
+<template>
+  <div class="card text-center div1">
+    現在使用者:{{emp.empName}}
+    <select v-model="formSelect.formType">
+      <option v-for="(type, index) in types" :value="index">{{ type }}</option>
+    </select>
+    <select
+        v-model="formSelect.type"
+        v-if="(formSelect.formType != 0) & (formSelect.formType != 3)"
+    >
+      <option
+          v-for="(type, index) in leave"
+          :value="index"
+          v-if="formSelect.formType == 1"
+      >
+        {{ type }}
+      </option>
+      <option
+          v-for="(type, index) in overtime"
+          :value="index"
+          v-if="formSelect.formType == 2"
+      >
+        {{ type }}
+      </option>
+    </select>
+    <select v-model="formSelect.stustId">
+      <option v-for="(stust, index) in stusts" :value="index">
+        {{ stust }}
+      </option>
+    </select>
+    <label>
+      <input type="checkbox" v-model="startDate" value="option1" />
+      日期搜尋
+    </label>
+    <template v-if="startDate == true">
+      開始日期
+      <input type="date" v-model="formSelect.startTime" />
+      結束日期
+      <input type="date" v-model="formSelect.endTime" />
+    </template>
+    <button @click="savevalue">進階搜尋</button>
+    <div class="card-header"></div>
+    <div class="card-body">
+      <table class="table">
+        <tr>
+          <th data-sortable="true">表單ID</th>
+          <th>表單類型</th>
+          <th>創建時間</th>
+          <th>更新日期</th>
+          <th>審核人</th>
+          <th>審核狀態</th>
+          <th>操作</th>
+        </tr>
+        <tr v-for="(form, index) in forms" :key="form.formId">
+          <td>{{ form.formId }}</td>
+          <td>{{ form.typeName }}</td>
+          <td>{{ formatStartDate(form.startDate) }}</td>
+          <td>{{ formatStartDate(form.endDate) }}</td>
+          <td>{{ form.auditor }}</td>
+          <td>{{ form.statusName }}</td>
+          <td>
+            <ShowFormObj :datas="form" :formType="form.typeId" />
+            <button
+                @click="revokeForm(form.empId, form.formId)"
+                v-if="form.statusId == 1"
+            >
+              撤回
+            </button>
+          </td>
+        </tr>
+      </table>
+      <FormPage
+          :total-pages="page.totalPages"
+          :current-page="page.currentPage"
+          @page-change="selectForm"
+      />
+    </div>
+  </div>
+</template>
 
 <style>
 .currentPage {

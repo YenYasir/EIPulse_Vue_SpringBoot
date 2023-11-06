@@ -51,4 +51,5 @@ public class TitleMove {
         this.effectDate = effectDate;
         this.approver = approver;
     }
+
 }

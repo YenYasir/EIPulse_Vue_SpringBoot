@@ -5,7 +5,7 @@
        style="width: 250px; height: 100vh;overflow-y: auto;">
     跟誰聊天:
     <select v-model="inputText" @change="ck(inputText)">
-      <option v-for="(user,index) in users" :key="index">{{ user[0] }}</option>
+      <option v-for="(user,index) in users" :value="user[0]">{{ user[0] }}{{ user[1] }}</option>
     </select>
     <ul class="nav nav-pills flex-column mb-auto">
       <li class="nav-item" v-for="personnel in personnels" @click="ck(personnel.sender)">
@@ -62,7 +62,7 @@
 <script setup>
 import {nextTick, onMounted, ref, onUnmounted } from 'vue';
 import axios from "axios";
-import PrivateChats1 from "@/components/chats/PrivateChats1.vue";
+import { Client } from '@stomp/stompjs';
 import {empStore} from "../../stores/employee.js";
 import Swal from "sweetalert2";
 const emp = empStore();

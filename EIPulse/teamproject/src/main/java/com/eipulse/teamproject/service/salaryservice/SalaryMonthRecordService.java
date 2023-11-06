@@ -8,7 +8,6 @@ import com.eipulse.teamproject.entity.salaryentity.SubjectType;
 import com.eipulse.teamproject.repository.salaryrepository.SalaryMonthRecordRepository;
 import com.eipulse.teamproject.repository.salaryrepository.SubjectTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,7 +36,7 @@ public class SalaryMonthRecordService {
 
 		// 前端輸入計算區間日期(終日)，找在終日(含)到在職員工
 		List<EmpSalaryInfo> infoList = infoService.findByDate(date);
-
+	
 		// 要返回的物件
 		List<SalaryTrialDto> trialList = new ArrayList<>();
 
@@ -53,7 +52,7 @@ public class SalaryMonthRecordService {
 	}
 	
 	// 產生SalaryTrialDto
-	private SalaryTrialDto createSalaryTrialDto(SalaryInfoDto infoDto, LocalDate date) {
+	public SalaryTrialDto createSalaryTrialDto(SalaryInfoDto infoDto, LocalDate date) {
 		LocalDate hiredate = infoDto.getHireDate();
 		Integer empId = infoDto.getEmpId();
 		String empName = infoDto.getEmpName();
@@ -75,6 +74,7 @@ public class SalaryMonthRecordService {
 			for (DetailDto d : details) {
 				// 計算加減項總和
 				SubjectType subject = subjectRepo.findById(d.getSubjectId()).get();
+				
 				if (subject.getCalculateType().equals("P")) {
 					addSum += d.getAmount();
 				} else if (subject.getCalculateType().equals("M")) {
@@ -130,7 +130,7 @@ public class SalaryMonthRecordService {
 		Double laborRate = infoDto.getLaborVolunteerPensionRate();
 
 		// 計算費用
-		Integer healthInsuranceFee = infoService.calculateHealthInsuranceFee(num, healthGrade);
+		Integer healthInsuranceFee = infoService.calculateHealthInsuranceFee(healthGrade,num);
 		Integer laborFee = infoService.calculateLaborInsuranceFee(laborGrade);
 		Integer laborVolunteerFee = infoService.calculateLaborVolunteerPensionFee(laborRate, laborGrade);
 		Integer welfareFee = infoService.calculateWelfareFee(welfare, basicSalary);
@@ -180,7 +180,6 @@ public class SalaryMonthRecordService {
 		Integer basicSalaryProrated = infoService.calculateSalaryProrated(hiredate, basicSalary);
 		Integer healthInsuranceFee = infoService.calculateHealthInsuranceFee(healthGrade, num);
 
-
 		List<DetailDto> detailList = new ArrayList<>();
 
 		// 基本薪資
@@ -206,9 +205,9 @@ public class SalaryMonthRecordService {
 	
 	// 第一次儲存 ==>Controller使用的主Service
 	@Transactional
-	@Scheduled(cron="0 25 09 * * *")
-	public List<SalaryTrialDto> saveMonthRecordAndDetail() {
-		LocalDate date = LocalDate.now();
+//	@Scheduled(cron="0 25 09 * * *")
+	public List<SalaryTrialDto> saveMonthRecordAndDetail(LocalDate date) {
+//		LocalDate date = LocalDate.now();
 		List<SalaryTrialDto> salaryTrialsDtos = generateSalaryTrialCalculation(date);
 
 		// 裝要回傳前端DTO物件

@@ -1,11 +1,6 @@
 package com.eipulse.teamproject.controller.formapprovalcontroller;
 
 
-import java.io.IOException;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import com.eipulse.teamproject.dto.formapprovaldto.FormDTO;
 import com.eipulse.teamproject.dto.formapprovaldto.FormLeaveDTO;
 import com.eipulse.teamproject.dto.formapprovaldto.FormOvertimeDTO;
@@ -23,9 +18,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
-
-
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @CrossOrigin
@@ -163,18 +160,17 @@ public class FormController {
 		return new ResponseEntity<>(frRepo.getRemainingLeaveDays(typeId, LocalDate.now().getMonthValue(),empId),HttpStatus.OK);
 	}
 
-	@GetMapping("/test")
-	public ResponseEntity<?>asd(@RequestParam Integer empId){
+	@PostMapping("/test")
+	public ResponseEntity<?>asd(@RequestBody FormSelect fs, @RequestParam Integer pageNumber, @RequestParam Integer pageSize){
+		Pageable pageable = PageRequest.of(pageNumber, pageSize);
 		return new ResponseEntity<>(
-				(frRepo.findCheckEmpForm(empId)).stream()
-				.map(FormDTO::new) // 使用 FormDTO 的建構子進行轉換
-				.collect(Collectors.toList()), HttpStatus.OK);
+				frRepo.findResignation(fs.getEmpId(),fs.getStustId(),fs.getStartTime(),fs.getEndTime(),pageable).map(formRecord -> new FormDTO(formRecord)), HttpStatus.OK);
 	}
 
 //	批審表單
 	@PutMapping("/form/check")
 	public ResponseEntity<?> checkEmpForm(@RequestParam Integer yn, @RequestBody FormAuditEventLog newauditLog) {
-		FormAuditEventLog auditLog = formService.checkEmpForm(yn,newauditLog);
+		formService.checkEmpForm(yn,newauditLog);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 

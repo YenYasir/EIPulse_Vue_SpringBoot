@@ -1,11 +1,11 @@
 package com.eipulse.teamproject.dto.salarydto;
 
 
-import java.time.LocalDateTime;
-
 import com.eipulse.teamproject.entity.salaryentity.SalaryDetail;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.time.LocalDateTime;
 
 @Getter
 @Setter

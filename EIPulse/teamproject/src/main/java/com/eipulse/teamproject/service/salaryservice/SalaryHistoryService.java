@@ -1,8 +1,5 @@
 package com.eipulse.teamproject.service.salaryservice;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.eipulse.teamproject.dto.salarydto.SalaryHistoryDto;
 import com.eipulse.teamproject.entity.salaryentity.EmpSalaryInfo;
 import com.eipulse.teamproject.entity.salaryentity.SalaryHistory;
@@ -10,6 +7,9 @@ import com.eipulse.teamproject.repository.salaryrepository.EmpSalaryInfoReposito
 import com.eipulse.teamproject.repository.salaryrepository.SalaryHistoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Service

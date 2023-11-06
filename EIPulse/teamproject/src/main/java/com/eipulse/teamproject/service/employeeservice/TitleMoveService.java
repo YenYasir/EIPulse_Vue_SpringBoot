@@ -5,6 +5,10 @@ import com.eipulse.teamproject.entity.employee.TitleMove;
 import com.eipulse.teamproject.repository.employeerepository.EmployeeRepository;
 import com.eipulse.teamproject.repository.employeerepository.TitleMoveRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -25,11 +29,11 @@ public class TitleMoveService {
     }
 
     // add
-    public void add(@RequestBody TitleMoveDTO dto){
+    public void add( TitleMoveDTO dto){
         // 先查到 EmpID
         Employee emp = empRepo.findById(dto.getEmpId()).orElseThrow(()-> new RuntimeException("查詢無此資料"));
         // 將 DTO 的物件 save 到 TitleMove
-        moveRepo.save(new TitleMove(emp,dto.getBeforeDeptInfo(),dto.getAfterDeptInfo(),
+        moveRepo.save(new TitleMove(emp,  dto.getBeforeDeptInfo(),dto.getAfterDeptInfo(),
                 dto.getReason(),dto.getEffectDate(),dto.getApprover()));
     }
 
@@ -77,5 +81,21 @@ public class TitleMoveService {
         move.setApprover(dto.getApprover());
         moveRepo.save(move);
         return  dto;
+    }
+
+    // 分頁功能
+    public Page<TitleMoveDTO> findByPage(Integer pageNumber){
+        Pageable pgb = PageRequest.of(pageNumber-1,5, Sort.Direction.DESC,"id");
+        Page<TitleMove> page = moveRepo.findByMovePage(pageNumber,pgb);
+        Page<TitleMoveDTO> result = page.map(titleMove ->new TitleMoveDTO(titleMove));
+        return result;
+    }
+
+    // 模糊收尋分頁
+    public Page<TitleMoveDTO> findByNamePage(Integer pageNumber,String name){
+        Pageable pgb = PageRequest.of(pageNumber-1,5, Sort.Direction.DESC,"id");
+        Page<TitleMove> page = moveRepo.findByNamePage(name,pgb);
+        Page<TitleMoveDTO> result = page.map(titleMove ->new TitleMoveDTO(titleMove));
+        return result;
     }
 }

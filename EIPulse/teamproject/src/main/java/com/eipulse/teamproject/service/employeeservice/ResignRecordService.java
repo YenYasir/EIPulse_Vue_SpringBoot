@@ -33,9 +33,9 @@ public class ResignRecordService {
 
     // 查詢單筆 (員編、原因、離職日、簽核人、離職證明書、勞健保轉出單)
     public ResignDTO findById(Integer id){
-       ResignRecord resign = resignRepo.findById(id).orElseThrow(()-> new RuntimeException("查詢錯誤"));
-       return  new ResignDTO(resign.getId(), resign.getEmp().getEmpId(),resign.getReason(),resign.getLeaveDate(),resign.getApprover()
-       ,resign.isQuit(),resign.isTransferForm());
+        ResignRecord resign = resignRepo.findById(id).orElseThrow(()-> new RuntimeException("查詢錯誤"));
+        return  new ResignDTO(resign.getId(), resign.getEmp().getEmpId(),resign.getReason(),resign.getLeaveDate(),resign.getApprover()
+                ,resign.isQuit(),resign.isTransferForm());
     }
     // 刪除
     public void deleteResign(Integer id) {
