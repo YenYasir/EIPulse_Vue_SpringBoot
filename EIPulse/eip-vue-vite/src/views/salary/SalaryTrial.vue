@@ -1,0 +1,203 @@
+<script setup>
+import { defineCustomElement, ref, onMounted } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
+import axios from "axios";
+import { empStore } from '../../stores/employee';
+const emp = empStore();
+const route = useRoute()
+const router = useRouter()
+const date = new Date();
+const formater = date.toISOString().split('T')[0];
+
+const slYear = ref()
+const slMonth = ref()
+
+
+
+const trials = ref({
+}
+)
+
+
+
+const endDate = ref(emp.endDate);
+const test = () => {
+    console.log(222);
+    getMonth()
+    getYear()
+}
+const getYear = () => {
+    // slYear.value = trials.value.endDate.getFullYear
+    const inputDate = document.getElementById("endDate");
+    const dateValue = new Date(inputDate.value);
+    slYear.value = dateValue.getFullYear()
+    console.log(333);
+    console.log("年" + slYear.value);
+
+
+}
+const getMonth = () => {
+    console.log(3331);
+    // const endDate = new Date();
+    // slYMonth.value = trials.value.endDate.getMonth + 1
+    const inputDate = document.getElementById("endDate");
+    const dateValue = new Date(inputDate.value);
+    slMonth.value = dateValue.getMonth() + 1
+    console.log("月" + slMonth.value);
+}
+// 舊的
+// const getSalaryTrial = async () => {
+//     const params = {
+//         date: endDate.value
+//     }
+//     console.log(`output->`, endDate.value)
+//     getYear()
+//     getMonth()
+
+//     const API_URL = `${import.meta.env.VITE_API_JAVAURL}payroll/salaryTrial/generate`
+
+//     const { data } = await axios.get(API_URL, { params })
+//     console.log(data);
+//     trials.value = data;
+// }
+const getSalaryTrial = async () => {
+    const params = {
+        date: endDate.value
+    }
+
+    const API_URL = `${import.meta.env.VITE_API_JAVAURL}payroll/salaryTrial/findAll`
+
+    const { data } = await axios.get(API_URL, { params })
+    console.log(data);
+    trials.value = data;
+}
+
+
+
+const sendTrial = async () => {
+    const API_URL = `${import.meta.env.VITE_API_JAVAURL}payroll/record/saveAll`
+
+
+}
+
+const saveSearchData = () => {
+    emp.setSearchDate(endDate.value);
+    endDate.value = emp.endDate;
+}
+
+onMounted(() => {
+    if (endDate.value === '') {
+        console.log("formater!!!!");
+        endDate.value = formater;
+    }
+    getSalaryTrial();
+})
+
+</script>
+<template>
+    <div class="container c">
+        <form @submit.prevent="getSalaryTrial">
+            <div class="row g-3 align-items-center mb-3">
+                <div class="col-auto">
+                    <label for="calculate" class="col-form-label">計算區間</label>
+                </div>
+                <div class="col-auto">
+                    <input type="date" id="inputPassword6" class="form-control form-control-sm" aria-describedby="startDate"
+                        @input="saveSearchData">
+                </div>
+                <div class="col-auto">
+                    <span id="date" class="form-text">
+                        ~
+                    </span>
+                </div>
+                <div class="col-auto">
+                    <input type="date" id="endDate" class="form-control form-control-sm" aria-describedby="endDate"
+                        v-model="endDate" @change="saveSearchData">
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-primary btn-sm" @click="test">產生</button>
+                </div>
+            </div>
+        </form>
+
+        <form @submit.prevent="sendTrial">
+            <!-- <button type="submit" class="btn btn-primary btn-sm mb-3">儲存</button> -->
+            <table class="table table-sm table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col" class="hidden-column">紀錄單號</th>
+                        <th scope="col">員工編號</th>
+                        <th scope="col">姓名</th>
+                        <th scope="col">加項總和</th>
+                        <!-- <th scope="col">應領薪資grossSalary</th> -->
+                        <th scope="col">減項總和</th>
+                        <th scope="col">實領薪資</th>
+                        <th scope="col">動作</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr v-for="(trial, index) in trials" :key="index">
+                        <!-- <td class="hidden-column"><router-Link :to="'/salary/trial/update/' + trial.salaryMonthRecordDto.id"
+                            @click="handleLinkClick"><i class="bi bi-zoom-in"></i></router-Link> -->
+
+                        <td class="hidden-column"> {{ trial.salaryMonthRecordDto.id }}
+                        </td>
+                        <!-- <input type="text" v-model="trial.salaryMonthRecordDto.id"> -->
+
+                        <!-- <td><router-Link :to="'/salary/trial/update/' + trial.salaryMonthRecordDto.id"
+                            @click="handleLinkClick"><i class="bi bi-zoom-in"></i></router-Link>
+                    </td> -->
+                        <td>
+                            {{ trial.salaryMonthRecordDto.empId }}
+                            <!-- <input type="text" v-model="trial.salaryMonthRecordDto.empId" readonly> -->
+                        </td>
+                        <td>
+                            {{ trial.salaryMonthRecordDto.empName }}
+                            <!-- <input type="text" v-model="trial.salaryMonthRecordDto.empName" readonly> -->
+                        </td>
+                        <td>
+                            <!-- <input type="text" v-model="trial.salaryMonthRecordDto.addSum"> -->
+                            {{ trial.salaryMonthRecordDto.addSum }}
+                        </td>
+
+                        <!-- <td>
+                        <input type="text" v-model="trial.salaryMonthRecordDto.grossSalary"> -->
+                        <!-- {{ trial.salaryMonthRecordDto.grossSalary }}
+                    </td> -->
+                        <td>
+                            <!-- <input type="text" v-model="trial.salaryMonthRecordDto.deduSum"> -->
+                            {{ trial.salaryMonthRecordDto.deduSum }}
+                        </td>
+                        <td>
+                            <!-- <input type="text" v-model="trial.salaryMonthRecordDto.netSalary"> -->
+                            {{ trial.salaryMonthRecordDto.netSalary }}
+                        </td>
+                        <td><router-Link :to="'/salary/trial/update/' + trial.salaryMonthRecordDto.id"
+                                @click="handleLinkClick" class="btn btn-secondary  btn-sm mx-1">
+                                <i class=" bi bi-pencil-square"></i></router-Link>
+                        </td>
+                    </tr>
+                </tbody>
+
+            </table>
+        </form>
+    </div>
+</template>
+    
+    
+<style scoped>
+.hidden-column {
+    display: none;
+    /* visibility: hidden; */
+    /* 或者使用 opacity: 0; */
+}
+
+table {
+    text-align: center;
+}
+
+.c {
+    margin-top: 20px;
+}
+</style>

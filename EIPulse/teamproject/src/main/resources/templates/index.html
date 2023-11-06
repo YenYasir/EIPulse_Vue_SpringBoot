@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>員工定位打卡</title>
+</head>
+<body>
+<div th:replace="~{layout/navbar}"></div>
+<div class="row d-flex justify-content-end"> <!-- 讓卡片靠右 -->
+    <div class="col-sm-6 mb-3 mb-sm-0">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-header">Your Location</h5>
+                <!-- 調整 Google Maps 的高度和寬度 -->
+                <div class="card-img-top mb-3" id="map" style="height: 300px; width: 100%;"></div>
+                <button type="button" class="btn btn-primary" id="userLocation">GetLocation</button>
+                <br/>
+                <br/>
+                <form th:action="@{/clockTime/postTime}" method="post" class="float-lg-start">
+                    <input type="hidden" id="latitude" name="latitude">
+                    <input type="hidden" id="longitude" name="longitude">
+                    <input type="hidden" name="empId" value="1001">
+                    <input type="hidden" name="type" value="下班">
+                    <input type="submit" value="打卡" class="btn btn-primary">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--<div ></div>-->
+<script th:src="@{/js/googleMaps.js}"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDxntkw27-7sWJpO1fm3kWQnrx_5rCkznc"></script>
+
+</body>
+</html>
