@@ -15,7 +15,7 @@
       </form>
     </div>
     <div class="card-footer text-body-secondary">
-      ©2023 EIPulse
+      Copyright ©  EIPulse科技 All Rights Reserved.
     </div>
   </div>
 </template>

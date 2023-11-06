@@ -19,7 +19,8 @@
                     <img src="../../assets/images/profile.jpg" alt="Admin" class="rounded-circle" width="150">
                     <div class="mt-3">
                       <h4>{{empName}}</h4>
-                      <p class="text-secondary mb-1">Full Stack Developer</p>
+                      <br>
+                      <p class="text-secondary mb-1">{{titleName}}</p>
                       <p class="text-muted font-size-sm">Bay Area, San Francisco, CA</p>
                      
                     </div>
@@ -145,7 +146,7 @@ const gender = store.gender;
 const phone = store.phone;
 const tel = store.tel;
 const address = store.address;
-
+const titleName = store.titleName;
 const getHomeLink = computed(() => {
       return `/manage/${empId}`; 
     })

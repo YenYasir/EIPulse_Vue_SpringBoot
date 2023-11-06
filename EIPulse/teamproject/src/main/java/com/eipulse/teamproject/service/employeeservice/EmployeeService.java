@@ -171,6 +171,7 @@ public class EmployeeService {
 				empDTO.setTel(employee.getTel());
 				empDTO.setAddress(employee.getAddress());
 				empDTO.setTitleName(employee.getTitle().getTitleName());
+
 				// 獲取員工的所有權限ID
 				for (PermissionInfo permissionInfo : employee.getPermissionInfos()) {
 					permissionIds.add(permissionInfo.getPermission().getPermissionId());

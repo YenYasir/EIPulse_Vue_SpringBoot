@@ -11,6 +11,7 @@
       <li class="nav-item" v-for="personnel in personnels" @click="ck(personnel.sender)">
         <div style="height: 50px;margin: 10px auto">
           員工:<span>{{personnel.sender}}</span>
+          
           訊息:<span v-if="personnel.chat != ''">{{personnel.chat}}</span>
           <span v-else>上傳了一張圖片</span><br>
           時間:<span>{{formatStartDate(personnel.createdAt)}}</span>
@@ -30,7 +31,7 @@
             <img src="#" class="avatar">
             <div class="message-content">
               <div class="name">{{ message.user2 == parseInt(userId) ? message.user1 : message.user2 }}</div>
-              <img v-if="message.file!=null" :src="getImageUrl(message.chat)" :alt="message.file" style="width: 300px; height: 200px;">
+              <img v-if="message.file!=null&&message.file!=''" :src="message.file" :alt="message.file" style="width: 300px; height: 200px;">
               <div v-else class="text">{{message.chat}}</div>
               <div class="timestamp">{{formatStartDate(message.createdAt)}}</div>
             </div>
@@ -40,7 +41,7 @@
             <img src="#" class="avatar">
             <div class="message-content">
               <div class="name">{{ message.user1 == parseInt(userId) ? message.user1 : message.user2 }}</div>
-              <img v-if="message.file!=null" :src="getImageUrl(message.chat)" :alt="message.file" style="width: 300px; height: 200px;">
+              <img v-if="message.file!=null&&message.file!=''" :src="message.file" :alt="message.file" style="width: 300px; height: 200px;">
               <div v-else class="text">{{message.chat}}</div>
               <div class="timestamp">{{formatStartDate(message.createdAt)}}</div>
             </div>
@@ -115,7 +116,7 @@ const sendMsg = async (msg1,file) => {
   let data = {
     chat:"",
     createdAt:new Date().toISOString(),
-    file:msg1.name,
+    file:"",
     receiver:presentTarget.value,
     sender:userId.value,
     user1:user.user1,
@@ -135,18 +136,19 @@ const sendMsg = async (msg1,file) => {
   const URLAPI = `${URL}sendMsg`;
   await axios.post(URLAPI, formData);
 
-
-  updateObjects(data,true)
-  if(data.file!=null){
-    await downloadFile(data.user1+""+data.user2,data.sender,data.file).then((result => {
-      data.chat = result;
-    }))
+  if (file == true) {
+    data.file = 'https://eipulseimages.blob.core.windows.net/images/'+msg1.name;
   }
-
+  updateObjects(data,true)
+  // if(data.file!=null){
+  //   await downloadFile(data.user1+""+data.user2,data.sender,data.file).then((result => {
+  //     data.chat = result;
+  //   }))
+  // }
   messages.value.push(data)
   msg.value = "";
-
 }
+
 onUnmounted( ()=>{
   stompClient.deactivate()
 })
@@ -154,24 +156,17 @@ stompClient.activate();
 stompClient.onConnect =  (frame) => {
   console.log('Connected: ' + frame);
   stompClient.subscribe(`/user/chat/contact`, async function (frame) {
-    console.log(123)
-    console.log('stompClient.onConnect')
     const entity = JSON.parse(frame.body)
-    console.log(entity.sender)
-    console.log(presentTarget.value)
     if(parseInt(entity.sender)==parseInt(presentTarget.value)) {
-      console.log(1)
       if (messages.value == null) {
-        console.log('messages.value == null')
         messages.value = entity
       } else {
-        console.log('messages.value != null')
-        if(entity.file!=null){
-          console.log('entity.file!=null')
-          await downloadFile(entity.user1+""+entity.user2,entity.sender,entity.file).then((result => {
-            entity.chat = result;
-          }))
-        }
+        // if(entity.file!=null){
+        //   console.log('entity.file!=null')
+        //   await downloadFile(entity.user1+""+entity.user2,entity.sender,entity.file).then((result => {
+        //     entity.chat = result;
+        //   }))
+        // }
         messages.value.push(entity)
       }
     }else{
@@ -182,7 +177,7 @@ stompClient.onConnect =  (frame) => {
   })
 }
 const ck =async (id) => {
-  page.value = 1;
+  page.value = 0;
   totalPages.value = false;
   login.value=true;
   presentTarget.value = id;
@@ -190,6 +185,7 @@ const ck =async (id) => {
   scrollContainer.value.addEventListener('scroll', () => {
     if(totalPages.value!=true){
       if(scrollContainer.value.scrollTop === 0) {
+        console.log(page.value)
         getMsg(page.value)
         page.value++;
         scrollContainer.value.scrollTop = 300
@@ -199,6 +195,10 @@ const ck =async (id) => {
 }
 
 const getMsg = async (index) => {
+  if(page.value==0){
+    messages.value = "";
+  }
+
   let user = userComparing(userId.value,presentTarget.value)
   let URLAPI = `${URL}getMsg?pageNumber=${index}&pageSize=10`;
   const data = {
@@ -207,28 +207,33 @@ const getMsg = async (index) => {
   }
   let responsePage = await axios.post(URLAPI,data)
   const response = responsePage.data.content
+  console.log('pa')
+  console.log(responsePage.data.totalPages)
+  console.log(page.value)
   if(page.value>= responsePage.data.totalPages)
     totalPages.value = true
-  for(let i = 0 ; i<response.length;i++){
-    if(response[i].file!=null){
-      await downloadFile(response[i].user1+""+response[i].user2,response[i].sender,response[i].file).then((result => {
-        response[i].chat = result;
-      }))
-    }
-  }
-  if(messages.value.length == 1 )
-  messages.value = response.slice().reverse();
-  else{
+  // for(let i = 0 ; i<response.length;i++){
+  //   if(response[i].file!=null){
+  //     await downloadFile(response[i].user1+""+response[i].user2,response[i].sender,response[i].file).then((result => {
+  //       response[i].chat = result;
+  //     }))
+  //   }
+  // }
+  if(messages.value.length == 1 ){
+    console.log('==')
+    messages.value = response.slice().reverse();
+  }else{
+    console.log('!=')
     messages.value = response.slice().reverse().concat(messages.value)
   }
 
   await scrollToBottom();
 };
-const downloadFile = async (folder,sender,fileName) => {
-  const URLAPI = `${URL}privateChats/${folder}/${sender}/${fileName}`;
-  const response = await axios.get(URLAPI)
-  return response.data;
-}
+// const downloadFile = async (folder,sender,fileName) => {
+//   const URLAPI = `${URL}privateChats/${folder}/${sender}/${fileName}`;
+//   const response = await axios.get(URLAPI)
+//   return response.data;
+// }
 
 //收到訊息時排序user
 const  updateObjects = (Object,ismy) => {
@@ -238,15 +243,11 @@ const  updateObjects = (Object,ismy) => {
     createdAt:Object.createdAt,
   };
   if(ismy==false){
-    console.log(789)
     index = personnels.value.findIndex(person => person.sender == Object.sender);
     newObject.sender = Object.sender
-    console.log(newObject)
   }else{
-    console.log(456)
     index = personnels.value.findIndex(person => person.sender == Object.receiver);
     newObject.sender = Object.receiver
-    console.log(newObject)
   }
   if (index !== -1) {
     personnels.value.splice(index, 1);
@@ -288,7 +289,6 @@ const fileChange = (e) => {
   file.value = '';
   const selectedFile = e.target.files[0]; // 獲取第一個選擇的檔案
   const maxSizeInBytes = 1024 * 1024 * 5; // 5MB
-
   if (selectedFile) {
     if (selectedFile.size > maxSizeInBytes) {
       Swal.fire({
@@ -309,13 +309,13 @@ const fileChange = (e) => {
   fileInput.value.type = 'file'
 };
 
-const getImageUrl = (imageData) => {
-  return `data:image/jpeg;base64,${imageData}`;
-}
+// const getImageUrl = (imageData) => {
+//   return `data:image/jpeg;base64,${imageData}`;
+// }
 
 const scrollContainer = ref(null);
 const scrollToBottom = () => {
-  if(page.value!=1){
+  if(page.value!=0){
     nextTick(() => {
       scrollContainer.value.scrollTop = 300;
     })

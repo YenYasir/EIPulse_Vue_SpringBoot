@@ -129,7 +129,7 @@ const router = createRouter({
                 {
                     // 部門異動紀錄
                     path: '/employee/update-title',
-                    component: () => import('@/views/employee/UpdateTitle.vue'),
+                    component: () => import('@/component/employee/UpdateTitle.vue'),
                     name: 'UpdateTitle',
                 },
                 // {

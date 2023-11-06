@@ -15,7 +15,7 @@
           <img src="#" class="avatar">
           <div class="message-content">
             <div class="name">{{ messagea.empId }}</div>
-            <img v-if="messagea.file!=''" :src="getImageUrl(messagea.message)" :alt="messagea.file" style="width: 300px; height: 200px;">
+            <img v-if="messagea.file!=''" :src="messagea.file" :alt="messagea.file" style="width: 300px; height: 200px;">
             <div v-else class="text">{{messagea.message}}</div>
             <div class="timestamp">{{formatStartDate(messagea.createdAt)}}</div>
           </div>
@@ -25,7 +25,7 @@
           <img src="#" class="avatar">
           <div class="message-content">
             <div class="name">{{messagea.empId}}</div>
-            <img v-if="messagea.file!=''" :src="getImageUrl(messagea.message)" :alt="messagea.file" style="width: 300px; height: 200px;">
+            <img v-if="messagea.file!=''" :src="messagea.file" :alt="messagea.file" style="width: 300px; height: 200px;">
             <div v-else class="text">{{messagea.message}}</div>
             <div class="timestamp">{{formatStartDate(messagea.createdAt)}}</div>
           </div>
@@ -133,11 +133,11 @@ stompClient.onConnect =  (frame) => {
     }else{
       newMessage.mymsg = false;
     }
-    if(newMessage.file!=""){
-      await downloadFile(newMessage.file,newMessage.empId).then((result => {
-        newMessage.message = result;
-      }))
-    }
+    // if(newMessage.file!=""){
+    //   await downloadFile(newMessage.file,newMessage.empId).then((result => {
+    //     newMessage.message = result;
+    //   }))
+    // }
     messages.value.push(newMessage)
     newMessage.value=""
     if (messages.value.length > 10) {
@@ -182,11 +182,11 @@ const chataa = async () =>{
     }else{
       response[i].mymsg = false;
     }
-    if(response[i].file!=""){
-      await downloadFile(response[i].file,response[i].empId).then((result => {
-        response[i].message = result;
-      }))
-    }
+    // if(response[i].file!=""){
+    //   await downloadFile(response[i].file,response[i].empId).then((result => {
+    //     response[i].message = result;
+    //   }))
+    // }
   }
   messages.value = response.slice().reverse();
   await scrollToBottom();
@@ -203,6 +203,7 @@ onUnmounted( ()=>{
   stompClient.deactivate()
 })
 onMounted(()=>{
+  connect()
   scrollContainer.value.addEventListener('scroll', () => {
     if(isConnected){
       if(!totalPages.value==true){
@@ -231,11 +232,11 @@ const getUpPage = async () => {
     }else{
       response[i].mymsg = false;
     }
-    if(response[i].file!=""){
-      await downloadFile(response[i].file,response[i].empId).then((result => {
-        response[i].message = result;
-      }))
-    }
+    // if(response[i].file!=""){
+    //   await downloadFile(response[i].file,response[i].empId).then((result => {
+    //     response[i].message = result;
+    //   }))
+    // }
   }
   console.log(response.slice().reverse())
   messages.value = response.slice().reverse().concat(messages.value);
@@ -256,19 +257,15 @@ const formatStartDate = (dateString) => {
   return date.toLocaleDateString('zh-TW', options);
 };
 
-const downloadFile = async (fileName,user) => {
-  const URLAPI = `${URL}chats/${roomid.value}/${user}/${fileName}`;
-  const response = await axios.get(URLAPI)
-  return response.data;
-}
-
-const getImageUrl = (imageData) => {
-  return `data:image/jpeg;base64,${imageData}`;
-}
-
-onMounted(() => {
-  connect()
-})
+// const downloadFile = async (fileName,user) => {
+//   const URLAPI = `${URL}chats/${roomid.value}/${user}/${fileName}`;
+//   const response = await axios.get(URLAPI)
+//   return response.data;
+// }
+//
+// const getImageUrl = (imageData) => {
+//   return `data:image/jpeg;base64,${imageData}`;
+// }
 
 </script>
 

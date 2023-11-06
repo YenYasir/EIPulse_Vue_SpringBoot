@@ -1,8 +1,86 @@
+<template>
+  <div class="card rounded ">
+    <div class="card-header text-center fs-3">員工列表</div>
+    <div class="card-body ">
+      <div class="mb-3" style="text-align:left; position:left;">
+        <button type="button" class="btn btn-outline-success  mb-2" @click="addEmp">新增員工</button>
+        <form @submit.prevent="loadEmployee" style="text-align: left">
+          <div class="input-group">
+            <input type="text" class="form-control custom-width" placeholder="輸入員工姓名" aria-label="Recipient's username"
+              aria-describedby="button-addon2" v-model="EMPname">
+            <button class="btn btn-outline-secondary" type="button" id="button-addon2">查詢</button>
+          </div>
+        </form>
+      </div>
+      <table class="table table-bordered text-center">
+        <thead>
+          <tr style="background-color: rgb(184, 179, 248); border-color: rgb(0, 0, 0);">
+            <th>員工編號</th>
+            <th>員工姓名</th>
+            <th>生日</th>
+            <th>電子信箱</th>
+            <th>身分證</th>
+            <th>性別</th>
+            <th>手機號碼</th>
+            <th>室內電話</th>
+            <th>照片</th>
+            <th>聯絡地址</th>
+            <th>職位</th>
+            <th>入職日</th>
+            <th>在職狀態</th>
+            <th>更新日期</th>
+            <th>編輯</th>
+          </tr>
+        </thead>
+        <tbody style="border-color: black; ">
+          <tr v-for="emp in employees" :key="emp.id">
+            <td>{{ emp.empId }}</td>
+            <td>{{ emp.empName }}</td>
+            <td>{{ emp.birth }}</td>
+            <td>{{ emp.email }}</td>
+            <td>{{ emp.idNumber }}</td>
+            <td>{{ emp.gender }}</td>
+            <td>{{ emp.phone }}</td>
+            <td>{{ emp.tel }}</td>
+            <td>{{ emp.photoUrl }}</td>
+            <td>{{ emp.address }}</td>
+            <td>
+              <button type="button" class="btn btn-secondary btn-font-color-black " @click="showEditModal(emp)">
+                {{ emp.titleName }}</button>
+            </td>
+            <td>{{ emp.hireDate }}</td>
+            <td>{{ emp.empState }}</td>
+            <td>{{ emp.editDate }}</td>
+            <td>
+              <button class="btn btn-secondary mx-1"><i class="bi bi-pencil-square" @click="updateEmp(emp.empId)"></i>
+              </button>
+              <button class="btn btn-secondary mx-1"><i class="bi bi-bucket" @click="deleteEmp(emp.empId)"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <Page :total-pages="totalPages" :current-page="currentPage" @select-page="updateCurrentPage"></Page>
+    </div>
+    <div class="card-footer text-body-secondary">
+      Copyright ©  EIPulse科技 All Rights Reserved.
+    </div>
+    <window-modal class="modal-lg" titleName="職位變更" ref="editModal" @submit="saveTitle">
+      <form>
+        <update-title :emp-edit="empEdit" @update-send-title="getEditedData"></update-title>
+      </form>
+    </window-modal>
+
+  </div>
+</template>
+
+
+
 <script>
 import axios from "axios";
 import Page from "../../../src/components/Page.vue";
 import Swal from 'sweetalert2';
-import updateTitle from '../../components/xukai/UpdateTitle.vue'
+import updateTitle from '../../components/employee/UpdateTitle.vue'
 import WindowModal from '../../components/mall/WindowModal.vue'
 
 
@@ -62,11 +140,11 @@ export default {
 
 
     addEmp() {
-      this.$router.push(`/xukai/add-emp`);
+      this.$router.push(`/employee/add-emp`);
     },
 
     updateEmp(empId) {
-      this.$router.push(`/xukai/updateEmp/${empId}`);
+      this.$router.push(`/employee/updateEmp/${empId}`);
     },
 
 
@@ -153,82 +231,6 @@ export default {
 };
 
 </script>
-
-<template>
-  <div class="card rounded ">
-    <div class="card-header text-center fs-3">員工列表</div>
-    <div class="card-body ">
-      <div class="mb-3" style="text-align:left; position:left;">
-        <button type="button" class="btn btn-outline-success  mb-2" @click="addEmp">新增員工</button>
-        <form @submit.prevent="loadEmployee" style="text-align: left">
-          <div class="input-group">
-            <input type="text" class="form-control custom-width" placeholder="輸入員工姓名" aria-label="Recipient's username"
-              aria-describedby="button-addon2" v-model="EMPname">
-            <button class="btn btn-outline-secondary" type="button" id="button-addon2">查詢</button>
-          </div>
-        </form>
-      </div>
-      <table class="table table-bordered text-center">
-        <thead>
-          <tr style="background-color: rgb(184, 179, 248); border-color: rgb(0, 0, 0);">
-            <th>員工編號</th>
-            <th>員工姓名</th>
-            <th>生日</th>
-            <th>電子信箱</th>
-            <th>身分證</th>
-            <th>性別</th>
-            <th>手機號碼</th>
-            <th>室內電話</th>
-            <th>照片</th>
-            <th>聯絡地址</th>
-            <th>職位</th>
-            <th>入職日</th>
-            <th>在職狀態</th>
-            <th>更新日期</th>
-            <th>編輯</th>
-          </tr>
-        </thead>
-        <tbody style="border-color: black; ">
-          <tr v-for="emp in employees" :key="emp.id">
-            <td>{{ emp.empId }}</td>
-            <td>{{ emp.empName }}</td>
-            <td>{{ emp.birth }}</td>
-            <td>{{ emp.email }}</td>
-            <td>{{ emp.idNumber }}</td>
-            <td>{{ emp.gender }}</td>
-            <td>{{ emp.phone }}</td>
-            <td>{{ emp.tel }}</td>
-            <td>{{ emp.photoUrl }}</td>
-            <td>{{ emp.address }}</td>
-            <td>
-              <button type="button" class="btn btn-secondary btn-font-color-black " @click="showEditModal(emp)">
-                {{ emp.titleName }}</button>
-            </td>
-            <td>{{ emp.hireDate }}</td>
-            <td>{{ emp.empState }}</td>
-            <td>{{ emp.editDate }}</td>
-            <td>
-              <button class="btn btn-secondary mx-1"><i class="bi bi-pencil-square" @click="updateEmp(emp.empId)"></i>
-              </button>
-              <button class="btn btn-secondary mx-1"><i class="bi bi-bucket" @click="deleteEmp(emp.empId)"></i>
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <Page :total-pages="totalPages" :current-page="currentPage" @select-page="updateCurrentPage"></Page>
-    </div>
-    <div class="card-footer text-body-secondary">
-      ©2023 EIPulse
-    </div>
-    <window-modal class="modal-lg" titleName="職位變更" ref="editModal" @submit="saveTitle">
-      <form>
-        <update-title :emp-edit="empEdit" @update-send-title="getEditedData"></update-title>
-      </form>
-    </window-modal>
-
-  </div>
-</template>
 
 
 

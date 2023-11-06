@@ -1,61 +1,4 @@
 
-<script setup>
-import { useRouter } from 'vue-router';
-import axios from 'axios';
-import { emp } from "@/model/Emp";
-import { addressAPI } from '@/address/AllData.js';
-import { ref, computed } from 'vue';
-import Swal from 'sweetalert2'
-
-const router = useRouter();
-const selectedCity = ref(''); // 用於保存選擇的縣市
-const selectedTown = ref(''); // 用於保存選擇的鄉鎮
-const detailAddress = ref(''); // 用於保存剩下的詳細地址
-
-const towns = ref([]);
-
-
-const getTowns = () => {
-  const selectedCityData = addressAPI.find(city => city.CityName === selectedCity.value);
-  return selectedCityData ? selectedCityData.AreaList : [];
-};
-
-const watchEffect = async () => {
-  towns.value = getTowns();
-};
-
-// 定義一個計算屬性
-const fullAddress = computed(() => {
-  return `${selectedCity.value}${selectedTown.value}${detailAddress.value}`;
-});
-
-
-const employeeData = ref(emp)
-// 呼叫watchEffect或其他初始化操作
-
-const addHandler = async () => {
-  emp.value.address = selectedCity.value + selectedTown.value + detailAddress.value
-  const API_URL = `${import.meta.env.VITE_API_JAVAURL}employee/add`;
-  try {
-    const response = await axios.post(API_URL, employeeData.value);
-    console.log(employeeData.value);
-    console.log(response);
-    if (response.status == 200) {
-      Swal.fire(
-        '儲存成功',
-        '',
-        'success'
-      )
-      router.push('/xukai/find-emp');
-    } else {
-      alert(response.data.message);
-    }
-  } catch (error) {
-    console.error("An error occurred while adding: ", error);
-    console.log('emp.value before sending:', employeeData.value);
-  }
-};
-</script>
 <template>
   <form @submit.prevent="addHandler">
     <div class="container">
@@ -157,6 +100,64 @@ const addHandler = async () => {
   </form>
 </template>
 
+
+<script setup>
+import { useRouter } from 'vue-router';
+import axios from 'axios';
+import { emp } from "@/model/Emp";
+import { addressAPI } from '@/address/AllData.js';
+import { ref, computed } from 'vue';
+import Swal from 'sweetalert2'
+
+const router = useRouter();
+const selectedCity = ref(''); // 用於保存選擇的縣市
+const selectedTown = ref(''); // 用於保存選擇的鄉鎮
+const detailAddress = ref(''); // 用於保存剩下的詳細地址
+
+const towns = ref([]);
+
+
+const getTowns = () => {
+  const selectedCityData = addressAPI.find(city => city.CityName === selectedCity.value);
+  return selectedCityData ? selectedCityData.AreaList : [];
+};
+
+const watchEffect = async () => {
+  towns.value = getTowns();
+};
+
+// 定義一個計算屬性
+const fullAddress = computed(() => {
+  return `${selectedCity.value}${selectedTown.value}${detailAddress.value}`;
+});
+
+
+const employeeData = ref(emp)
+// 呼叫watchEffect或其他初始化操作
+
+const addHandler = async () => {
+  emp.value.address = selectedCity.value + selectedTown.value + detailAddress.value
+  const API_URL = `${import.meta.env.VITE_API_JAVAURL}employee/add`;
+  try {
+    const response = await axios.post(API_URL, employeeData.value);
+    console.log(employeeData.value);
+    console.log(response);
+    if (response.status == 200) {
+      Swal.fire(
+        '儲存成功',
+        '',
+        'success'
+      )
+      router.push('/xukai/find-emp');
+    } else {
+      alert(response.data.message);
+    }
+  } catch (error) {
+    console.error("An error occurred while adding: ", error);
+    console.log('emp.value before sending:', employeeData.value);
+  }
+};
+</script>
 
 <style >
 h2 {

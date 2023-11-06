@@ -2,14 +2,14 @@
 
   <li>
     <!-- First Dropdown item -->
-    <a class="nav-link text-white dropdown-toggle" data-bs-toggle="collapse" :href="'#' + menuId"><i :class="'bi bi-'+iconName"></i>
+    <a class="nav-link text-warning dropdown-toggle" data-bs-toggle="collapse" :href="'#' + menuId"><i :class="'bi bi-'+iconName"></i>
       {{ title }}
     </a>
     <div class="collapse text-white" :id="menuId">
       <ul class="nav flex-column">
         <slot></slot>
         <li class="nav-item" v-for="item in items" :key="item.name">
-          <router-link :to="item.path ? item.path :'/'" class="nav-link text-muted text-white" >{{ item.name }}</router-link>
+          <router-link :to="item.path ? item.path :'/'" class="nav-link  text-white" >{{ item.name }}</router-link>
         </li>
       </ul>
     </div>

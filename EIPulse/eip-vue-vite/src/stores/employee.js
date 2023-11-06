@@ -11,6 +11,7 @@ export const empStore = defineStore({
         phone:sessionStorage.getItem('phone') || null,
         tel:sessionStorage.getItem('tel') || null,
         address:sessionStorage.getItem('address') || null,
+        titlename:sessionStorage.getItem('titlename') || null,
         password:'',
         isLogin:sessionStorage.getItem('isLogin') ||false,
         otp:'',
@@ -32,6 +33,7 @@ export const empStore = defineStore({
             this.phone = emp.phone;
             this.tel = emp.tel;
             this.address = emp.address;
+            this.titlename = emp.titlename;
             this.permission = emp.permissionId[0].toString();
             sessionStorage.setItem('empId',this.empId)
             sessionStorage.setItem('empName',this.empName)
@@ -44,6 +46,7 @@ export const empStore = defineStore({
             sessionStorage.setItem('phone',this.phone)
             sessionStorage.setItem('tel',this.tel)
             sessionStorage.setItem('address',this.address)
+            sessionStorage.setItem('titleName',thhis.titlename)
             if(this.empId===''){
                 this.empId=sessionStorage.getItem('empId')
         

@@ -1,27 +1,3 @@
-<script>
-import axios from "axios";
-export default {
-  data() {
-    return {
-      resignRecords: [],
-    }
-  },
-  methods: {
-    loadRecord() {
-      axios.get('http://localhost:8090/eipulse/resign/findAll').then(res => {
-        console.log(res.data)
-        this.resignRecords = res.data;
-      }).catch((e) => {
-        console.log(e)
-      })
-    }
-  },
-  mounted() {
-    this.loadRecord();
-  }
-}
-</script>
-
 <template>
   <div class="card text-center  rounded ">
     <div class="card-header">所有離職紀錄</div>
@@ -48,7 +24,7 @@ export default {
       </table>
     </div>
     <div class="card-footer text-body-secondary">
-      ©2023 EIPulse
+      Copyright ©  EIPulse科技 All Rights Reserved.
     </div>
     <window-modal @submit="editSubmit" class="modal-xl" titleName="產品編輯" ref="editModal">
       <form>
@@ -57,6 +33,31 @@ export default {
     </window-modal>
   </div>
 </template>
+
+
+<script>
+import axios from "axios";
+export default {
+  data() {
+    return {
+      resignRecords: [],
+    }
+  },
+  methods: {
+    loadRecord() {
+      axios.get('http://localhost:8090/eipulse/resign/findAll').then(res => {
+        console.log(res.data)
+        this.resignRecords = res.data;
+      }).catch((e) => {
+        console.log(e)
+      })
+    }
+  },
+  mounted() {
+    this.loadRecord();
+  }
+}
+</script>
 
 
 <style scoped>

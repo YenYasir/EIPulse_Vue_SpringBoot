@@ -102,7 +102,7 @@ public class EmpController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
-	// 模糊收尋名字
+	// 模糊搜尋名字
 	@GetMapping("/findByName/{name}")
 	public List<EmpDTO> findByName(@PathVariable("name") String name) {
 		List<EmpDTO> list = employeeService.findByNameLikeSearch(name);
@@ -139,7 +139,7 @@ public class EmpController {
 
 	}
 
-	// 模糊收尋的分頁
+	// 模糊搜尋的分頁
 	@GetMapping("/employee/paged/{name}/{pageNumber}")
 	@ResponseStatus(HttpStatus.OK) // 這裡設置返回的 HTTP 狀態碼為 200
 	public Page<EmpDTO> getByNamePage(@PathVariable String name, @PathVariable Integer pageNumber) {

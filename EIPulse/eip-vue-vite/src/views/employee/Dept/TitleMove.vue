@@ -50,7 +50,7 @@
       <Page :total-pages="totalPages" :current-page="currentPage" @select-page="updateCurrentPage"></Page>
     </div>
     <div class="card-footer text-body-secondary">
-      ©2023 EIPulse
+      Copyright ©  EIPulse科技 All Rights Reserved.
     </div>
     <window-modal class="modal-xl" titleName="產品編輯" ref="editModal">
       <form>

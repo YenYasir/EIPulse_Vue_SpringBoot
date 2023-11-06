@@ -17,9 +17,7 @@
         { name: '權限管理', path: '/' },
       ]" menuId="submenu1"></drop-down>
       <drop-down title="薪資管理" iconName="airplane" :items="[
-        { name: '薪資設定', path: '/salary' },
-        { name: '新增', path: '/salary/set' },
-        { name: '結算作業', path: '/salary/payroll' }
+        { name: '薪資設定', path: '/salary' }
       ]" menuId="submenu2"></drop-down>
       <drop-down title="表單簽核" iconName="pen" :items="[
              { name: '申請表單', path: '/manage/form/apply' },
@@ -43,7 +41,7 @@
              { name: '商城首頁', path: '/mall' }
            ]" menuId="submenu6">
         <li class="nav-item">
-          <button class="nav-link text-muted text-white" @click="showSaveType">新增類別</button>
+          <button class="nav-link  text-white" @click="showSaveType">新增類別</button>
         </li>
       </drop-down>
     </aside-bar>
@@ -85,4 +83,5 @@ const showSaveType = () => {
 section{
   background-color: #f0f0f0;
 }
+
 </style>
