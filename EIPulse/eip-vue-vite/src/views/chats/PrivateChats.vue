@@ -1,60 +1,82 @@
 <template>
-  <!--  使用者:<input type="text" v-model="userId" @change="getUser">-->
-
-  <div class=" position-fixed"
-       style="width: 250px; height: 100vh;overflow-y: auto;">
-    跟誰聊天:
-    <select v-model="inputText" @change="ck(inputText)">
-      <option v-for="(user,index) in users" :value="user[0]">{{ user[0] }}{{ user[1] }}</option>
-    </select>
-    <ul class="nav nav-pills flex-column mb-auto">
-      <li class="nav-item" v-for="personnel in personnels" @click="ck(personnel.sender)">
-        <div style="height: 50px;margin: 10px auto">
-          員工:<span>{{personnel.sender}}</span>
-          訊息:<span v-if="personnel.chat != ''">{{personnel.chat}}</span>
-          <span v-else>上傳了一張圖片</span><br>
-          時間:<span>{{formatStartDate(personnel.createdAt)}}</span>
-        </div>
-      </li>
-    </ul>
-
-  </div>
-  <div v-if="login==true" style="margin-left: 20%;">
-<!--    <PrivateChats1 @sendMsg="sendMsg" @loadMsg="getMsg" :messages="filterMessages(presentTarget)" :user="parseInt(userId)"/>-->
-    <div class="chat-container">
-
-      <div class="chat-messages" ref="scrollContainer">
-        <div v-for="message in filterMessages(presentTarget)">
-
-          <div v-if="message.receiver == parseInt(userId)" class="message left">
-            <img src="#" class="avatar">
-            <div class="message-content">
-              <div class="name">{{ message.user2 == parseInt(userId) ? message.user1 : message.user2 }}</div>
-              <img v-if="message.file!=null" :src="getImageUrl(message.chat)" :alt="message.file" style="width: 300px; height: 200px;">
-              <div v-else class="text">{{message.chat}}</div>
-              <div class="timestamp">{{formatStartDate(message.createdAt)}}</div>
-            </div>
+  <div class="chat-container">
+    <!-- 左側聯絡人列表 -->
+    <div class="contacts">
+      <div class="contacts-header">
+        跟誰聊天:
+        <select v-model="inputText" @change="ck(inputText)">
+          <option v-for="user in users" :value="user[0]">
+            {{user[0]}}{{user[1]}}
+          </option>
+        </select>
+      </div>
+      <div class="a">
+      <div class="contact"
+           v-for="personnel in personnels"
+           @click="ck(personnel.sender)">
+        <img v-if="findPhoto(personnel.sender)[2]!=null&&findPhoto(personnel.sender)[2]!=''" :src="findPhoto(personnel.sender)[2]" class="avatar">
+        <img v-else src="https://eipulseimages.blob.core.windows.net/images/ce2cc2511903a619a519d801b61e1d9d.jpg" class="avatar">
+        <div class="personnel-info">
+          <span>{{findPhoto(personnel.sender)[1]}}</span>
+          <div v-if="personnel.chat" style="font-size: 15px">訊息:{{personnel.chat}}</div>
+          <div v-else style="font-size: 15px">訊息:上傳了一張圖片</div>
+          <div>
+            <span style="font-size: 12px">時間:{{formatStartDate(personnel.createdAt)}}</span>
           </div>
-
-          <div v-else class="message right">
-            <img src="#" class="avatar">
-            <div class="message-content">
-              <div class="name">{{ message.user1 == parseInt(userId) ? message.user1 : message.user2 }}</div>
-              <img v-if="message.file!=null" :src="getImageUrl(message.chat)" :alt="message.file" style="width: 300px; height: 200px;">
-              <div v-else class="text">{{message.chat}}</div>
-              <div class="timestamp">{{formatStartDate(message.createdAt)}}</div>
+        </div>
+      </div>
+      </div>
+    </div>
+    <!-- 右側聊天視窗 -->
+    <div class="chat-window" v-if="login">
+      <div class="chat-header">
+        <img v-if="presentTarget[2]!=null && presentTarget[2]!=''" :src="presentTarget[2]" class="avatar">
+        <img v-else src="https://eipulseimages.blob.core.windows.net/images/ce2cc2511903a619a519d801b61e1d9d.jpg" class="avatar">
+        {{presentTarget[1]}}
+      </div>
+      <div class="chat-messages" >
+        <div class="chat-messages">
+          <div class="messages" ref="scrollContainer">
+            <div v-for="message in messages">
+              <!-- 左邊(對方發送) -->
+              <div v-if="message.sender != userId" class="message left">
+                <img v-if="presentTarget[2]!=null && presentTarget[2]!=''" :src="presentTarget[2]" class="avatar">
+                <img v-else src="https://eipulseimages.blob.core.windows.net/images/ce2cc2511903a619a519d801b61e1d9d.jpg" class="avatar">
+                <div class="message-content">
+<!--                  <div class="name">{{ message.user2 == parseInt(userId) ? message.user1 : message.user2 }}</div>-->
+                  <img v-if="message.file" :src="message.file" style="max-width: 300px; max-height: 200px;">
+                  <div v-else class="text">
+                    {{message.chat}}
+                  </div>
+                  <div class="timestamp" style="font-size: 12px">
+                    {{formatStartDate(message.createdAt)}}
+                  </div>
+                </div>
+              </div>
+              <!-- 右邊(自己發送) -->
+              <div v-else class="message right">
+<!--                <img src="#" class="avatar">-->
+                <div class="message-content">
+<!--                  <div class="name">{{ message.user1 == parseInt(userId) ? message.user1 : message.user2 }}</div>-->
+                  <img v-if="message.file" :src="message.file" style="width: 300px; height: 200px;">
+                  <div v-else class="text">
+                    {{message.chat}}
+                  </div>
+                  <div class="timestamp" style="font-size: 12px">
+                    {{formatStartDate(message.createdAt)}}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-
       <div class="chat-input">
-        <textarea v-model="msg" class="msg"></textarea>
-        <input type="file" id="selectedFile" accept=".jpg, .jpeg, .png, .gif" style="display: none;" @change="fileChange" ref="fileInput">
-        <input type="button" value="傳圖檔" onclick="document.getElementById('selectedFile').click();" class="file"/>
+        <textarea v-model="msg" class="msg" @keydown.enter.prevent="sendMsg"/>
+        <input type="file" id="selectedFile" @change="fileChange" style="display: none;" ref="fileInput">
+        <button onclick="document.getElementById('selectedFile').click();">傳圖檔</button>
         <button @click="sendMsg(msg)" class="button">Send</button>
       </div>
-
     </div>
   </div>
 </template>
@@ -76,15 +98,7 @@ const URL = import.meta.env.VITE_API_JAVAURL;
 const personnels = ref([])
 
 
-const messages = ref([{
-  chat:"",
-  createdAt:"",
-  file:"",
-  receiver:"",
-  sender:"",
-  user1:"",
-  user2:"",
-}]);
+const messages = ref([]);
 const getUser = async () => {
   let URLAPI = `${URL}getUsers?my=${userId.value}`;
   let response = await axios.get(URLAPI)
@@ -110,13 +124,13 @@ const sendMsg = async (msg1,file) => {
   if(file!=true && msg.value==""){
     return
   }
-  let user = userComparing(userId.value,presentTarget.value)
+  let user = userComparing(userId.value,presentTarget.value[0])
   const formData = new FormData();
   let data = {
     chat:"",
     createdAt:new Date().toISOString(),
-    file:msg1.name,
-    receiver:presentTarget.value,
+    file:"",
+    receiver:presentTarget.value[0],
     sender:userId.value,
     user1:user.user1,
     user2:user.user2,
@@ -135,18 +149,14 @@ const sendMsg = async (msg1,file) => {
   const URLAPI = `${URL}sendMsg`;
   await axios.post(URLAPI, formData);
 
-
-  updateObjects(data,true)
-  if(data.file!=null){
-    await downloadFile(data.user1+""+data.user2,data.sender,data.file).then((result => {
-      data.chat = result;
-    }))
+  if (file == true) {
+    data.file = 'https://eipulseimages.blob.core.windows.net/images/'+msg1.name;
   }
-
+  updateObjects(data,true)
   messages.value.push(data)
   msg.value = "";
-
 }
+
 onUnmounted( ()=>{
   stompClient.deactivate()
 })
@@ -154,52 +164,45 @@ stompClient.activate();
 stompClient.onConnect =  (frame) => {
   console.log('Connected: ' + frame);
   stompClient.subscribe(`/user/chat/contact`, async function (frame) {
-    console.log(123)
-    console.log('stompClient.onConnect')
     const entity = JSON.parse(frame.body)
-    console.log(entity.sender)
-    console.log(presentTarget.value)
-    if(parseInt(entity.sender)==parseInt(presentTarget.value)) {
-      console.log(1)
+    if(parseInt(entity.sender)==parseInt(presentTarget.value[0])) {
       if (messages.value == null) {
-        console.log('messages.value == null')
         messages.value = entity
       } else {
-        console.log('messages.value != null')
-        if(entity.file!=null){
-          console.log('entity.file!=null')
-          await downloadFile(entity.user1+""+entity.user2,entity.sender,entity.file).then((result => {
-            entity.chat = result;
-          }))
-        }
         messages.value.push(entity)
       }
-    }else{
-      console.log("entity,false")
-      console.log(entity)
     }
     updateObjects(entity,false)
   })
 }
+const first = ref(false)
 const ck =async (id) => {
-  page.value = 1;
+  presentTarget.value = users.value.find(obj => obj[0] == id);
   totalPages.value = false;
   login.value=true;
-  presentTarget.value = id;
   await getMsg(0)
-  scrollContainer.value.addEventListener('scroll', () => {
-    if(totalPages.value!=true){
-      if(scrollContainer.value.scrollTop === 0) {
-        getMsg(page.value)
-        page.value++;
-        scrollContainer.value.scrollTop = 300
+  page.value = 0;
+  if(first.value==false){
+    first.value=true;
+    scrollContainer.value.addEventListener('scroll', () => {
+      if(totalPages.value!=true){
+        if(scrollContainer.value.scrollTop == 0) {
+          getMsg(page.value)
+          page.value++;
+          scrollContainer.value.scrollTop = 300
+        }
       }
-    }
-  })
+    })
+  }
+
 }
 
 const getMsg = async (index) => {
-  let user = userComparing(userId.value,presentTarget.value)
+  if(page.value==0){
+    messages.value = null;
+  }
+
+  let user = userComparing(userId.value,presentTarget.value[0])
   let URLAPI = `${URL}getMsg?pageNumber=${index}&pageSize=10`;
   const data = {
     user1: user.user1,
@@ -209,26 +212,14 @@ const getMsg = async (index) => {
   const response = responsePage.data.content
   if(page.value>= responsePage.data.totalPages)
     totalPages.value = true
-  for(let i = 0 ; i<response.length;i++){
-    if(response[i].file!=null){
-      await downloadFile(response[i].user1+""+response[i].user2,response[i].sender,response[i].file).then((result => {
-        response[i].chat = result;
-      }))
-    }
-  }
-  if(messages.value.length == 1 )
-  messages.value = response.slice().reverse();
-  else{
+  if(messages.value == null ){
+    messages.value = response.slice().reverse();
+  }else{
     messages.value = response.slice().reverse().concat(messages.value)
   }
 
   await scrollToBottom();
 };
-const downloadFile = async (folder,sender,fileName) => {
-  const URLAPI = `${URL}privateChats/${folder}/${sender}/${fileName}`;
-  const response = await axios.get(URLAPI)
-  return response.data;
-}
 
 //收到訊息時排序user
 const  updateObjects = (Object,ismy) => {
@@ -238,15 +229,11 @@ const  updateObjects = (Object,ismy) => {
     createdAt:Object.createdAt,
   };
   if(ismy==false){
-    console.log(789)
     index = personnels.value.findIndex(person => person.sender == Object.sender);
     newObject.sender = Object.sender
-    console.log(newObject)
   }else{
-    console.log(456)
     index = personnels.value.findIndex(person => person.sender == Object.receiver);
     newObject.sender = Object.receiver
-    console.log(newObject)
   }
   if (index !== -1) {
     personnels.value.splice(index, 1);
@@ -288,7 +275,6 @@ const fileChange = (e) => {
   file.value = '';
   const selectedFile = e.target.files[0]; // 獲取第一個選擇的檔案
   const maxSizeInBytes = 1024 * 1024 * 5; // 5MB
-
   if (selectedFile) {
     if (selectedFile.size > maxSizeInBytes) {
       Swal.fire({
@@ -308,14 +294,9 @@ const fileChange = (e) => {
   fileInput.value.type = ''
   fileInput.value.type = 'file'
 };
-
-const getImageUrl = (imageData) => {
-  return `data:image/jpeg;base64,${imageData}`;
-}
-
 const scrollContainer = ref(null);
 const scrollToBottom = () => {
-  if(page.value!=1){
+  if(page.value!=0){
     nextTick(() => {
       scrollContainer.value.scrollTop = 300;
     })
@@ -336,34 +317,47 @@ const exceptForMyself = async () => {
   const response = await axios.get(URLAPI)
   users.value = response.data;
 }
+
+const findPhoto = (id) => {
+  return users.value.find(obj => obj[0] == id);
+}
 onMounted(()=>{
   exceptForMyself()
 })
 </script>
 
-
 <style scoped>
+
+/* 聊天室樣式 */
+
 .chat-container {
   display: flex;
-  flex-direction: column;
-  height: 500px;
 }
 
-.chat-header {
+.contacts {
+  width: 30%;
+  border-right: 1px solid #ddd;
+}
+
+.contacts-header {
   padding: 10px;
   border-bottom: 1px solid #eee;
-  font-weight: bold;
 }
 
-.chat-messages {
-  flex: 1;
-  overflow: scroll;
-  padding: 10px;
+.a{
+  overflow: auto;
+  height: 700px;
 }
 
-.message {
+.contact {
   display: flex;
-  margin-bottom: 10px;
+  align-items: center;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.contact:hover {
+  background-color: gray;
 }
 
 .avatar {
@@ -373,60 +367,91 @@ onMounted(()=>{
   margin-right: 10px;
 }
 
+.personnel-info {
+  flex: 1;
+}
+
+/* 聊天視窗 */
+.chat-window{
+  width: 100%;
+}
+
+.chat-header {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  font-weight: bold;
+}
+
+/* 訊息區塊 */
+.chat-messages {
+  height: 500px;
+  display: flex;
+  flex-direction: column;
+}
+
+.messages {
+  flex: 1;
+  overflow: auto;
+  padding: 10px;
+}
+
+/* 訊息氣泡 */
+.message {
+  display: flex;
+  margin-bottom: 10px;
+}
+
 .message-content {
   max-width: 80%;
+  background-color: #babbbc;
 }
 
-.name {
-  font-weight: bold;
-  margin-bottom: 4px;
-}
-
-.text {
-  background: #eee;
-  padding: 8px;
-  border-radius: 4px;
-}
-
-.timestamp {
-  font-size: 12px;
-  color: #999;
-  margin-top: 5px;
+/* 左右區分 */
+.right {
+  text-align: right;
+  justify-content: flex-end;
 }
 
 .left {
   justify-content: flex-start;
 }
 
-.right {
-  justify-content: flex-end;
+.message-content {
+  padding: 8px;
+  border-radius: 4px;
+  max-width: 80%;
 }
 
+.right {
+  align-self: flex-end;
+}
+
+.left {
+  align-self: flex-start;
+}
+
+/* 輸入框 */
+
 .chat-input {
-  display: flex;
-  align-items: center;
   padding: 10px;
   border-top: 1px solid #ddd;
 }
 
 .msg {
-  flex: 1;
-  margin-right: 10px;
-  padding: 8px;
+  width: 100%;
+  resize: none;
   border-radius: 4px;
   border: 1px solid #ddd;
+  padding: 10px;
 }
 
-.button {
-  padding: 8px 12px;
+button {
+  float: right;
+  padding: 6px 10px;
   border-radius: 4px;
-  background: #007bff;
-  color: #fff;
+  background: blue;
+  color: white;
   border: none;
-  cursor: pointer;
 }
 
-.file{
-
-}
 </style>

@@ -13,7 +13,7 @@
             placeholder="請選擇請假類別"
             @change="getRemaining(form.type)"
         >
-          <option value="-1">請選擇請假類別</option>
+          <option value="-1" disabled>請選擇請假類別</option>
           <option value="1">半年特休</option>
           <option value="2">一年特休</option>
           <option value="3">半薪病假</option>
@@ -49,15 +49,15 @@
       </div>
       <div v-if="form.name === '加班'">
         <label>加班日期</label>
-        <input type="date" v-model="date" />
+        <input type="date" v-model="date" @change="isWeekend(date)"/>
         <label>加班時段</label>
         <input type="time" v-model="startDateTime" />
         到
         <input type="time" v-model="endDateTime" />
         <select v-model="form.type" placeholder="請選擇加班日別">
-          <option value="-1">請選擇加班類別</option>
-          <option value="1">平日</option>
-          <option value="2">休息日</option>
+          <option value="-1" disabled>請選擇加班類別</option>
+          <option value="1" v-if="weekend!=true">平日</option>
+          <option value="2" v-else>休息日</option>
           <option value="3">國定假日或特別休假</option>
           <option value="4">例假</option>
         </select>
@@ -483,7 +483,8 @@ onMounted(()=>{
 const onReset = () => {
   date.value = formattedDate;
   file.value = [];
-  fileInput.value = "";
+  fileInput.value.type = "";
+  fileInput.value.type = "file";
   form.value.reason = "";
   aduit.value = "";
 if(form.value.name === '請假'){
@@ -508,6 +509,18 @@ if(form.value.name === '請假'){
 }
 
 }
+
+
+const weekend = ref();
+const isWeekend = (day) => {
+  const aDay = new Date(day).getDay();
+  if(aDay!=0&&aDay!=6){
+    weekend.value=false;
+  }else{
+    weekend.value=true;
+  }
+}
+
 </script>
 
 <style scoped>

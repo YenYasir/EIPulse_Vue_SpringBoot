@@ -1,3 +1,34 @@
+<template>
+    <form @submit.prevent="addHandler">
+        <div style=" margin-top: 100px; ">
+            <h2>新增緊急聯絡人資料</h2>
+            <table class="form-table" style="width: 410px; ">
+                <!-- 家屬姓名 -->
+                <tr>
+                    <th><label for="emergencyName" class="form-label">姓名</label></th>
+                    <td><input type="text" class="form-control" id="emergencyName" required></td>
+                </tr>
+
+                <!-- 關係 -->
+                <tr>
+                    <th><label for="relation" class="form-label">關係</label></th>
+                    <td><input type="text" class="form-control" id="relation" required></td>
+                </tr>
+                <!-- 電話 -->
+                <tr>
+                    <th><label for="phone" class="form-label">連絡電話</label></th>
+                    <td><input type="tel" class="form-control" id="phone" required></td>
+                </tr>
+
+            </table>
+            <button class="btn btn-primary" type="submit" style="width: 400px;">
+                新增
+            </button>
+        </div>
+    </form>
+</template>
+
+
 <script setup >
 import { ref, computed, reactive } from 'vue';
 import Swal from 'sweetalert2'
@@ -31,35 +62,6 @@ const addHandler = async () => {
 </script>
 
 
-<template>
-    <form @submit.prevent="addHandler">
-        <div style=" margin-top: 100px; ">
-            <h2>新增緊急聯絡人資料</h2>
-            <table class="form-table" style="width: 410px; ">
-                <!-- 家屬姓名 -->
-                <tr>
-                    <th><label for="emergencyName" class="form-label">姓名</label></th>
-                    <td><input type="text" class="form-control" id="emergencyName" required></td>
-                </tr>
-
-                <!-- 關係 -->
-                <tr>
-                    <th><label for="relation" class="form-label">關係</label></th>
-                    <td><input type="text" class="form-control" id="relation" required></td>
-                </tr>
-                <!-- 電話 -->
-                <tr>
-                    <th><label for="phone" class="form-label">連絡電話</label></th>
-                    <td><input type="tel" class="form-control" id="phone" required></td>
-                </tr>
-
-            </table>
-            <button class="btn btn-primary" type="submit" style="width: 400px;">
-                新增
-            </button>
-        </div>
-    </form>
-</template>
 
 <style scoped>
 h2 {

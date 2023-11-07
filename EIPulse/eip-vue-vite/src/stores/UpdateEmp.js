@@ -16,6 +16,7 @@ export const useEmpInfoStore = defineStore('empInfo', {
         deptId: '',
         deptName: '',
         deptOffice: '',
+        endDate: ''
     }),
     getters: {
 

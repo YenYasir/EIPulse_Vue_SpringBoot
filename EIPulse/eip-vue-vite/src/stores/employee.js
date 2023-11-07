@@ -10,13 +10,15 @@ export const empStore = defineStore({
         gender:sessionStorage.getItem('gender') || null,
         phone:sessionStorage.getItem('phone') || null,
         tel:sessionStorage.getItem('tel') || null,
-   
         address:sessionStorage.getItem('address') || null,
-
-        password:'',
+        titleName:sessionStorage.getItem('titleName') || null,
+        deptName:sessionStorage.getItem('deptName') || null,
+        photoUrl:sessionStorage.getItem('photoUrl') || null,
         isLogin:sessionStorage.getItem('isLogin') ||false,
+        permissionId:sessionStorage.getItem('permissionId') || null,
+        password:'',
         otp:'',
-        permission:"",
+        endDate: '',
         showClock:true
     }),
     getters:{
@@ -33,21 +35,25 @@ export const empStore = defineStore({
             this.gender = emp.gender;
             this.phone = emp.phone;
             this.tel = emp.tel;
-   
             this.address = emp.address;
-            this.permission = emp.permissionId[0].toString();
+            this.titleName = emp.titleName;
+            this.deptName = emp.deptName;
+            this.photoUrl = emp.photoUrl;
+            this.permissionId = emp.permissionId.toString();
             sessionStorage.setItem('empId',this.empId)
             sessionStorage.setItem('empName',this.empName)
             sessionStorage.setItem('isLogin',this.isLogin)
-            sessionStorage.setItem('permission',this.permission)
+            sessionStorage.setItem('permissionId',this.permissionId)
             sessionStorage.setItem('email', this.email)
             sessionStorage.setItem('birth',this.birth)
             sessionStorage.setItem('idNumber',this.idNumber)
             sessionStorage.setItem('gender',this.gender)
             sessionStorage.setItem('phone',this.phone)
             sessionStorage.setItem('tel',this.tel)
-    
             sessionStorage.setItem('address',this.address)
+            sessionStorage.setItem('titleName',this.titleName)
+            sessionStorage.setItem('deptName',this.deptName)
+            sessionStorage.setItem('photoUrl',this.photoUrl)
             if(this.empId===''){
                 this.empId=sessionStorage.getItem('empId')
         
@@ -60,6 +66,8 @@ export const empStore = defineStore({
         toggleClockVisibility(visible) {
             this.showClock = visible;
         },
-       
+        setSearchDate(endDate) {
+            this.endDate = endDate;
+        },
     }
 })

@@ -14,7 +14,7 @@ import com.eipulse.teamproject.entity.employee.Employee;
 
 public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
 
-	// 模糊收尋員工姓名
+	// 模糊搜尋員工姓名
 	@Query("FROM Employee emp WHERE emp.empName LIKE %?1% ")
 	List<EmpDTO> findByNameLikeSearch(String name);
 
@@ -36,6 +36,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
 	@Query("from Employee e where e.empLineId=?1")
 	Optional<Employee> findByEmpLineId(String empLineId);
 
-	@Query("select e.empId,e.empName from Employee e where  e.empId!=:empId")
+	@Query("select e.empId,e.empName,e.photoUrl from Employee e where  e.empId!=:empId")
 	List<Object> exceptForMyself(Integer empId);
+
 }

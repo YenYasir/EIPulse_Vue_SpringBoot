@@ -9,6 +9,6 @@ public interface FormEventLogRepository extends JpaRepository<FormEventLog, Inte
 	@Query(value = "from FormEventLog e JOIN e.formRecord fr where fr.formId = ?1")
 	FormEventLog findEventForm(Integer id);
 	
-	@Query(value = "from FormEventLog where sequence = ?1")
-	FormEventLog findNextEventForm(Integer count);
+	@Query(value = "from FormEventLog fe join fe.formRecord fr where fe.sequence = ?1 AND fr.formId = ?2")
+	FormEventLog findNextEventForm(Integer count,Integer formId);
 }

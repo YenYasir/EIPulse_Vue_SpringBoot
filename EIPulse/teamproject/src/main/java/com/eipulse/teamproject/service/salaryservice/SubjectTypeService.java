@@ -24,25 +24,25 @@ public class SubjectTypeService {
 
         SubjectType subject = new SubjectType(subjectDto);
         SubjectType result = subjectRepo.save(subject);
-        String frequencyValue = result.getFrequency();
-        String calculateValue = result.getCalculateType();
-        String status = result.getStatus();
+//        String frequencyValue = result.getFrequency();
+//        String calculateValue = result.getCalculateType();
+//        String status = result.getStatus();
 
 
-        Map<String, String> calculateMap = new HashMap<>();
-        calculateMap.put("P", "加項");
-        calculateMap.put("M", "減項");
-        result.setCalculateType(calculateMap.get(calculateValue));
-
-        Map<String, String> frequencyeMap = new HashMap<>();
-        frequencyeMap.put("0", "變動");
-        frequencyeMap.put("1", "固定");
-        result.setFrequency(frequencyeMap.get(frequencyValue));
-
-        Map<String, String> statusMap = new HashMap<>();
-        statusMap.put("0", "停止");
-        statusMap.put("1", "啟用");
-        result.setStatus(statusMap.get(status));
+//        Map<String, String> calculateMap = new HashMap<>();
+//        calculateMap.put("P", "加項");
+//        calculateMap.put("M", "減項");
+//        result.setCalculateType(calculateMap.get(calculateValue));
+//
+//        Map<String, String> frequencyeMap = new HashMap<>();
+//        frequencyeMap.put("0", "變動");
+//        frequencyeMap.put("1", "固定");
+//        result.setFrequency(frequencyeMap.get(frequencyValue));
+//
+//        Map<String, String> statusMap = new HashMap<>();
+//        statusMap.put("0", "停止");
+//        statusMap.put("1", "啟用");
+//        result.setStatus(statusMap.get(status));
 
         return new SubjectTypeDto(result);
     }
@@ -63,24 +63,24 @@ public class SubjectTypeService {
         List<SubjectType> subjectList = subjectRepo.findAll();
         List<SubjectTypeDto> dtoList = new ArrayList<>();
         for (SubjectType s : subjectList) {
-            String calculateType = s.getCalculateType();
-            String frequency = s.getFrequency();
-            String status = s.getStatus();
+//            String calculateType = s.getCalculateType();
+//            String frequency = s.getFrequency();
+//            String status = s.getStatus();
 
-            Map<String, String> calculateMap = new HashMap<>();
-            calculateMap.put("P", "加項");
-            calculateMap.put("M", "減項");
-            s.setCalculateType(calculateMap.get(calculateType));
-
-            Map<String, String> frequencyeMap = new HashMap<>();
-            frequencyeMap.put("0", "變動");
-            frequencyeMap.put("1", "固定");
-            s.setFrequency(frequencyeMap.get(frequency));
-
-            Map<String, String> statusMap = new HashMap<>();
-            statusMap.put("0", "停止");
-            statusMap.put("1", "啟用");
-            s.setStatus(statusMap.get(status));
+//            Map<String, String> calculateMap = new HashMap<>();
+//            calculateMap.put("P", "加項");
+//            calculateMap.put("M", "減項");
+//            s.setCalculateType(calculateMap.get(calculateType));
+//
+//            Map<String, String> frequencyeMap = new HashMap<>();
+//            frequencyeMap.put("0", "變動");
+//            frequencyeMap.put("1", "固定");
+//            s.setFrequency(frequencyeMap.get(frequency));
+//
+//            Map<String, String> statusMap = new HashMap<>();
+//            statusMap.put("0", "停止");
+//            statusMap.put("1", "啟用");
+//            s.setStatus(statusMap.get(status));
 
             SubjectTypeDto subjectDto = new SubjectTypeDto(s);
             dtoList.add(subjectDto);
@@ -110,7 +110,15 @@ public class SubjectTypeService {
         } else {
             return false;
         }
-
+    }
+    
+    // 更改科目狀態
+    public Boolean updateStatus(String newStatus,Integer id) {
+    	Integer transStatus = subjectRepo.transStatus(newStatus, id);
+    	if(transStatus>0) {
+    		return true;
+    	}
+    	return  false;
     }
 
     // 找科目啟用
@@ -118,24 +126,24 @@ public class SubjectTypeService {
         List<SubjectType> result = subjectRepo.findByStatus();
         List<SubjectTypeDto> dtoList = new ArrayList<>();
         for (SubjectType s : result) {
-            String calculateType = s.getCalculateType();
-            String frequency = s.getFrequency();
-            String status = s.getStatus();
+//            String calculateType = s.getCalculateType();
+//            String frequency = s.getFrequency();
+//            String status = s.getStatus();
 
-            Map<String, String> calculateMap = new HashMap<>();
-            calculateMap.put("P", "加項");
-            calculateMap.put("M", "減項");
-            s.setCalculateType(calculateMap.get(calculateType));
-
-            Map<String, String> frequencyeMap = new HashMap<>();
-            frequencyeMap.put("0", "變動");
-            frequencyeMap.put("1", "固定");
-            s.setFrequency(frequencyeMap.get(frequency));
-
-            Map<String, String> statusMap = new HashMap<>();
-            statusMap.put("0", "停止");
-            statusMap.put("1", "啟用");
-            s.setStatus(statusMap.get(status));
+//            Map<String, String> calculateMap = new HashMap<>();
+//            calculateMap.put("P", "加項");
+//            calculateMap.put("M", "減項");
+//            s.setCalculateType(calculateMap.get(calculateType));
+//
+//            Map<String, String> frequencyeMap = new HashMap<>();
+//            frequencyeMap.put("0", "變動");
+//            frequencyeMap.put("1", "固定");
+//            s.setFrequency(frequencyeMap.get(frequency));
+//
+//            Map<String, String> statusMap = new HashMap<>();
+//            statusMap.put("0", "停止");
+//            statusMap.put("1", "啟用");
+//            s.setStatus(statusMap.get(status));
 
             SubjectTypeDto subjectDto = new SubjectTypeDto(s);
             dtoList.add(subjectDto);
@@ -148,24 +156,24 @@ public class SubjectTypeService {
         List<SubjectType> result = subjectRepo.findTypeIsP();
         List<SubjectTypeDto> dtoList = new ArrayList<>();
         for (SubjectType s : result) {
-            String calculateType = s.getCalculateType();
-            String frequency = s.getFrequency();
-            String status = s.getStatus();
+//            String calculateType = s.getCalculateType();
+//            String frequency = s.getFrequency();
+//            String status = s.getStatus();
 
-            Map<String, String> calculateMap = new HashMap<>();
-            calculateMap.put("P", "加項");
-            calculateMap.put("M", "減項");
-            s.setCalculateType(calculateMap.get(calculateType));
-
-            Map<String, String> frequencyeMap = new HashMap<>();
-            frequencyeMap.put("0", "變動");
-            frequencyeMap.put("1", "固定");
-            s.setFrequency(frequencyeMap.get(frequency));
-
-            Map<String, String> statusMap = new HashMap<>();
-            statusMap.put("0", "停止");
-            statusMap.put("1", "啟用");
-            s.setStatus(statusMap.get(status));
+//            Map<String, String> calculateMap = new HashMap<>();
+//            calculateMap.put("P", "加項");
+//            calculateMap.put("M", "減項");
+//            s.setCalculateType(calculateMap.get(calculateType));
+//
+//            Map<String, String> frequencyeMap = new HashMap<>();
+//            frequencyeMap.put("0", "變動");
+//            frequencyeMap.put("1", "固定");
+//            s.setFrequency(frequencyeMap.get(frequency));
+//
+//            Map<String, String> statusMap = new HashMap<>();
+//            statusMap.put("0", "停止");
+//            statusMap.put("1", "啟用");
+//            s.setStatus(statusMap.get(status));
 
             SubjectTypeDto subjectDto = new SubjectTypeDto(s);
             dtoList.add(subjectDto);
@@ -178,24 +186,24 @@ public class SubjectTypeService {
         List<SubjectType> result = subjectRepo.findTypeIsM();
         List<SubjectTypeDto> dtoList = new ArrayList<>();
         for (SubjectType s : result) {
-            String calculateType = s.getCalculateType();
-            String frequency = s.getFrequency();
-            String status = s.getStatus();
-
-            Map<String, String> calculateMap = new HashMap<>();
-            calculateMap.put("P", "加項");
-            calculateMap.put("M", "減項");
-            s.setCalculateType(calculateMap.get(calculateType));
-
-            Map<String, String> frequencyeMap = new HashMap<>();
-            frequencyeMap.put("0", "變動");
-            frequencyeMap.put("1", "固定");
-            s.setFrequency(frequencyeMap.get(frequency));
-
-            Map<String, String> statusMap = new HashMap<>();
-            statusMap.put("0", "停止");
-            statusMap.put("1", "啟用");
-            s.setStatus(statusMap.get(status));
+//            String calculateType = s.getCalculateType();
+//            String frequency = s.getFrequency();
+//            String status = s.getStatus();
+//
+//            Map<String, String> calculateMap = new HashMap<>();
+//            calculateMap.put("P", "加項");
+//            calculateMap.put("M", "減項");
+//            s.setCalculateType(calculateMap.get(calculateType));
+//
+//            Map<String, String> frequencyeMap = new HashMap<>();
+//            frequencyeMap.put("0", "變動");
+//            frequencyeMap.put("1", "固定");
+//            s.setFrequency(frequencyeMap.get(frequency));
+//
+//            Map<String, String> statusMap = new HashMap<>();
+//            statusMap.put("0", "停止");
+//            statusMap.put("1", "啟用");
+//            s.setStatus(statusMap.get(status));
 
             SubjectTypeDto subjectDto = new SubjectTypeDto(s);
             dtoList.add(subjectDto);

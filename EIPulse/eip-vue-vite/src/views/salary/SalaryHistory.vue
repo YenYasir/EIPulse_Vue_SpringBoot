@@ -7,6 +7,7 @@ const route = useRoute()
 const router = useRouter()
 
 const personalHistory = ref()
+const empId = ref(0)
 const loadData = async () => {
     const empId = route.params.empId
     console.log(empId)
@@ -14,6 +15,7 @@ const loadData = async () => {
     const { data } = await axios.get(API_URL)
     console.log(data)
     personalHistory.value = data
+    empId = personalHistory.value[0].empId
 }
 
 
@@ -21,16 +23,20 @@ onMounted(loadData)
 </script>
 
 <template>
-    <!-- <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><i class="bi bi-tag-fill"></i>{{ empName }} 個人訊息</li>
-            <li class="breadcrumb-item active" aria-current="page">
-                <router-link :to="{ name: 'infoPersonal', params: { empId: history.empId } }"><i class="bi bi-tag-fill"></i>
-                    個人薪資資訊</router-link>
-            </li>
-        </ol>
-    </nav> -->
-    <!-- <span v-bind="history.empId"></span> -->
+    <!-- <div class="nav1">
+        <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <router-link :to="{ name: 'infoPersonal', params: { empId: empId } }">
+                    <li class="breadcrumb-item"><i class="bi bi-person-fill"></i>{{ empId }} 薪資資訊</li>
+                </router-link>
+                <li class="breadcrumb-item active" aria-current="page">
+                    <router-link :to="{ name: 'historyPersonal', params: { empId: info.empId } }"><i
+                            class="bi bi-tag-fill"></i>
+                        薪資異動紀錄</router-link>
+                </li>
+            </ol>
+        </nav>
+    </div> -->
     <div class="div1" style=" margin-top:20px;">
         <table class="table table-sm table-hover">
             <thead>

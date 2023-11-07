@@ -5,6 +5,7 @@ import { onMounted } from 'vue';
 
 const subject = ref([]);
 const subjectInput = ref({})
+const open = ref()
 
 const handleSubmit = async () => {
     const API_URL = `${import.meta.env.VITE_API_JAVAURL}payroll/subject/edit`
@@ -17,6 +18,9 @@ const loadSubject = async () => {
     const API_URL = `${import.meta.env.VITE_API_JAVAURL}payroll/subjects`
     const { data } = await axios.get(API_URL)
     subject.value = data;
+    console.log(`output->121212`, 121212)
+    console.log(`output->`, data.value)
+
 }
 
 
@@ -26,6 +30,23 @@ const openModal = async (subjectId) => {
     subjectInput.value = data;
 
 }
+
+// const changeStatus = async () => {
+//     console.log(`output111@->`, open.value)
+//     if (open.value === true) {
+//         status.valueOf = '1'
+//     } else {
+//         status.valueOf = '0'
+//     }
+
+//     const params = {
+//         subjectId: subject.value.subjectId,
+//         status: status.valueOf
+//     }
+//     const API_URL = `${import.meta.env.VITE_API_JAVAURL}payroll/subject/status`
+//     const { data } = await axios.post(API_URL, { params })
+//     console.log(`outputBBB->`, data.value)
+// }
 
 onMounted(loadSubject);
 
@@ -61,8 +82,7 @@ onMounted(loadSubject);
                                         aria-describedby="inputSubjectName" v-model="subjectInput.subjectName">
                                 </div>
                                 <div class="col mb-3">
-                                    <label for="amountDefault" class="form-label"><span
-                                            style="color:red">*</span>預設金額</label>
+                                    <label for="amountDefault" class="form-label">預設金額</label>
                                     <input type="text" id="amountDefault" class="form-control"
                                         aria-describedby="amountDefault" v-model="subjectInput.amountDefault">
                                 </div>
@@ -128,11 +148,26 @@ onMounted(loadSubject);
                             <!-- <th scope="row">1</th> -->
                             <td class="hidden-column">{{ s.subjectId }}</td>
                             <td class="t1">{{ s.subjectName }}</td>
-                            <td>{{ s.calculateType }}</td>
-                            <td>{{ s.frequency }}</td>
+                            <td class="t1" v-if="s.calculateType == 'P'">加項</td>
+                            <td class="t1" v-else>減項</td>
+                            <!-- <td>{{ s.calculateType }}</td> -->
+                            <td class="t1" v-if="s.frequency == '1'">固定</td>
+                            <td class="t1" v-else>變動</td>
+                            <!-- <td>{{ s.frequency }}</td> -->
                             <td>{{ s.amountDefault }}</td>
-                            <td> {{ s.status }} </td>
-
+                            <!-- <td> {{ s.status }} </td>-->
+                            <td v-if="s.status === '1'">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" role="switch"
+                                        id="flexSwitchCheckChecked" checked @click="changeStatus" v-model="open">
+                                </div>
+                            </td>
+                            <td v-else>
+                                <div class="form-check form-switch">
+                                    <input class=" form-check-input" type="checkbox" role="switch"
+                                        id="flexSwitchCheckDefault" v-model="s.status">
+                                </div>
+                            </td>
                             <td>
                                 <!-- <router-link class="btn btn-secondary mx-1" :to=" "><i class="bi bi-pencil-square"></i></router-link> -->
                                 <!-- 互動視窗(更新) -->
@@ -170,8 +205,7 @@ onMounted(loadSubject);
                                         aria-describedby="inputSubjectName" v-model="subjectInput.subjectName">
                                 </div>
                                 <div class="col mb-3">
-                                    <label for="amountDefault" class="form-label"><span
-                                            style="color:red">*</span>預設金額</label>
+                                    <label for="amountDefault" class="form-label"></label>
                                     <input type="text" id="amountDefault" class="form-control"
                                         aria-describedby="amountDefault" v-model="subjectInput.amountDefault">
                                 </div>

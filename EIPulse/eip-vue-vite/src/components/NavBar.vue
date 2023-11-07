@@ -60,10 +60,11 @@
     <!-- Right elements -->
     <ul class="navbar-nav flex-row">
       <li class="nav-item me-3 me-lg-1">
-        <router-link :to="getProfileLink" title="個人中心">
-           <img src="../assets/images/profile.jpg" class="rounded-circle" height="22" />
-         </router-link>
-         <strong class="d-none d-sm-block ms-1">{{ empName }}</strong>
+        <router-link :to="getProfileLink" title="個人中心" class="d-flex align-items-center" style="text-decoration: none; color: black;">
+          <img :src="store.photoUrl" class="rounded-circle" height="40" />
+          <strong class="d-none d-sm-block ms-1">{{ empName }}</strong>
+        </router-link>
+       
       </li>
       <!-- <li class="nav-item me-3 me-lg-1">
         <a class="nav-link" href="#">

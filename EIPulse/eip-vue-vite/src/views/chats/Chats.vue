@@ -12,20 +12,19 @@
     <div class="chat-messages" ref="scrollContainer">
       <div v-for="messagea in messages">
         <div v-if="messagea.mymsg==false" class="message left">
-          <img src="#" class="avatar">
+          <img v-if="findUser(messagea.empId)[2]!=null && findUser(messagea.empId)[2]!=''" :src="findUser(messagea.empId)[2]" class="avatar">
+          <img v-else src="https://eipulseimages.blob.core.windows.net/images/ce2cc2511903a619a519d801b61e1d9d.jpg" class="avatar">
           <div class="message-content">
-            <div class="name">{{ messagea.empId }}</div>
-            <img v-if="messagea.file!=''" :src="getImageUrl(messagea.message)" :alt="messagea.file" style="width: 300px; height: 200px;">
+            <div class="name">{{ findUser(messagea.empId)[1] }}</div>
+            <img v-if="messagea.file!=''" :src="messagea.file" :alt="messagea.file" style="max-width: 300px; max-height: 200px;">
             <div v-else class="text">{{messagea.message}}</div>
             <div class="timestamp">{{formatStartDate(messagea.createdAt)}}</div>
           </div>
         </div>
 
-        <div v-else-if="messagea.mymsg==true" class="message right">
-          <img src="#" class="avatar">
+        <div v-else-if="messagea.mymsg==true" class="message right" style="text-align: right">
           <div class="message-content">
-            <div class="name">{{messagea.empId}}</div>
-            <img v-if="messagea.file!=''" :src="getImageUrl(messagea.message)" :alt="messagea.file" style="width: 300px; height: 200px;">
+            <img v-if="messagea.file!=''" :src="messagea.file" :alt="messagea.file" style="max-width: 300px; max-height: 200px;">
             <div v-else class="text">{{messagea.message}}</div>
             <div class="timestamp">{{formatStartDate(messagea.createdAt)}}</div>
           </div>
@@ -90,6 +89,16 @@ const sendmsg = async() => {
   }
 }
 
+const allUser = ref();
+const exceptForMyself = async () => {
+  const URLAPI = `${URL}exceptForMyself?empId=${userid.value}`;
+  const response = await axios.get(URLAPI)
+  allUser.value = response.data;
+}
+exceptForMyself();
+const findUser = (id) => {
+  return allUser.value.find(obj => obj[0] == id);
+}
 
 const fileInput = ref(null);
 const file = ref("");
@@ -133,11 +142,11 @@ stompClient.onConnect =  (frame) => {
     }else{
       newMessage.mymsg = false;
     }
-    if(newMessage.file!=""){
-      await downloadFile(newMessage.file,newMessage.empId).then((result => {
-        newMessage.message = result;
-      }))
-    }
+    // if(newMessage.file!=""){
+    //   await downloadFile(newMessage.file,newMessage.empId).then((result => {
+    //     newMessage.message = result;
+    //   }))
+    // }
     messages.value.push(newMessage)
     newMessage.value=""
     if (messages.value.length > 10) {
@@ -182,11 +191,11 @@ const chataa = async () =>{
     }else{
       response[i].mymsg = false;
     }
-    if(response[i].file!=""){
-      await downloadFile(response[i].file,response[i].empId).then((result => {
-        response[i].message = result;
-      }))
-    }
+    // if(response[i].file!=""){
+    //   await downloadFile(response[i].file,response[i].empId).then((result => {
+    //     response[i].message = result;
+    //   }))
+    // }
   }
   messages.value = response.slice().reverse();
   await scrollToBottom();
@@ -203,6 +212,7 @@ onUnmounted( ()=>{
   stompClient.deactivate()
 })
 onMounted(()=>{
+  connect()
   scrollContainer.value.addEventListener('scroll', () => {
     if(isConnected){
       if(!totalPages.value==true){
@@ -231,11 +241,11 @@ const getUpPage = async () => {
     }else{
       response[i].mymsg = false;
     }
-    if(response[i].file!=""){
-      await downloadFile(response[i].file,response[i].empId).then((result => {
-        response[i].message = result;
-      }))
-    }
+    // if(response[i].file!=""){
+    //   await downloadFile(response[i].file,response[i].empId).then((result => {
+    //     response[i].message = result;
+    //   }))
+    // }
   }
   console.log(response.slice().reverse())
   messages.value = response.slice().reverse().concat(messages.value);
@@ -256,20 +266,6 @@ const formatStartDate = (dateString) => {
   return date.toLocaleDateString('zh-TW', options);
 };
 
-const downloadFile = async (fileName,user) => {
-  const URLAPI = `${URL}chats/${roomid.value}/${user}/${fileName}`;
-  const response = await axios.get(URLAPI)
-  return response.data;
-}
-
-const getImageUrl = (imageData) => {
-  return `data:image/jpeg;base64,${imageData}`;
-}
-
-onMounted(() => {
-  connect()
-})
-
 </script>
 
 
@@ -278,7 +274,7 @@ onMounted(() => {
 .chat-container {
   display: flex;
   flex-direction: column;
-  height: 500px;
+  height: 700px;
 }
 
 .chat-header {

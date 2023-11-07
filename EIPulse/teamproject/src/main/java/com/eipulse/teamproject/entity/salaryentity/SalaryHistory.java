@@ -49,7 +49,7 @@ public class SalaryHistory {
     private String remark;
 
 
-    @Column(name = "adjusted_date")
+    @Column(name = "adjusted_date" ,insertable = false,updatable = false)
     private LocalDateTime adjustedDate;
 
 

@@ -38,19 +38,21 @@ onMounted(loadData);
         { name: '員工薪資', path: '/info' },
         { name: '調薪紀錄', path: '/history' }]"></SalaryBar> -->
     <!-- <router-view></router-view> -->
-
-    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><i class="bi bi-tag-fill"></i>{{ info.empName }} 個人訊息</li>
-            <!-- <li class="breadcrumb-item"><a href="#">條新紀錄</a></li>
+    <div class="nav1">
+        <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><i class="bi bi-person-fill"></i>{{ info.empName }} 薪資資訊</li>
+                <!-- <li class="breadcrumb-item"><a href="#">條新紀錄</a></li>
             <router-link :to="{ name: 'salaryForm' }" class="btn btn-primary" href="#" role="button">Link</router-link> -->
 
-            <li class="breadcrumb-item active" aria-current="page">
-                <router-link :to="{ name: 'historyPersonal', params: { empId: info.empId } }"><i class="bi bi-tag-fill"></i>
-                    薪資異動紀錄</router-link>
-            </li>
-        </ol>
-    </nav>
+                <li class="breadcrumb-item active" aria-current="page">
+                    <router-link :to="{ name: 'historyPersonal', params: { empId: info.empId } }"><i
+                            class="bi bi-tag-fill"></i>
+                        薪資異動紀錄</router-link>
+                </li>
+            </ol>
+        </nav>
+    </div>
 
     <div class="container">
         <form>
@@ -153,5 +155,11 @@ onMounted(loadData);
 
 a {
     text-decoration: none;
+}
+
+.nav1 {
+    font-size: 20px;
+    margin-top: 20px;
+    margin-left: 40px;
 }
 </style>

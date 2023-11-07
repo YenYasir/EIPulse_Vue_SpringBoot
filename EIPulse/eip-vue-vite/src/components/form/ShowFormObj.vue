@@ -21,18 +21,19 @@ const formatStartDate = (dateString) => {
 };
 
 //檔案名稱不能過長,之後換post
-const downloadFile = async () => {
-  const URLAPI = `${URL}download/${props.datas.empId}/${props.datas.form.file}`;
-  const response = await axios.get(URLAPI)
-  images.value = response.data;
-}
-const getImageUrl = (imageData) => {
-  return `data:image/jpeg;base64,${imageData.body}`;
-}
+// const downloadFile = async () => {
+//   const URLAPI = `${URL}download/${props.datas.empId}/${props.datas.form.file}`;
+//   const response = await axios.get(URLAPI)
+//   images.value = response.data;
+// }
+// const getImageUrl = (imageData) => {
+//   return `data:image/jpeg;base64,${imageData.body}`;
+// }
 
 if (props.datas.form.file != '' && props.datas.form.file != null) {
   console.log(props.datas.form.file)
-  downloadFile();
+  // downloadFile();
+  images.value = props.datas.form.file.split(",");
 }
 
 
@@ -90,7 +91,7 @@ if (props.datas.form.file != '' && props.datas.form.file != null) {
 
 
           <div v-if="datas.form.file!=null">
-                <img v-for="(image, index) in images" :key="index" :src="getImageUrl(image)" alt="Image">
+                <img v-for="(image, index) in images" :key="index" :src="'https://eipulseimages.blob.core.windows.net/images/form/'+image" alt="Image">
           </div>
         </div>
 

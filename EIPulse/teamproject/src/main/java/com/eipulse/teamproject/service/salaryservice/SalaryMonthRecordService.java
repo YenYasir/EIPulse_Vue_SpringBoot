@@ -270,23 +270,23 @@ public class SalaryMonthRecordService {
 		return returnDto;
 	}
 
-	// 員工查詢歷史薪資明細/月紀錄(已計薪) ok
-	public List<SalaryTrialFinalDto> findAllByEmpId(Integer EmpId) {
+	// 員工查詢歷史薪資明細/月紀錄 ok
+	public SalaryTrialDto findByEmpId(Integer empId,Integer year,Integer month) {
 
-		List<SalaryTrialFinalDto> finalDtoList = new ArrayList<>();
+		List<SalaryTrialDto> finalDtoList = new ArrayList<>();
 		// 取出月紀錄表與相關明細
-		List<SalaryMonthRecord> recordResult = recordRepo.findByEmpId(EmpId);
+		SalaryMonthRecord monthRecord = recordRepo.findByEmpId(empId,year,month);
+		List<SalaryDetail> salaryDetails = monthRecord.getSalaryDetails();
+		new SalaryTrialDto(monthRecord, salaryDetails);
 		// 一個員工一個月會有一筆月紀錄及多筆明細
-		int size = recordResult.size();
-		System.out.println("多長:" + size);
-		for (int i = 0; i < size; i++) {
-			SalaryMonthRecord salaryMonthRecord = recordResult.get(i);
-			List<SalaryDetail> salaryDetails = salaryMonthRecord.getSalaryDetails();
-
-			SalaryTrialFinalDto salaryTrialFinalDto = new SalaryTrialFinalDto(salaryMonthRecord, salaryDetails);
-			finalDtoList.add(salaryTrialFinalDto);
-		}
-		return finalDtoList;
+//		int size = salaryDetails.size();
+//		for (int i = 0; i < size; i++) {
+//			SalaryDetail salaryDetail = salaryDetails.get(i);
+//
+//			SalaryTrialDto salaryTrialDto = new SalaryTrialDto(salaryMonthRecord, salaryDetails);
+//			finalDtoList.add(salaryTrialFinalDto);
+//		}
+		return new SalaryTrialDto(monthRecord, salaryDetails);
 	}
 	
 	// 找當月份all

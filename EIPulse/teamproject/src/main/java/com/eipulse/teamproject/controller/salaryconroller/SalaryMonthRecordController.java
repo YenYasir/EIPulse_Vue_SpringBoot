@@ -49,9 +49,9 @@ public class SalaryMonthRecordController {
 
 
 	// 員工查詢歷史薪資明細/月紀錄
-	@GetMapping("/payroll/record/{empId}")
-	public ResponseEntity<?>  findAllByEmpId(@PathVariable Integer empId) {
-		return new ResponseEntity<>(slMonthService.findAllByEmpId(empId),HttpStatus.OK);
+	@GetMapping("/payroll/record")
+	public ResponseEntity<?>  findByEmpId(@RequestParam Integer empId,@RequestParam Integer slYear,@RequestParam Integer slMonth) {
+		return new ResponseEntity<>(slMonthService.findByEmpId(empId,slYear,slMonth),HttpStatus.OK);
 	}
 
 }

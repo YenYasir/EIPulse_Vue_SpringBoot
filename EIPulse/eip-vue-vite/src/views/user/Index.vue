@@ -5,14 +5,15 @@
       <drop-down title="個人管理" iconName="person-circle" :items="[
              { name: '個人資料查詢', path: '/' },
              { name: '個人資料修改', path: '/'},
-             { name: '薪資查詢', path: '/'}
+             { name: '薪資查詢', path: `/user/${emp.empId}/paySlip` }
            ]" menuId="submenu0"></drop-down>
       <drop-down title="出勤管理" iconName="clock-history" :items="[
              { name: '個人出席紀錄', path: `/user/${emp.empId}/attendance` },
              { name: '個人打卡記錄', path: `/user/${emp.empId}/clocktime` }
            ]" menuId="submenu1"></drop-down>
-      <drop-down title="會議室" iconName="cup-hot-fill" :items="[
-             { name: '員工聊天室', path: '/' },
+      <drop-down title="聊天室" iconName="cup-hot-fill" :items="[
+             { name: '員工聊天室', path: '/user/chats' },
+             { name: '私訊聊天室', path: '/user/privatechats' },
            ]" menuId="submenu5"></drop-down>
       <drop-down title="福委會" iconName="shop-window" :items="[
              { name: '商城首頁', path: '/mall' }

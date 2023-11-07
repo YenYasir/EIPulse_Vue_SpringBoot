@@ -56,7 +56,7 @@ public class SalaryMonthRecord {
     @Column(name = "net_salary", nullable = false)
     private Integer netSalary;
 
-    @Column(name = "created_date")
+    @Column(name = "created_date" ,insertable = false,updatable = false)
     private LocalDateTime createdDate;
 
     @JsonManagedReference(value = "salary-month-record-detail")

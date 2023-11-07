@@ -146,17 +146,17 @@ public class FormService {
 		}
 		eventRepo.save(eventLog);
 		// 查詢是否有下一個流程
-		FormEventLog nextEventLog = eventRepo.findNextEventForm(eventLog.getSequence() + 1);
+		FormEventLog nextEventLog = eventRepo.findNextEventForm(eventLog.getSequence() + 1,eventLog.getFormRecord().getFormId());
 		if (nextEventLog == null) {
 			FormRecord upfr = eventLog.getFormRecord();
 			upfr.setEndDate(date);
 			upfr.setStatusId(eventLog.getStatusId());
 
+
 			//表單結束後執行
-			if(upfr.getTypeId()==3 & upfr.getFormStatus().getStatusId()==3){
+			if(upfr.getTypeId()==3 & upfr.getStatusId()==2){
 				setResign(upfr);
 			}
-
 
 
 			frRepo.save(upfr);
@@ -184,6 +184,7 @@ public class FormService {
 	}
 
 	private void setResign(FormRecord form){
+
 		resRepo.save(new ResignRecord(form));
 	}
 

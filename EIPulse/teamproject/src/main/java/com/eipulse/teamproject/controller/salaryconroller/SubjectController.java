@@ -74,4 +74,13 @@ public class SubjectController {
     public ResponseEntity<?> findMinus() {
         return new ResponseEntity<>(subjectService.findMinus(), HttpStatus.OK);
     }
+    
+    // 更改科目狀態
+    @PostMapping("/payroll/subject/status")
+//    public ResponseEntity<?> updateStatus(@RequestParam Integer subjectId,@RequestParam String status){
+//    	return new ResponseEntity<>(subjectService.enabledSubject(subjectId, status), HttpStatus.OK);
+//    }
+    public ResponseEntity<?> updateStatus(@RequestParam String status,@RequestParam Integer subjectId){
+    	return new ResponseEntity<>(subjectService.updateStatus(status,subjectId), HttpStatus.OK);
+    }
 }

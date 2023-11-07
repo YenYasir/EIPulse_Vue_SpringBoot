@@ -52,9 +52,9 @@
 </template>
 
 <script>
+
 import axios from "axios";
 import Swal from "sweetalert2";
-import index from "./manage/Index.vue";
 import {empStore} from "../stores/employee.js";
 
 export default {
@@ -66,7 +66,7 @@ export default {
       password:store.password,
       isLogin: store.isLogin,
       setLoginStatus:store.setLoginStatus,
-      permission: store.permission
+      permissionId: store.permissionId
     }
   },
   methods: {
@@ -87,7 +87,7 @@ export default {
           icon:'success'
         })
         //判別權限導向不同畫面
-        if(sessionStorage.getItem('permission') ==='6' || this.permission==='6'){
+        if (parseInt(sessionStorage.getItem('permissionId'), 10) === 6 || parseInt(this.permissionId, 10) === 6){
           this.$router.push({name:'manage-index',params:{empId:this.empId}})
         }else {
           this.$router.push({name:'user-index',params:{empId:this.empId}})

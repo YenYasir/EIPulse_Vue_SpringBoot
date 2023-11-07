@@ -47,7 +47,7 @@ public class FormController {
 	public ResponseEntity<?> applyForOvertime(@RequestParam Integer audit, @RequestParam Integer empId,
 											  @RequestPart(value = "files", required = false) List<MultipartFile> files,
 											  @RequestPart(value = "data") Overtime overTime) throws IOException {
-		fileService.saveFile(files,empId);
+		fileService.uploadFormImage(files);
 
 		FormRecord form = formService.createForm(empId, audit,2);
 		form.setOvertime(overTime);
@@ -62,7 +62,7 @@ public class FormController {
 	public ResponseEntity<?> applyForLeave(@RequestParam Integer audit,@RequestParam Integer empId,
 									@RequestPart(value = "files", required = false) List<MultipartFile> files,
 									@RequestPart("data") Leave leave) throws IOException {
-		fileService.saveFile(files,empId);
+		fileService.uploadFormImage(files);
 
 		FormRecord form = formService.createForm(empId, audit,1);
 		form.setLeaveTable(leave);
@@ -81,7 +81,7 @@ public class FormController {
 			return new ResponseEntity<>(false,HttpStatus.OK);
 		}
 
-		fileService.saveFile(files,empId);
+		fileService.uploadFormImage(files);
 
 		FormRecord form = formService.createForm(empId, audit,3);
 		form.setResignation(resignation);

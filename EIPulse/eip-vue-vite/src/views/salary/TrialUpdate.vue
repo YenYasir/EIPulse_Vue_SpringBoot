@@ -15,9 +15,6 @@ const trial = ref({
     detaildDto: []
 })
 
-
-
-const subPrice = ref([]);
 const subjectPlus = ref([])
 const getPlusSubject = async () => {
 
@@ -25,7 +22,7 @@ const getPlusSubject = async () => {
     const response = await axios.get(API_URL)
     subjectPlus.value = response.data
     console.log(response.data);
-    console.log("回傳值" + subjectPlus.value)
+    console.log("回傳值123" + subjectPlus.value)
     // for (let i = 0; i < subject.value.length; i++) {
     //     selectedAmount.value = subject.value[i].amountDefault
     // }
@@ -79,7 +76,7 @@ const addForm = () => {
         // n: '',
         // // id: '',
         subjectId: '',
-        amount: ''
+        amount: 0
     }
     // formCount.value.push(count)
     selectedSubjectA.value.push(newitem)
@@ -165,7 +162,7 @@ const sendData = ref({
         id: '',
         empId: '',
         subjectId: '',
-        amount: '',
+        amount: 0,
         createdDate: '',
         recoirdId: '',
     }]
@@ -186,52 +183,50 @@ const handleSubmit = async () => {
     sendData.value.salaryMonthRecordDto = trial.value.salaryMonthRecordDto
     sendData.value.detaildDto = trial.value.detaildDto.concat(selectedSubjectA.value, selectedSubjectD.value)
 
+    // console.log(`intput->`, sendData.value)
+    // console.log(`output->`, selectedSubjectA.value)
+    console.log(`outputTOdb->`, trial.value)
+
     const API_URL = `${import.meta.env.VITE_API_JAVAURL}payroll/record/update`
     try {
-        const response = await axios.post(API_URL, trial.value)
-        console.log(`output->`, response.data)
+        const response = await axios.post(API_URL, sendData.value)
+        console.log(`output update->`, response.data)
     } catch (error) {
         console.error(error);
     }
-    // sendData.value.salaryMonthRecordDto.recordId = trial.value.salaryMonthRecordDto.id,
-    //     sendData.value.salaryMonthRecordDto.empId = trial.value.salaryMonthRecordDto.empId,
-    //     sendData.value.salaryMonthRecordDto.slYear = trial.value.salaryMonthRecordDto.slYear
-    // sendData.value.salaryMonthRecordDto.slMonth = trial.value.salaryMonthRecordDto.slMonth,
-    //     sendData.value.salaryMonthRecordDto.addSum = trial.value.salaryMonthRecordDto.slYear,
-    //     sendData.value.salaryMonthRecordDto.deduSum = trial.value.salaryMonthRecordDto.deduSum,
-    //     sendData.value.salaryMonthRecordDto.netSalary = trial.value.salaryMonthRecordDto.addSum,
-    //     sendData.value.salaryMonthRecordDto.createdDate = trial.value.salaryMonthRecordDto.createdDate,
-
-    //     sendData.value.detaildDto = trial.value.detaildDto.concat(addList.value)
-    // sendData.value.detaildDto = trial.value.detaildDto.concat(deduList.value)
-
-    // sendData.value.detaildDto = trial.value.detaildDto.concat(selectedSubjectB.value)
-    // console.log(`回傳output->`, sendData.value.recordId)
     console.log(`output->output`, sendData.value)
 
 }
-
-// const getAmountDefaultById = (subjectId) => {
-//     subjectPlus.find(subjectId)
-// }
-
-const getAmountBySubjectId = (id) => {
-    const subject = selectedSubjectA[index].find(s => s.id === id)
-
-    return subject ? subject.amount : 0
-}
-
 // change事件
-const changeAmountA = (index) => {
-    const id = selectedSubjectA[index].subjectId
-    const amount = getAmountBySubjectId(id)
-
-    selectedSubjectA[index].amount.value = amount
-
-    console.log(selectedSubjectA[index].amount.value)
-
+const changeAmountA = (Obj, index) => {
+    console.log('index');
+    console.log(Obj);
+    // selectedSubjectA[index].value.amount=
+    const newObj = subjectPlus.value.find(item => item.subjectId === Obj)
+    console.log(`output-123>`, newObj.amountDefault.value)
+    console.log('類型' + typeof newObj.amountDefault);
+    if (newObj.amountDefault != undefined) {
+        selectedSubjectA.value[index].amount = newObj.amountDefault
+    } else {
+        selectedSubjectA.value[index].amount = 0
+    }
+    console.log(`output$$->`, newObj.amountDefault)
 }
 
+const changeAmountD = (Obj, index) => {
+    console.log('index');
+    console.log(Obj);
+    // selectedSubjectA[index].value.amount=
+    const newObj = subjectPlus.value.find(item => item.subjectId === Obj)
+    console.log(`output-123>`, newObj.amountDefault.value)
+    console.log('類型' + typeof newObj.amountDefault);
+    if (newObj.amountDefault != undefined) {
+        selectedSubjectD.value[index].amount = newObj.amountDefault
+    } else {
+        selectedSubjectD.value[index].amount = 0
+    }
+    console.log(`output$$->`, newObj.amountDefault)
+}
 
 // const changeAmountA = (subjectId, index) => {
 //     for (let a of selectedSubjectA.value) {
@@ -243,7 +238,7 @@ const changeAmountA = (index) => {
 //     // Object.assign(selectedSubjectA[index].amount, selectedSubjectA[index].subjectId.value)
 //     console.log('~~~' + selectedSubjectA[index].value.amount);
 // }
-const add = ref(true)
+// const add = ref(true)
 
 
 
@@ -390,7 +385,8 @@ onMounted(loadData)
                                             <th>
                                                 <div class=" form-floating text-center">
                                                     <select class="form-control  text-center"
-                                                        v-model="selectedSubjectA[index].subjectId" @change="changeAmountA">
+                                                        v-model="selectedSubjectA[index].subjectId"
+                                                        @change="changeAmountA(selectedSubjectA[index].subjectId, index)">
                                                         <option value="">科目名稱</option>
                                                         <option v-for="s in subjectPlus" :value="s.subjectId"
                                                             :key="s.subjectId">{{
@@ -402,7 +398,7 @@ onMounted(loadData)
                                             <th>
                                                 <div class="form-floating ">
                                                     <!-- <label for="price">金額</label> -->
-                                                    <input v-model="selectedSubjectA[index].amount" type="text"
+                                                    <input v-model.trim="selectedSubjectA[index].amount" type="text"
                                                         class="form-control  text-center" id="price" placeholder="請輸入數字"
                                                         @change="calculateAddSum">
 
@@ -466,7 +462,8 @@ onMounted(loadData)
                                             <th>
                                                 <div class=" form-floating text-center">
                                                     <select class="form-control text-center"
-                                                        v-model="selectedSubjectD[index].subjectId" @change="changeSubType">
+                                                        v-model="selectedSubjectD[index].subjectId"
+                                                        @change="changeAmountD(selectedSubjectD[index].subjectId, index)">
                                                         <option value="" disabled>科目名稱</option>
                                                         <option v-for="m in subjectMinus" :value="m.subjectId"
                                                             :key="m.subjectId">{{

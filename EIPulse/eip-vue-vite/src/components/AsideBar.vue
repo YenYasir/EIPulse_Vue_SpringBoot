@@ -1,16 +1,18 @@
 
 <template>
   <clock-time ref="clockModal"></clock-time>
-  <div class="d-flex flex-column p-0 bg-dark text-white rounded-4"
+  <div class="d-flex flex-column p-0 bg-dark text-white rounded-4"  :class="{ 'sidebar': sidebarVisible }" 
        style="width: 250px; height: 100vh;overflow-y: auto;">
-      
-    <h3 class=" rounded-4 text-center " style="line-height: 2 ;background-color: black">
+       <button class="hamburger-icon" @click="toggleSidebar">
+      <i class="bi bi-list"></i>
+    </button>
+    <h3 class=" rounded-4 text-center " style="line-height: 2 ;background-color: black ; color: orange;" >
       <img src="../assets/logo/logo.png" height="40" alt="Logo" loading="lazy"/>
       EIPulse
     </h3>
     <ul class="nav nav-pills flex-column mb-auto">
       <li class="nav-item">
-        <router-link :to="homePath" class="nav-link text-white">
+        <router-link :to="homePath" class="nav-link text-warning">
           <i class="bi bi-house-door">主頁</i>
         </router-link>
       </li>
@@ -28,6 +30,11 @@
   </div>
 </template>
 <script setup>
+const sidebarVisible = ref(true); // Initially, the sidebar is visible
+
+const toggleSidebar = () => {
+  sidebarVisible.value = !sidebarVisible.value;
+}
 import DropDown from "./DropDown.vue";
 import {empStore} from "../stores/employee.js";
 
@@ -59,5 +66,17 @@ const showModal = () => {
 
 
 <style scoped>
+.hamburger-icon {
+  display: none; 
+}
 
+@media screen and (max-width: 767px) {
+  .sidebar {
+    display: none; 
+  }
+
+  .hamburger-icon {
+    display: block; 
+  }
+}
 </style>

@@ -18,9 +18,9 @@ public interface SalaryMonthRecordRepository extends JpaRepository<SalaryMonthRe
 //	@Query(value ="update salary_month_record r join salary_detail d on r.id = d.record_id  set r.status = :status1 ,d.status= :status2 where r.emp_id = :empId and r.id = :id ;" ,nativeQuery = true)
 	 Integer translateStatusUnabled(@Param(value="id") Integer id,@Param(value="empId") Integer empId);
 	
-	// 員工編號找歷史月紀錄/明細 (狀態: 已結新) for 薪資明細
-	@Query(value = "select * from salary_month_record where emp_id = :empId and status = 1", nativeQuery = true)
-	 List<SalaryMonthRecord> findByEmpId(@Param(value="empId") Integer empId);
+	// 員工編號找歷史月紀錄/明細 for 薪資明細
+	@Query(value = "select * from salary_month_record where emp_id = :empId and sl_Year = :year and sl_Month = :month", nativeQuery = true)
+	SalaryMonthRecord findByEmpId(@Param(value="empId") Integer empId,@Param(value="year") Integer year,@Param(value="month")Integer month);
 	
 	//透年月找
 	@Query(value = "select * from salary_month_record where sl_Year = :year and sl_Month = :month", nativeQuery = true)

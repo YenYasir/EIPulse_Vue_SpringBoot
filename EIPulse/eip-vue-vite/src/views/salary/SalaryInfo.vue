@@ -13,7 +13,7 @@ const employmentInsuranceRate = ref(0.12)
 const totalPages = ref(0)
 const currentPage = ref(1)
 const keyword = ref('')
-
+const basicSalarySum = ref(0)
 
 // 分頁
 const getPage = async () => {
@@ -22,8 +22,18 @@ const getPage = async () => {
     console.log(response.data);
     totalPages.value = response.data.totalPages
     salaryInfos.value = response.data.content
-}
+    console.log(`output->`, typeof salaryInfos)
 
+    // 重置 basicSalarySum 的值
+    basicSalarySum.value = 0;
+
+    for (let key in salaryInfos.value) {
+        const info = salaryInfos.value[key];
+        basicSalarySum.value += info.basicSalary;
+    }
+    console.log(`outputsUM->`, basicSalarySum.value)
+
+}
 const selectPage = (newPage) => {
     currentPage.value = newPage;
     console.log("當前頁" + currentPage.value)
@@ -31,6 +41,8 @@ const selectPage = (newPage) => {
 }
 
 const inputHandler = async () => {
+    // if(keyword.value ==''&& keyword.value  == null)
+    // getPage()
     if (keyword.value !== null && keyword.value !== '') {
 
         const API_URL = `${import.meta.env.VITE_API_JAVAURL}payroll/page/${keyword.value}/${currentPage.value}`
@@ -43,8 +55,31 @@ const inputHandler = async () => {
         } catch (error) {
             console.error(error);
         }
+    } else {
+        getPage()
     }
 }
+// const arr = Object.values(salaryInfos)
+// const salarySum = arr.reduce((sum, salaryInfo) => {
+//     return sum + salaryInfo.value.basicSalary;
+// }, 0);
+// console.log(`output->Sum`, sum)
+
+// let basicSalarySum = 0;
+// for (let key in salaryInfos) {
+//     const info = salaryInfos[key]
+//     basicSalarySum += info.basicSalary
+//     console.log(`outputSum->`, basicSalarySum)
+// }
+// const getBasicSalarySum = () => {
+//     for (let key in salaryInfos.value) {
+//         const info = salaryInfos.value[key]
+//         basicSum += info.basicSalary
+
+//     }
+//     console.log(`outputSum->`, basicSum.value)
+// }
+
 onMounted(() => {
     // loadSalaryInfos()
     getPage()
@@ -55,9 +90,9 @@ onMounted(() => {
 <template>
     <!-- <SalaryBar :items="[{ name: '薪資設定', path: '/info' }, { name: '薪資科目', path: '/subject' }]"></SalaryBar> -->
 
-    <div class="container c">
-        <div class="row mb-2">
-            <div class="col-3">
+    <div class="container  c">
+        <div class="row mb-2 ">
+            <div class="col-3 ">
                 <RouterLink class="btn btn-primary btn-sm mb-3" :to="{ name: 'salaryForm' }">
                     <i class="bi bi-plus-lg"></i>新增
                 </RouterLink>
@@ -71,71 +106,84 @@ onMounted(() => {
 
             </div>
         </div>
-        <div class="div1 ">
-            <table class="table table-sm table-hover">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>員工編號</th>
-                        <th>員工姓名</th>
-                        <th>基本薪資(元)</th>
-                        <th>勞保投保級距</th>
-                        <th>勞保費</th>
-                        <th>勞退自願提撥率</th>
-                        <!-- <th>勞退自願提繳退休金</th> -->
-                        <th>健保投保級距</th>
-                        <th>眷屬扶養人數</th>
-                        <th>健保費</th>
-                        <th>福利金扣繳(Y/N)</th>
-                        <th>動作</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="salaryInfo in salaryInfos" :key="salaryInfo.empId">
-                        <td><router-Link :to="'/info/' + salaryInfo.empId" @click="handleLinkClick"><i class="bi bi-zoom-in"
-                                    style="color:black"></i></router-Link></td>
-                        <td>{{ salaryInfo.empId }}</td>
-                        <td>{{ salaryInfo.empName }}</td>
-                        <td>{{ salaryInfo.basicSalary }}</td>
-                        <td>{{ salaryInfo.laborInsuranceGrade }}</td>
-                        <td>{{ Math.round(salaryInfo.laborInsuranceGrade * laborInsuranceRateEmp * employmentInsuranceRate)
-                        }}
-                        </td>
-                        <td>{{ salaryInfo.laborVolunteerPensionRate * 100 }}%</td>
-                        <!-- <td>{{ Math.round(salaryInfo.laborVolunteerPensionRate * salaryInfo.laborInsuranceGrade) }}
+        <div class="card shadow-sm border-0">
+            <div class="card-header">
+                <p style="font-weight: bold ; margin:2px;">員工薪資表</p>
+            </div>
+            <div class="card-body">
+                <div class="div1 ">
+                    {{ basicSalarySum }}
+                    <table class="table table-sm table-hover">
+                        <thead>
+                            <tr>
+                                <th># {{ basicSalarySum }}</th>
+                                <th>員工編號</th>
+                                <th>員工姓名</th>
+                                <th>基本薪資(元)</th>
+                                <th>勞保投保級距</th>
+                                <th>勞保費</th>
+                                <th>勞退自願提撥率</th>
+                                <!-- <th>勞退自願提繳退休金</th> -->
+                                <th>健保投保級距</th>
+                                <th>眷屬扶養人數</th>
+                                <th>健保費</th>
+                                <th>福利金扣繳(Y/N)</th>
+                                <th>動作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="salaryInfo in salaryInfos" :key="salaryInfo.empId">
+                                <td><router-Link :to="'/info/' + salaryInfo.empId" @click="handleLinkClick"><i
+                                            class="bi bi-zoom-in" style="color:black"></i></router-Link></td>
+                                <td>{{ salaryInfo.empId }}</td>
+                                <td>{{ salaryInfo.empName }}</td>
+                                <td>{{ salaryInfo.basicSalary.toLocaleString() }}</td>
+                                <td>{{ salaryInfo.laborInsuranceGrade.toLocaleString() }}</td>
+                                <td>{{ Math.round(salaryInfo.laborInsuranceGrade * laborInsuranceRateEmp *
+                                    employmentInsuranceRate)
+                                    .toLocaleString() }}
+                                </td>
+                                <td>{{ salaryInfo.laborVolunteerPensionRate * 100 }}%</td>
+                                <!-- <td>{{ Math.round(salaryInfo.laborVolunteerPensionRate * salaryInfo.laborInsuranceGrade) }}
                         </td> -->
-                        <td>{{ salaryInfo.healthInsuranceGrade }} </td>
-                        <td>{{ salaryInfo.familyDependantsNum }} </td>
-                        <td>{{ Math.round(salaryInfo.healthInsuranceGrade * healthInsuranceRate
-                            * healthInsuranceRateEmp * (1 + salaryInfo.familyDependantsNum)) }} </td>
+                                <td>{{ salaryInfo.healthInsuranceGrade.toLocaleString() }} </td>
+                                <td>{{ salaryInfo.familyDependantsNum }} </td>
+                                <td>{{ Math.round(salaryInfo.healthInsuranceGrade * healthInsuranceRate
+                                    * healthInsuranceRateEmp * (1 + salaryInfo.familyDependantsNum)).toLocaleString() }}
+                                </td>
 
 
-                        <td v-if="salaryInfo.welfareBenefitsDeduction == 0">是</td>
-                        <td v-else>否</td>
+                                <td v-if="salaryInfo.welfareBenefitsDeduction == 0">否</td>
+                                <td v-else>是</td>
 
 
-                        <!-- <td>{{ salaryInfo.welfareBenefitsDeduction }} </td> -->
-                        <!-- <td><button class="btn btn-secondary mx-1" @click="editSalaryInfo(salaryInfo.empId)"><i
+                                <!-- <td>{{ salaryInfo.welfareBenefitsDeduction }} </td> -->
+                                <!-- <td><button class="btn btn-secondary mx-1" @click="editSalaryInfo(salaryInfo.empId)"><i
                                     class="bi bi-pencil-square"></i></button> -->
-                        <td>
-                            <router-link class="btn btn-secondary  btn-sm mx-1"
-                                :to="'/salary/info/update/' + salaryInfo.empId"><i
-                                    class="bi bi-pencil-square "></i></router-link>
-                            <button class="btn btn-secondary  btn-sm mx-1" @click="deleteSalaryInfo(salaryInfo.empId)"><i
-                                    class="bi bi-bucket"></i></button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <!-- </div> -->
+                                <td>
+                                    <router-link class="btn btn-secondary  btn-sm mx-1"
+                                        :to="'/salary/info/update/' + salaryInfo.empId"><i
+                                            class="bi bi-pencil-square "></i></router-link>
+                                    <button class="btn btn-secondary  btn-sm mx-1"
+                                        @click="deleteSalaryInfo(salaryInfo.empId)"><i class="bi bi-bucket"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+                    <!-- </div> -->
+                </div>
+            </div>
+            <div class="row mb-2 d-flex justify-content-center">
+                <div class="col-3">
+                    <Paging :totalPages="totalPages" :currentPage="currentPage" @selectPage="selectPage"></Paging>
+                </div>
+            </div>
         </div>
-    </div>
-    <!-- <div class="card-footer text-body-secondary"> -->
-    <!-- </div> -->
-    <div class="row mb-2">
-        <div class="col-3">
-            <Paging :totalPages="totalPages" :currentPage="currentPage" @selectPage="selectPage"></Paging>
-        </div>
+
+        <!-- <div class="card-footer text-body-secondary"> -->
+        <!-- </div> -->
+
     </div>
 </template>
 <style scoped>

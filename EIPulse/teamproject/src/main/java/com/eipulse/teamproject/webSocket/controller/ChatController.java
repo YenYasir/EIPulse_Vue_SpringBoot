@@ -1,6 +1,7 @@
 package com.eipulse.teamproject.webSocket.controller;
 
 import com.eipulse.teamproject.repository.employeerepository.EmployeeRepository;
+import com.eipulse.teamproject.service.formapprovalservice.FileService;
 import com.eipulse.teamproject.webSocket.entity.MessageEntity;
 import com.eipulse.teamproject.webSocket.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,18 +26,16 @@ public class ChatController {
     private String uploadPath;
     @Autowired
     private EmployeeRepository empRepository;
+    @Autowired
+    private FileService fileService;
 
     @PostMapping("/sendMsg")
     public void sendMsg(@RequestPart(value = "file", required = false) MultipartFile file,
                         @RequestPart(value = "data") MessageEntity messageEntity) throws IOException {
         if(file!=null){
-            String directoryPath = uploadPath + "/privateChats/" + messageEntity.getUser1() +  messageEntity.getUser2() + "/" + messageEntity.getSender();
-            File directory = new File(directoryPath);
-            if (!directory.exists()) {
-                directory.mkdirs(); // 這裡會建立整個路徑，包括中間可能不存在的目錄
-            }
-            String filePath = directoryPath + "/" + file.getOriginalFilename();
-            file.transferTo(new File(filePath));
+            String path = fileService.uploadImage(file,String.valueOf(messageEntity.getSender()));
+            System.out.println(path);
+            messageEntity.setFile(path);
         }
         messageService.sendToUser(messageEntity);
     }

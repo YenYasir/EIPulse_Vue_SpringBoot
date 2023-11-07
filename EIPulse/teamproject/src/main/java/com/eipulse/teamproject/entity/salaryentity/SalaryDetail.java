@@ -43,7 +43,7 @@ public class SalaryDetail {
 	@Column(name = "amount", nullable = false)
 	private Integer amount;
 
-	@Column(name = "created_date")
+	@Column(name = "created_date" ,insertable = false,updatable = false)
 	private LocalDateTime createdDate;
 
 
