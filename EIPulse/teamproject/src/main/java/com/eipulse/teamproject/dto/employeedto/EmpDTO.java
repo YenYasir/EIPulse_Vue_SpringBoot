@@ -28,6 +28,7 @@ public class EmpDTO {
 	@JsonInclude(JsonInclude.Include.NON_NULL)
 	private Integer titleId;
 	private String titleName;
+	private String deptName;
 	private String empState;
 	private LocalDate hireDate;
 	private LocalDate leaveDate;
@@ -85,8 +86,8 @@ public class EmpDTO {
 	}
 
 	public EmpDTO(Integer empId, String empName, LocalDate birth, String email, String idNumber, String gender,
-			String phone, String tel, String photoUrl, String address, String titleName, String empState,
-			LocalDate hireDate, LocalDate leaveDate, LocalDate editDate, String password) {
+			String phone, String tel, String photoUrl, String address, String titleName, String deptName,
+			String empState, LocalDate hireDate, LocalDate leaveDate, LocalDate editDate, String password) {
 		this.empId = empId;
 		this.empName = empName;
 		this.birth = birth;
@@ -98,6 +99,7 @@ public class EmpDTO {
 		this.photoUrl = photoUrl;
 		this.address = address;
 		this.titleName = titleName;
+		this.deptName = deptName;
 		this.empState = empState;
 		this.hireDate = hireDate;
 		this.leaveDate = leaveDate;
@@ -142,6 +144,7 @@ public class EmpDTO {
 		this.photoUrl = emp.getPhotoUrl();
 		this.address = emp.getAddress();
 		this.titleName = emp.getTitle().getTitleName();
+		this.deptName = emp.getTitle().getDept().getDeptName();
 		this.empState = emp.getEmpState();
 		this.hireDate = emp.getHireDate();
 		this.leaveDate = emp.getLeaveDate();

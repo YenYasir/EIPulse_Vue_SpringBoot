@@ -1,5 +1,14 @@
 package com.eipulse.teamproject.controller.formapprovalcontroller;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -10,72 +19,72 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
+import com.eipulse.teamproject.service.formapprovalservice.FileService;
+
 @RestController
 @CrossOrigin
 public class FileController {
 
-    @Value("${upload.path}")
-    private String uploadPath;
-    @GetMapping("/download/{empId}/{fileNames:.+}")
-    public ResponseEntity<byte[]>[] getImages1(@PathVariable Integer empId, @PathVariable String fileNames) throws IOException {
+	@Autowired
+	FileService fileService;
 
-        List<ResponseEntity<byte[]>> responseEntities = new ArrayList<>();
+	@Value("${upload.path}")
+	private String uploadPath;
 
-        String[] fileNameArray = fileNames.split(",");
-        for (String fileName : fileNameArray) {
+	@GetMapping("/download/{empId}/{fileNames:.+}")
+	public ResponseEntity<byte[]>[] getImages1(@PathVariable Integer empId, @PathVariable String fileNames)
+			throws IOException {
 
-                String filePath = uploadPath + "/" + empId + "/" + fileName;
-                byte[] photoFile = getFileAsByteArray(filePath);
+		List<ResponseEntity<byte[]>> responseEntities = new ArrayList<>();
 
-                HttpHeaders headers = new HttpHeaders();
-                headers.setContentType(MediaType.IMAGE_JPEG);
+		String[] fileNameArray = fileNames.split(",");
+		for (String fileName : fileNameArray) {
 
-                ResponseEntity<byte[]> responseEntity = new ResponseEntity<>(photoFile, headers, HttpStatus.OK);
-                responseEntities.add(responseEntity);
+			String filePath = uploadPath + "/" + empId + "/" + fileName;
+			byte[] photoFile = getFileAsByteArray(filePath);
 
-        }
-        ResponseEntity<byte[]>[] responseArray = new ResponseEntity[responseEntities.size()];
-        return responseEntities.toArray(responseArray);
-    }
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(MediaType.IMAGE_JPEG);
 
+			ResponseEntity<byte[]> responseEntity = new ResponseEntity<>(photoFile, headers, HttpStatus.OK);
+			responseEntities.add(responseEntity);
 
+		}
+		ResponseEntity<byte[]>[] responseArray = new ResponseEntity[responseEntities.size()];
+		return responseEntities.toArray(responseArray);
+	}
 
-    @GetMapping("/chats/{roomId}/{empId}/{fileName}")
-    public ResponseEntity<?> getImages(@PathVariable Integer roomId, @PathVariable String empId, @PathVariable String fileName) throws IOException {
-        String filePath = uploadPath + "/chats/" + roomId + "/" + empId + "/" + fileName;
-        byte[] photoFile = getFileAsByteArray(filePath);
-        String base64Image = Base64.getEncoder().encodeToString(photoFile);
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.IMAGE_JPEG);
+	@GetMapping("/chats/{roomId}/{empId}/{fileName}")
+	public ResponseEntity<?> getImages(@PathVariable Integer roomId, @PathVariable String empId,
+			@PathVariable String fileName) throws IOException {
+		String filePath = uploadPath + "/chats/" + roomId + "/" + empId + "/" + fileName;
+		byte[] photoFile = getFileAsByteArray(filePath);
+		String base64Image = Base64.getEncoder().encodeToString(photoFile);
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.IMAGE_JPEG);
 
-        return new ResponseEntity<>(base64Image, headers, HttpStatus.OK);
-    }
+		return new ResponseEntity<>(base64Image, headers, HttpStatus.OK);
+	}
 
-    public byte[] getFileAsByteArray(String filePath) throws IOException {
-        Path path = Paths.get(filePath);
+	public byte[] getFileAsByteArray(String filePath) throws IOException {
+		Path path = Paths.get(filePath);
 
-        // 根據檔案路徑取得byte[]
-        byte[] fileData = Files.readAllBytes(path);
+		// 根據檔案路徑取得byte[]
+		byte[] fileData = Files.readAllBytes(path);
 
-        return fileData;
-    }
+		return fileData;
+	}
 
-    @GetMapping("/privateChats/{folder}/{sender}/{fileName}")
-    public ResponseEntity<?> getPrivateImages(@PathVariable Integer folder, @PathVariable String sender, @PathVariable String fileName) throws IOException {
-        String filePath = uploadPath + "/privateChats/" + folder + "/" + sender + "/" + fileName;
-        byte[] photoFile = getFileAsByteArray(filePath);
-        String base64Image = Base64.getEncoder().encodeToString(photoFile);
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.IMAGE_JPEG);
+	@GetMapping("/privateChats/{folder}/{sender}/{fileName}")
+	public ResponseEntity<?> getPrivateImages(@PathVariable Integer folder, @PathVariable String sender,
+			@PathVariable String fileName) throws IOException {
+		String filePath = uploadPath + "/privateChats/" + folder + "/" + sender + "/" + fileName;
+		byte[] photoFile = getFileAsByteArray(filePath);
+		String base64Image = Base64.getEncoder().encodeToString(photoFile);
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.IMAGE_JPEG);
 
-        return new ResponseEntity<>(base64Image, headers, HttpStatus.OK);
-    }
+		return new ResponseEntity<>(base64Image, headers, HttpStatus.OK);
+	}
 
 }

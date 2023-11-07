@@ -132,51 +132,7 @@ const router = createRouter({
                     component: () => import('@/component/employee/UpdateTitle.vue'),
                     name: 'UpdateTitle',
                 },
-                // {
-                //     path: '/manage/:empId/salary',
-                //     component: () => import('@/views/salary/SalaryView.vue'),
-                //     name: 'salary',
-                // },
-                // {
-                //     path: '/manage/:empId/salary/info',
-                //     component: () => import('@/views/salary//SalaryInfo.vue'),   
-                    
-                // },
-                // {
-                //     path: '/manage/:empId/salary/info/add',
-                //     component: () => import('@/views/salary/SalaryForm.vue'),
-                //     name: 'salaryForm'
-                // },
-                // {
-                //     path: '/manage/salary/info/update/:empId',
-                //     component: () => import('@/views/salary/InfoUpdate.vue'),
-                //     name: 'infoUpdate'
-                // },
-                // {
-                //     path: '/manage/:empId/salary/info/:empId',
-                //     component: () => import('@/views/salary/InfoPersonal.vue'),
-                //     name: 'infoPersonal'
-                // },
-                // {
-                //     path: '/manage/:empId/salary/history/:empId',
-                //     component: () => import('@/views/salary/SalaryHistory.vue'),
-                //     name: 'salaryHistory'
-                // },
-                // {
-                //     path: '/manage/:empId/salary/subject',
-                //     component: () => import('@/views/salary/subjectView.vue'),
-                //     name: 'subject'
-                // },
-                // {
-                //     path: '/manage/:empId/salary/trial/calculate',
-                //     component: () => import('@/views/salary/SalaryTrial.vue'),
-                //     name: 'trial'
-                // },
-                // {
-                //     path: '/trial/update/:id',
-                //     component: () => import('@/views/salary/TrialUpdate.vue'),
-                //     name: 'trialUpdate'
-                // }, 
+    
                     {
                     path: '/salary',
                     component: () => import('@/views/salary/SalaryView.vue'),

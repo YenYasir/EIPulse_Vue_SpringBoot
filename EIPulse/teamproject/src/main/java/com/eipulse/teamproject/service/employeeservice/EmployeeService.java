@@ -1,5 +1,7 @@
 package com.eipulse.teamproject.service.employeeservice;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -9,6 +11,7 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -17,7 +20,10 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.azure.storage.blob.BlobServiceClient;
+import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.eipulse.teamproject.config.SecurityConfig;
 import com.eipulse.teamproject.dto.employeedto.EmpDTO;
 import com.eipulse.teamproject.dto.employeedto.TitleMoveDTO;
@@ -28,6 +34,7 @@ import com.eipulse.teamproject.entity.employee.TitleMove;
 import com.eipulse.teamproject.repository.employeerepository.EmployeeRepository;
 import com.eipulse.teamproject.repository.employeerepository.TitleMoveRepository;
 import com.eipulse.teamproject.repository.employeerepository.TitleRepository;
+import com.eipulse.teamproject.service.formapprovalservice.FileService;
 
 @Service
 public class EmployeeService {
@@ -38,6 +45,11 @@ public class EmployeeService {
 	private EmployeeRepository empRepo;
 	private TitleMoveService titleMoveService;
 	private TitleMoveRepository moveRepo;
+	@Value("${upload.path}")
+	private String uploadPath;
+	private String connectStr = "DefaultEndpointsProtocol=https;AccountName=eipulseimages;AccountKey=J3OLfPQvTNjhsavqjIZpktnTy8hCx12b3u6t+IdLYwIJ7i/nzSGJuLgF7Do5/SPoBi5+PkLamBDF+AStcEcIBQ==;EndpointSuffix=core.windows.net";
+	private BlobServiceClient blobServiceClient = new BlobServiceClientBuilder().connectionString(connectStr)
+			.buildClient();;
 
 	@Autowired
 	public EmployeeService(SecurityConfig securityConfig, TitleRepository titleRepository,
@@ -98,7 +110,7 @@ public class EmployeeService {
 	}
 
 	// update
-	public EmpDTO updateEmp(EmpDTO empDTO) {
+	public EmpDTO updateEmp(EmpDTO empDTO, MultipartFile file) {
 		Employee employee = empRepo.findById(empDTO.getEmpId())
 				.orElseThrow(() -> new RuntimeException("Employee not found with ID: " + empDTO.getEmpId()));
 
@@ -108,9 +120,35 @@ public class EmployeeService {
 		employee.setEmail(empDTO.getEmail());
 		employee.setAddress(empDTO.getAddress());
 		employee.setTel(empDTO.getTel());
-
+		FileService fileService = new FileService();
+		if (file != null) {
+			String photoUrl = fileService.uploadImage(file);
+			employee.setPhotoUrl(photoUrl);
+		}
 		// 保存並返回更新後的employee
 		return new EmpDTO(empRepo.save(employee));
+	}
+
+	// 變更頭像
+	public EmpDTO updateAvatar(EmpDTO empDTO, MultipartFile file) {
+		Employee employee = empRepo.findById(empDTO.getEmpId())
+				.orElseThrow(() -> new RuntimeException("Employee not found with ID: " + empDTO.getEmpId()));
+		try {
+			String uploadPath = "${upload.path}";
+			String fileName = "avatar_" + empDTO.getEmpId() + "_" + file.getOriginalFilename();
+			String filePath = uploadPath + "/" + fileName;
+
+			File localFile = new File(filePath);
+			file.transferTo(localFile);
+
+			employee.setPhotoUrl(filePath);
+
+			empRepo.save(employee);
+			return new EmpDTO(empRepo.save(employee));
+		} catch (IOException e) {
+
+		}
+		return empDTO;
 	}
 
 	// 變更員工職位
@@ -142,7 +180,7 @@ public class EmployeeService {
 		return result;
 	}
 
-	// 模糊收尋分頁功能
+	// 模糊搜尋分頁功能
 	public Page<EmpDTO> findByNamePage(Integer pageNumber, String name) {
 		Pageable pgb = PageRequest.of(pageNumber - 1, 5, Sort.Direction.DESC, "empId");
 		Page<Employee> page = empRepo.findByNamePage(name, pgb);
@@ -171,7 +209,8 @@ public class EmployeeService {
 				empDTO.setTel(employee.getTel());
 				empDTO.setAddress(employee.getAddress());
 				empDTO.setTitleName(employee.getTitle().getTitleName());
-
+				empDTO.setDeptName(employee.getTitle().getDept().getDeptName());
+				empDTO.setPhotoUrl(employee.getPhotoUrl());
 				// 獲取員工的所有權限ID
 				for (PermissionInfo permissionInfo : employee.getPermissionInfos()) {
 					permissionIds.add(permissionInfo.getPermission().getPermissionId());

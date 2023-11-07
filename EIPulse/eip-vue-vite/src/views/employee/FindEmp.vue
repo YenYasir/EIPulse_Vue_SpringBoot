@@ -246,7 +246,10 @@ export default {
 
   background-color: #a3c4e8;
 }
-
+.card-body {
+  max-height: 800px;
+  overflow-y: auto; 
+}
 img {
   width: 50px;
 }

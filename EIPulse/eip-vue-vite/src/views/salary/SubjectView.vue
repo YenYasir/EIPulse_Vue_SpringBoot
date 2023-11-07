@@ -1,35 +1,4 @@
-<script setup>
-import axios from "axios";
-import { ref, reactive } from "vue"
-import { onMounted } from 'vue';
 
-const subject = ref([]);
-const subjectInput = ref({})
-
-const handleSubmit = async () => {
-    const API_URL = `${import.meta.env.VITE_API_JAVAURL}payroll/subject/edit`
-    const response = await axios.post(API_URL, subjectInput.value)
-    subjectInput.value = {}
-    loadSubject()
-    // location.reload()
-}
-const loadSubject = async () => {
-    const API_URL = `${import.meta.env.VITE_API_JAVAURL}payroll/subjects`
-    const { data } = await axios.get(API_URL)
-    subject.value = data;
-}
-
-
-const openModal = async (subjectId) => {
-    const API_URL = `${import.meta.env.VITE_API_JAVAURL}payroll/subject/${subjectId}`
-    const { data } = await axios.get(API_URL)
-    subjectInput.value = data;
-
-}
-
-onMounted(loadSubject);
-
-</script>
 
 <template>
     <div class="container c">
@@ -218,8 +187,45 @@ onMounted(loadSubject);
 
     </div>
 </template>
-    
+
+<script setup>
+import axios from "axios";
+import { ref, reactive } from "vue"
+import { onMounted } from 'vue';
+
+const subject = ref([]);
+const subjectInput = ref({})
+
+const handleSubmit = async () => {
+    const API_URL = `${import.meta.env.VITE_API_JAVAURL}payroll/subject/edit`
+    const response = await axios.post(API_URL, subjectInput.value)
+    subjectInput.value = {}
+    loadSubject()
+    // location.reload()
+}
+const loadSubject = async () => {
+    const API_URL = `${import.meta.env.VITE_API_JAVAURL}payroll/subjects`
+    const { data } = await axios.get(API_URL)
+    subject.value = data;
+}
+
+
+const openModal = async (subjectId) => {
+    const API_URL = `${import.meta.env.VITE_API_JAVAURL}payroll/subject/${subjectId}`
+    const { data } = await axios.get(API_URL)
+    subjectInput.value = data;
+
+}
+
+onMounted(loadSubject);
+
+</script>
+
 <style scoped>
+.card {
+  max-height: 800px;
+  overflow-y: auto; 
+}
 table {
     text-align: center;
     font-size: 15px;

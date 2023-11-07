@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.eipulse.teamproject.dto.employeedto.EmpDTO;
 import com.eipulse.teamproject.dto.employeedto.TitleMoveDTO;
@@ -112,9 +113,9 @@ public class EmpController {
 	// 更新員工
 	@Transactional
 	@PutMapping("/employee/updateEmp")
-	public ResponseEntity<?> update(@RequestBody EmpDTO empDTO) {
+	public ResponseEntity<?> update(@RequestBody EmpDTO empDTO, MultipartFile file) {
 		try {
-			return new ResponseEntity<>(employeeService.updateEmp(empDTO), HttpStatus.OK);
+			return new ResponseEntity<>(employeeService.updateEmp(empDTO, file), HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
