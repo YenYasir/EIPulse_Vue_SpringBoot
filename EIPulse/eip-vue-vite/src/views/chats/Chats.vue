@@ -283,7 +283,7 @@ const formatStartDate = (dateString) => {
 .chat-container {
   display: flex;
   flex-direction: column;
-  height: 700px;
+  height: 40%;
 }
 
 .chat-header {

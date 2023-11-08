@@ -17,11 +17,11 @@
           <option value="1">半年特休</option>
           <option value="2">一年特休</option>
           <option value="3">半薪病假</option>
-          <option value="4" v-if="empStore.gender=='女'">生理假</option>
+          <option value="4" v-if="emp.gender=='女'">生理假</option>
           <option value="5">事假</option>
           <option value="6">婚假</option>
           <option value="7">喪假</option>
-          <option value="8" v-if="empStore.gender=='女'">產假</option>
+          <option value="8" v-if="emp.gender=='女'">產假</option>
         </select>
         <span v-if="form.type >= 1"
         >目前還可以請 : {{ Math.floor(remainingDays / 24) }} 天
@@ -93,7 +93,7 @@
     </div>
     <div style="flex: 1">
 
-        <h2 style="margin-top: 50px">申請表單注意事項</h2><br>
+        <h2 style="margin-top: 20px">申請表單注意事項</h2>
         <ul style="text-align: left">
           <li style="margin: 20px">請提供合理的理由</li>
           <li style="margin: 20px">請先提前通知</li>

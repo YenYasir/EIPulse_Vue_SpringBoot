@@ -57,6 +57,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import {empStore} from "../stores/employee.js";
 
+
 export default {
   // 全局員工資料
   setup(){
@@ -73,7 +74,8 @@ export default {
     //登入 function
     async handleSubmit() {
       try {
-        const response = await axios.post('http://localhost:8090/eipulse/login', {
+        const URL = import.meta.env.VITE_API_JAVAURL;
+        const response = await axios.post(`${URL}login`, {
           empId: this.empId,
           password: this.password,
         }, {

@@ -27,7 +27,7 @@ public class SecurityConfig {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**").allowedOrigins("http://localhost:5173", "https://payment-stage.ecPay.com.tw/Cashier/AioCheckOut/V5", "http://localhost:5174/")
+                registry.addMapping("/**").allowedOrigins("http://localhost:5173", "https://payment-stage.ecPay.com.tw/Cashier/AioCheckOut/V5", "http://localhost:5174/", "https://maximum-llama-rightly.ngrok-free.app/")
                         .allowCredentials(true).allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .maxAge(3600);
             }
