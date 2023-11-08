@@ -1,0 +1,16 @@
+a方法
+...
+throw new 各種Exception型態("密碼錯誤");
+//新建一個資料型態為Exception&將Exception傳到上一層
+...
+
+---
+
+b方法
+...(使用a方法)
+try {
+...
+}catch (Exception e) {
+	System.out.println(e.getMessage());
+//	取得(Exception資料型態)e的detailMessage
+}
