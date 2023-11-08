@@ -6,6 +6,15 @@
 <!--      設定聊天室:<input v-model="roomid"><br>-->
 <!--      you name: <input v-model="userid"><br>-->
 <!--      <button @click="connect">連線</button>-->
+      <select v-model="roomid" @change="connect">
+        <option value="1">一般聊天室1</option>
+        <option value="2">一般聊天室2</option>
+        <option value="3">一般聊天室3</option>
+        <template v-if="emp.permissionId==6">
+        <option value="4">主管聊天室1</option>
+        <option value="5">主管聊天室2</option>
+        </template>
+      </select>
       <h2>留言板</h2>
       目前在線人數:{{ connectedUsers }}
     </div>
@@ -35,7 +44,7 @@
     <div class="chat-input">
       <textarea v-model="newMessage" style="resize: none;" class="msg" @keydown.enter.prevent="sendmsg"></textarea>
       <input type="file" id="selectedFile" accept=".jpg, .jpeg, .png, .gif" style="display: none;"  @change="fileChange" ref="fileInput">
-      <input type="button" value="傳圖檔" onclick="document.getElementById('selectedFile').click();" class="file"/>
+      <input type="button" value="傳圖檔" onclick="document.getElementById('selectedFile').click();" class="button"/>
       <button @click="sendmsg" class="button">Send</button>
     </div>
 

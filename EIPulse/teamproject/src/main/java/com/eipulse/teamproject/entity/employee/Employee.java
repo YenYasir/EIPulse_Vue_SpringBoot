@@ -90,56 +90,56 @@ public class Employee {
 	private String empLineId;
 
 	@JsonManagedReference(value = "emp-permissionInfo")
-	@OneToOne(mappedBy = "employee")
+	@OneToOne(fetch = FetchType.LAZY, mappedBy = "employee")
 	private PermissionInfo permissionInfo;
 
 	@JsonManagedReference(value = "emp-emergencies")
-	@OneToMany(mappedBy = "emp")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "emp")
 	private Set<Emergency> emergencies = new LinkedHashSet<>();
 
 	@JsonManagedReference(value = "emp-permissionMoves")
-	@OneToMany(mappedBy = "emp")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "emp")
 	private Set<PermissionMove> permissionMoves = new LinkedHashSet<>();
 
 	@JsonManagedReference(value = "emp-resignRecords")
-	@OneToMany(mappedBy = "emp")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "emp")
 	private Set<ResignRecord> resignRecords = new LinkedHashSet<>();
 
 	@JsonManagedReference(value = "emp-titleMoves")
-	@OneToMany(mappedBy = "emp")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "emp")
 	private Set<TitleMove> titleMoves = new LinkedHashSet<>();
 
 	@JsonManagedReference(value = "employee-clockTime")
-	@OneToMany(mappedBy = "employee")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "employee")
 	private Set<ClockTime> clockTimes = new LinkedHashSet<>();
 
 	@JsonManagedReference(value = "employee-attendance")
-	@OneToMany(mappedBy = "employee")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "employee")
 	private Set<Attendance> attendances = new LinkedHashSet<>();
 
 	@JsonManagedReference(value = "employee-orders")
-	@OneToMany(mappedBy = "employee")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "employee")
 	private Set<Order> orders = new LinkedHashSet<>();
 
 	@JsonManagedReference(value = "employee-cart")
-	@OneToOne(mappedBy = "employee")
+	@OneToOne(fetch = FetchType.LAZY, mappedBy = "employee")
 	private Cart cart;
 
 	// salary
 	@JsonManagedReference(value = "employee-salary-info")
-	@OneToOne(fetch = FetchType.EAGER, mappedBy = "employee", cascade = CascadeType.ALL)
+	@OneToOne(fetch = FetchType.LAZY, mappedBy = "employee", cascade = CascadeType.ALL)
 	private EmpSalaryInfo empSalaryInfo;
 
 	@JsonManagedReference(value = "employee-salary-detail")
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "employee", cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "employee", cascade = CascadeType.ALL)
 	private List<SalaryDetail> salaryDetail;
 
 	@JsonManagedReference(value = "employee-salary-month-records")
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "employee", cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "employee", cascade = CascadeType.ALL)
 	private List<SalaryMonthRecord> salaryMonthRecords;
 
 	@JsonManagedReference(value = "employee-salary-history")
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "employee", cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "employee", cascade = CascadeType.ALL)
 	private List<SalaryHistory> salaryHistory;
 
 	public Employee() {

@@ -132,7 +132,7 @@ const formatStartDate = (dateString) => {
 </script>
 <template>
   <div class="card text-center div1">
-    現在使用者:{{emp.empName}}
+    <h2 style="margin: 20px 0" >查詢自己送出的表單</h2>
     <select v-model="formSelect.formType">
       <option v-for="(type, index) in types" :value="index">{{ type }}</option>
     </select>

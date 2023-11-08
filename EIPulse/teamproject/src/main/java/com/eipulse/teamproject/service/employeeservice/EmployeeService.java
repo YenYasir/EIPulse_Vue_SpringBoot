@@ -207,7 +207,7 @@ public class EmployeeService {
 	}
 
 	// 查詢同部門
-	public List<EmpDTO> findSameDeptEmp(Integer empId) {
+	public List<Object> findSameDeptEmp(Integer empId) {
 		Employee employee = empRepo.findById(empId).orElseThrow(() -> new RuntimeException("error"));
 		return empRepo.findSameDeptEmp(employee.getTitle().getDept().getDeptId());
 	}

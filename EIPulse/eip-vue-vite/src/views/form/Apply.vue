@@ -1,6 +1,6 @@
 <template>
-  <div class="card text-center border-0 " style="background-color: #f0f0f0">
-    <div class="a1">
+  <div class="card text-center border-0 all-body">
+    <div class="a1" style="flex: 1">
       <label>表單名稱</label>
       <select v-model="form.name" @change="onReset">
         <option value="加班">加班申請</option>
@@ -83,15 +83,44 @@
         <select v-model="aduit">
           <option value="" disabled>請選擇審核人</option>
           <template v-for="deptEmp in sameDeptEmp">
-          <option v-if="deptEmp.empId!=user" :value="deptEmp.empId">
-            {{deptEmp.empName}}
+          <option v-if="deptEmp[0]!=user" :value="deptEmp[0]">
+            {{deptEmp[1]}}
           </option>
           </template>
         </select></label>
       <button @click="applyForm" class="btn btn-secondary mx-2">提交</button>
       <button @click="onReset" class="btn btn-secondary mx-2">重置</button>
     </div>
+    <div style="flex: 1">
+
+        <h2 style="margin-top: 50px">申請表單注意事項</h2><br>
+        <ul style="text-align: left">
+          <li style="margin: 20px">請提供合理的理由</li>
+          <li style="margin: 20px">請先提前通知</li>
+          <li style="margin: 20px">老闆說code沒打完前只能送審加班單,請假單一律拒絕</li>
+          <br>
+          <ul>
+            <h4>請假單申請注意事項</h4>
+            <li style="margin: 20px">請假時數只會計算平日早上八點到下午五點</li>
+            <li style="margin: 20px">中午午休時間一小時不計算</li>
+            <li style="margin: 20px">請注意自己剩餘的時數</li>
+          </ul><br>
+
+          <ul>
+            <h4>加班單申請注意事項</h4>
+            <li style="margin: 20px">加班開始時間請勿低於結束時間</li>
+          </ul><br>
+
+          <ul>
+            <h4>離職單申請注意事項</h4>
+            <li style="margin: 20px">如果有離職單正在審核或者已核准，則無法送出離職單</li>
+          </ul>
+
+        </ul>
+
+    </div>
   </div>
+
 </template>
 
 <script setup>
@@ -242,7 +271,7 @@ const dayCount = () => {
 //送出
 const applyForm = async () => {
   if(!checkform()){
-    onReset();
+
     return;
   }
   let applyType = "";
@@ -524,6 +553,14 @@ const isWeekend = (day) => {
 </script>
 
 <style scoped>
+.all-body{
+  background-color: #f0f0f0;display: flex;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  //align-items: center;
+}
+
 .a1 {
   max-width: 100%;
   margin: 0 auto;

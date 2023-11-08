@@ -1,8 +1,8 @@
 <template>
   <section class="card border-0 shadow-sm ">
-    <div class="card-header text-center mb-2">待審核表單</div>
+    <div class="card-header text-center mb-2">待審核表單
 
-    <table class="table table-light">
+    <table class="table table-light" style="height: 300px">
       <thead>
       <tr>
         <th scope="col" data-sortable="true">表單編號</th>
@@ -29,13 +29,14 @@
       </tr>
       </tbody>
     </table>
+
     <FormPage
         :total-pages="page.unTotalPages"
         :current-page="page.unCurrentPage"
         @page-change="loadUncompletedProducts"
-    />
-    <p class="text-center mb-2"> 未完成表單</p>
-    <table class="table table-light">
+    /></div>
+    <div class="card-header text-center mb-2"> 未完成表單
+    <table class="table table-light" style="height: 300px">
       <thead>
       <tr>
         <th scope="col" data-sortable="true">表單編號</th>
@@ -61,12 +62,12 @@
       </tr>
       </tbody>
     </table>
-  </section>
+
   <FormPage
       :total-pages="page.totalPages"
       :current-page="page.currentPage"
       @page-change="loadCompletedProducts"
-  />
+  /> </div> </section>
 </template>
 <script setup>
 import {ref, reactive, onMounted} from "vue";
