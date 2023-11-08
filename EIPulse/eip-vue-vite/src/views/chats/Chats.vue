@@ -33,7 +33,7 @@
     </div>
 
     <div class="chat-input">
-      <textarea v-model="newMessage" style="resize: none;" class="msg"></textarea>
+      <textarea v-model="newMessage" style="resize: none;" class="msg" @keydown.enter.prevent="sendmsg"></textarea>
       <input type="file" id="selectedFile" accept=".jpg, .jpeg, .png, .gif" style="display: none;"  @change="fileChange" ref="fileInput">
       <input type="button" value="傳圖檔" onclick="document.getElementById('selectedFile').click();" class="file"/>
       <button @click="sendmsg" class="button">Send</button>

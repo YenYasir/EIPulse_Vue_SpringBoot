@@ -72,7 +72,7 @@
         </div>
       </div>
       <div class="chat-input">
-        <textarea v-model="msg" class="msg" @keydown.enter.prevent="sendMsg"/>
+        <textarea v-model="msg" class="msg" @keydown.enter.prevent="sendMsg(msg)"/>
         <input type="file" id="selectedFile" @change="fileChange" style="display: none;" ref="fileInput">
         <button onclick="document.getElementById('selectedFile').click();">傳圖檔</button>
         <button @click="sendMsg(msg)" class="button">Send</button>
@@ -175,16 +175,20 @@ stompClient.onConnect =  (frame) => {
     updateObjects(entity,false)
   })
 }
-const first = ref(false)
 const ck =async (id) => {
+  if(scrollContainer.value!=null)
+  scrollContainer.value.removeEventListener('scroll', onScroll);
   presentTarget.value = users.value.find(obj => obj[0] == id);
   totalPages.value = false;
   login.value=true;
-  await getMsg(0)
   page.value = 0;
-  if(first.value==false){
-    first.value=true;
-    scrollContainer.value.addEventListener('scroll', () => {
+  await getMsg(0)
+  scrollContainer.value.scrollTop = scrollContainer.value.scrollHeight;
+  scrollContainer.value.addEventListener('scroll', onScroll);
+
+}
+
+const onScroll = () =>{
       if(totalPages.value!=true){
         if(scrollContainer.value.scrollTop == 0) {
           getMsg(page.value)
@@ -192,9 +196,6 @@ const ck =async (id) => {
           scrollContainer.value.scrollTop = 300
         }
       }
-    })
-  }
-
 }
 
 const getMsg = async (index) => {
@@ -212,13 +213,14 @@ const getMsg = async (index) => {
   const response = responsePage.data.content
   if(page.value>= responsePage.data.totalPages)
     totalPages.value = true
-  if(messages.value == null ){
+  if(messages.value == null){
     messages.value = response.slice().reverse();
   }else{
-    messages.value = response.slice().reverse().concat(messages.value)
+    messages.value = messages.value.concat(response.slice().reverse().concat())
   }
 
   await scrollToBottom();
+
 };
 
 //收到訊息時排序user

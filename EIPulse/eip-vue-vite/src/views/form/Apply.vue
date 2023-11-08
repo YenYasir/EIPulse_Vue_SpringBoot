@@ -17,11 +17,11 @@
           <option value="1">半年特休</option>
           <option value="2">一年特休</option>
           <option value="3">半薪病假</option>
-          <option value="4">生理假</option>
+          <option value="4" v-if="empStore.gender=='女'">生理假</option>
           <option value="5">事假</option>
           <option value="6">婚假</option>
           <option value="7">喪假</option>
-          <option value="8">產假</option>
+          <option value="8" v-if="empStore.gender=='女'">產假</option>
         </select>
         <span v-if="form.type >= 1"
         >目前還可以請 : {{ Math.floor(remainingDays / 24) }} 天
