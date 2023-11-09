@@ -1,6 +1,5 @@
 <template>
-  <div class="chat-container">
-
+  <div class="chat-container h-75">
     <div class="chat-header">
       <!--      設定聊天室:<input v-model="roomid"><br>-->
       <!--      you name: <input v-model="userid"><br>-->
@@ -20,162 +19,205 @@
     <div class="chat-messages" ref="scrollContainer">
       <div v-for="messagea in messages">
         <div v-if="messagea.mymsg == false" class="message left">
-          <img v-if="findUser(messagea.empId)[2] != null && findUser(messagea.empId)[2] != ''"
-            :src="findUser(messagea.empId)[2]" class="avatar">
-          <img v-else src="https://eipulseimages.blob.core.windows.net/images/ce2cc2511903a619a519d801b61e1d9d.jpg"
-            class="avatar">
+          <img
+            v-if="
+              findUser(messagea.empId)[2] != null &&
+              findUser(messagea.empId)[2] != ''
+            "
+            :src="findUser(messagea.empId)[2]"
+            class="avatar"
+          />
+          <img
+            v-else
+            src="https://eipulseimages.blob.core.windows.net/images/ce2cc2511903a619a519d801b61e1d9d.jpg"
+            class="avatar"
+          />
           <div class="message-content">
             <div class="name">{{ findUser(messagea.empId)[1] }}</div>
-            <img v-if="messagea.file != ''" :src="messagea.file" :alt="messagea.file"
-              style="max-width: 300px; max-height: 200px;">
+            <img
+              v-if="messagea.file != ''"
+              :src="messagea.file"
+              :alt="messagea.file"
+              style="max-width: 300px; max-height: 200px"
+            />
             <div v-else class="text">{{ messagea.message }}</div>
-            <div class="timestamp">{{ formatStartDate(messagea.createdAt) }}</div>
+            <div class="timestamp">
+              {{ formatStartDate(messagea.createdAt) }}
+            </div>
           </div>
         </div>
 
-        <div v-else-if="messagea.mymsg == true" class="message right" style="text-align: right">
+        <div
+          v-else-if="messagea.mymsg == true"
+          class="message right"
+          style="text-align: right"
+        >
           <div class="message-content">
-            <img v-if="messagea.file != ''" :src="messagea.file" :alt="messagea.file"
-              style="max-width: 300px; max-height: 200px;">
+            <img
+              v-if="messagea.file != ''"
+              :src="messagea.file"
+              :alt="messagea.file"
+              style="max-width: 300px; max-height: 200px"
+            />
             <div v-else class="text">{{ messagea.message }}</div>
-            <div class="timestamp">{{ formatStartDate(messagea.createdAt) }}</div>
+            <div class="timestamp">
+              {{ formatStartDate(messagea.createdAt) }}
+            </div>
           </div>
         </div>
       </div>
     </div>
 
     <div class="chat-input">
-      <textarea v-model="newMessage" style="resize: none;" class="msg" @keydown.enter.prevent="sendmsg"></textarea>
-      <input type="file" id="selectedFile" accept=".jpg, .jpeg, .png, .gif" style="display: none;" @change="fileChange"
-        ref="fileInput">
-      <input type="button" value="傳圖檔" onclick="document.getElementById('selectedFile').click();" class="button" />
+      <textarea
+        v-model="newMessage"
+        style="resize: none"
+        class="msg"
+        @keydown.enter.prevent="sendmsg"
+      ></textarea>
+      <input
+        type="file"
+        id="selectedFile"
+        accept=".jpg, .jpeg, .png, .gif"
+        style="display: none"
+        @change="fileChange"
+        ref="fileInput"
+      />
+      <input
+        type="button"
+        value="傳圖檔"
+        onclick="document.getElementById('selectedFile').click();"
+        class="button"
+      />
       <button @click="sendmsg" class="button">Send</button>
     </div>
-
   </div>
 </template>
 <script setup>
-import { nextTick, onMounted, ref, onUnmounted } from 'vue';
+import { nextTick, onMounted, ref, onUnmounted } from "vue";
 import axios from "axios";
-import { Client } from '@stomp/stompjs';
+import { Client } from "@stomp/stompjs";
 import Swal from "sweetalert2";
 import { empStore } from "../../stores/employee.js";
 const emp = empStore();
 const userid = ref(emp.empId);
-const roomid = ref('1');
+const roomid = ref("1");
 const messages = ref([]);
-const newMessage = ref('');
-const connectedUsers = ref('');
+const newMessage = ref("");
+const connectedUsers = ref("");
 const URL = import.meta.env.VITE_API_JAVAURL;
 const stompClient = new Client({
-  brokerURL: 'ws://localhost:8090/eipulse/ws',
+  brokerURL: "ws://localhost:8090/eipulse/ws",
 });
 const sendmsg = async () => {
   if (newMessage.value != "" || file.value != "") {
     // const clientIP = await getClientIP()
     const formData = new FormData();
     const chats = ref({
-      "empId": userid.value,
-      "roomId": roomid.value,
-      "message": "",
-      "file": "",
-      "createdAt": new Date().toISOString(),
+      empId: userid.value,
+      roomId: roomid.value,
+      message: "",
+      file: "",
+      createdAt: new Date().toISOString(),
       // "userIp": clientIP,
     });
     if (file.value != "") {
-      formData.append('file', file.value);
+      formData.append("file", file.value);
       chats.value.file = file.value.name;
     } else {
       chats.value.message = newMessage.value;
     }
     const json = JSON.stringify(chats.value);
     const blob = new Blob([json], {
-      type: 'application/json'
+      type: "application/json",
     });
-    formData.append('data', blob);
+    formData.append("data", blob);
 
     const URLAPI = `${URL}Chats`;
     console.log(URLAPI);
     await axios.post(URLAPI, formData);
     newMessage.value = "";
   }
-}
+};
 
 const allUser = ref();
 const exceptForMyself = async () => {
   const URLAPI = `${URL}exceptForMyself?empId=${userid.value}`;
-  const response = await axios.get(URLAPI)
+  const response = await axios.get(URLAPI);
   allUser.value = response.data;
-}
+};
 exceptForMyself();
 const findUser = (id) => {
-  return allUser.value.find(obj => obj[0] == id);
-}
+  return allUser.value.find((obj) => obj[0] == id);
+};
 
 const fileInput = ref(null);
 const file = ref("");
 const fileChange = (e) => {
-  file.value = '';
+  file.value = "";
   const selectedFile = e.target.files[0]; // 獲取第一個選擇的檔案
   const maxSizeInBytes = 1024 * 1024 * 5; // 5MB
 
   if (selectedFile) {
     if (selectedFile.size > maxSizeInBytes) {
       Swal.fire({
-        icon: 'error',
-        title: '檔案超過大小',
+        icon: "error",
+        title: "檔案超過大小",
         text: `${selectedFile.name}超過5MB`,
       });
-      fileInput.value = ''; // 清空輸入框
+      fileInput.value = ""; // 清空輸入框
       return;
     } else {
       file.value = selectedFile;
       sendmsg();
     }
   }
-  file.value = '';
+  file.value = "";
 };
-
 
 stompClient.onConnect = (frame) => {
   setConnected(true);
 
   stompClient.publish({
-    destination: '/app/login',
+    destination: "/app/login",
     body: JSON.stringify({
-      userId: userid.value
-    })
-  })
+      userId: userid.value,
+    }),
+  });
 
-  console.log('Connected: ' + frame);
-  stompClient.subscribe('/topic/' + roomid.value + '/chats', async (message) => {
-    const newMessage = JSON.parse(message.body)
-    if (newMessage.empId == userid.value) {
-      newMessage.mymsg = true;
-    } else {
-      newMessage.mymsg = false;
+  console.log("Connected: " + frame);
+  stompClient.subscribe(
+    "/topic/" + roomid.value + "/chats",
+    async (message) => {
+      const newMessage = JSON.parse(message.body);
+      if (newMessage.empId == userid.value) {
+        newMessage.mymsg = true;
+      } else {
+        newMessage.mymsg = false;
+      }
+      // if(newMessage.file!=""){
+      //   await downloadFile(newMessage.file,newMessage.empId).then((result => {
+      //     newMessage.message = result;
+      //   }))
+      // }
+      messages.value.push(newMessage);
+      newMessage.value = "";
+      if (messages.value.length > 10) {
+        messages.value.shift();
+      }
     }
-    // if(newMessage.file!=""){
-    //   await downloadFile(newMessage.file,newMessage.empId).then((result => {
-    //     newMessage.message = result;
-    //   }))
-    // }
-    messages.value.push(newMessage)
-    newMessage.value = ""
-    if (messages.value.length > 10) {
-      messages.value.shift();
+  );
+  console.log("connectedUsers未連接");
+  stompClient.subscribe(
+    "/topic/" + roomid.value + "/connectedUsers",
+    (data) => {
+      if (JSON.parse(data.body) != -1)
+        connectedUsers.value = JSON.parse(data.body);
+      else connectedUsers.value--;
+
+      console.log("connectedUsers連接");
     }
-  })
-  console.log('connectedUsers未連接');
-  stompClient.subscribe('/topic/' + roomid.value + '/connectedUsers', (data) => {
-    if (JSON.parse(data.body) != -1)
-      connectedUsers.value = JSON.parse(data.body);
-    else
-      connectedUsers.value--;
-
-    console.log('connectedUsers連接');
-  })
-
+  );
 };
 
 const isConnected = ref(false);
@@ -197,7 +239,7 @@ const setConnected = (connected) => {
 const chataa = async () => {
   const URLAPI = `${URL}Chats?roomId=${roomid.value}&pageNumber=0&pageSize=10`;
   const responsePage = await axios.get(URLAPI);
-  const response = responsePage.data.content
+  const response = responsePage.data.content;
   for (let i = 0; i < response.length; i++) {
     if (response[i].empId == userid.value) {
       response[i].mymsg = true;
@@ -212,42 +254,40 @@ const chataa = async () => {
   }
   messages.value = response.slice().reverse();
   await scrollToBottom();
-}
-
+};
 
 const scrollContainer = ref(null);
 const scrollToBottom = () => {
   nextTick(() => {
     scrollContainer.value.scrollTop = scrollContainer.value.scrollHeight;
-  })
+  });
 };
 onUnmounted(() => {
-  stompClient.deactivate()
-})
+  stompClient.deactivate();
+});
 onMounted(() => {
-  connect()
-  scrollContainer.value.addEventListener('scroll', () => {
+  connect();
+  scrollContainer.value.addEventListener("scroll", () => {
     if (isConnected) {
       if (!totalPages.value == true) {
         if (scrollContainer.value.scrollTop === 0) {
-          getUpPage()
-          page.value++
-          scrollContainer.value.scrollTop = 300
+          getUpPage();
+          page.value++;
+          scrollContainer.value.scrollTop = 300;
         }
       }
     }
-  })
-})
+  });
+});
 const page = ref(1);
 const totalPages = ref();
 const getUpPage = async () => {
   const URLAPI = `${URL}Chats?roomId=${roomid.value}&pageNumber=${page.value}&pageSize=10`;
   const responsePage = await axios.get(URLAPI);
-  console.log(URLAPI)
-  console.log(responsePage)
-  if (page.value >= responsePage.data.totalPages)
-    totalPages.value = true
-  const response = responsePage.data.content
+  console.log(URLAPI);
+  console.log(responsePage);
+  if (page.value >= responsePage.data.totalPages) totalPages.value = true;
+  const response = responsePage.data.content;
   for (let i = 0; i < response.length; i++) {
     if (response[i].empId == userid.value) {
       response[i].mymsg = true;
@@ -260,13 +300,13 @@ const getUpPage = async () => {
     //   }))
     // }
   }
-  console.log(response.slice().reverse())
+  console.log(response.slice().reverse());
   messages.value = response.slice().reverse().concat(messages.value);
-}
+};
 
 async function getClientIP() {
-  const res = await fetch('https://api.ipify.org?format=json')
-  return res.json().then(data => data.ip)
+  const res = await fetch("https://api.ipify.org?format=json");
+  return res.json().then((data) => data.ip);
 }
 
 const formatStartDate = (dateString) => {
@@ -278,12 +318,9 @@ const formatStartDate = (dateString) => {
     second: "2-digit",
   };
   const date = new Date(dateString);
-  return date.toLocaleDateString('zh-TW', options);
+  return date.toLocaleDateString("zh-TW", options);
 };
-
 </script>
-
-
 
 <style scoped>
 .chat-container {
@@ -369,4 +406,6 @@ const formatStartDate = (dateString) => {
   cursor: pointer;
 }
 
-.file {}</style>
+.file {
+}
+</style>
