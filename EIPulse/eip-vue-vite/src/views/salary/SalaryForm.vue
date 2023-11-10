@@ -139,7 +139,7 @@ export default {
                         <label for="laborInsurance" class="form-label">勞保投保級距</label>
 
                         <select class="form-select" aria-label="Default select example" v-model="datas.laborInsuranceGrade">
-                            <!-- <option disabled value="">請選擇投保級距</option> -->
+                            <option disabled value="">--請選擇投保級距--</option>
                             <option v-for=" laborGrade  in  laborGrades " :value="laborGrade">第{{
                                 laborGrades.indexOf(laborGrade) +
                                 1
@@ -151,7 +151,7 @@ export default {
                         <label for="pensionRate" class="form-label">勞退自願提撥率</label>
 
                         <select v-model="datas.laborVolunteerPensionRate" class="form-select">
-                            <!-- <option disabled value="">請選擇自願提撥率</option> -->
+                            <option disabled value="">---請選擇自願提撥率---</option>
                             <option v-for=" rate in pensionRate " :value="rate">
                                 {{ rate * 100 }}% </option>
                         </select>
@@ -161,7 +161,7 @@ export default {
                     <div class="col-md-4">
                         <label for="healthInsuranceGrade" class="form-label">健保投保級距</label>
                         <select v-model="datas.healthInsuranceGrade" class="form-select">
-                            <!-- <option disabled value="">請選擇投保級距</option> -->
+                            <option disabled value="">---請選擇投保級距---</option>
                             <option v-for=" healthGrade  in  healthGrades " :value="healthGrade">
                                 第{{ healthGrades.indexOf(healthGrade) + 1 }}級({{ healthGrade }}元)</option>
                         </select>
@@ -169,7 +169,7 @@ export default {
                     <div class="col-md-4">
                         <label for="familyDepedent" class="form-label">眷屬加保人數</label>
                         <select v-model="datas.familyDependantsNum" class="form-select">
-                            <!-- <option disabled value="">請選擇眷屬加保人數</option> -->
+                            <option disabled value="">---請選擇眷屬加保人數---</option>
                             <option v-for=" num  in  nums " :value="num">{{ num }}人
                             </option>
                         </select>
@@ -190,7 +190,7 @@ export default {
                 </div>
 
             </div>
-            <button type="submit" class="btn btn-warning mt-3">儲存</button>
+            <button type="submit" class="btn btn-warning mt-3 " style="margin-left:10px">儲存</button>
         </form>
     </div>
 </template>

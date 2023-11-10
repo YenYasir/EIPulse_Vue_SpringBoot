@@ -40,8 +40,8 @@ if (props.datas.form.file != '' && props.datas.form.file != null) {
 </script>
 
 <template>
-  <button type="button" class="btn" data-bs-toggle="modal" :data-bs-target="'#exampleModal' + datas.form.formId"
-    data-bs-whatever="@mdo">詳細資料</button>
+  <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
+    :data-bs-target="'#exampleModal' + datas.form.formId" data-bs-whatever="@mdo" style="margin-left: 15px;">詳細資料</button>
 
   <div class="modal fade" :id="'exampleModal' + datas.form.formId" tabindex="-1" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
@@ -113,4 +113,5 @@ if (props.datas.form.file != '' && props.datas.form.file != null) {
   height: auto;
   margin: 10px 0;
   object-fit: contain;
-}</style>
+}
+</style>

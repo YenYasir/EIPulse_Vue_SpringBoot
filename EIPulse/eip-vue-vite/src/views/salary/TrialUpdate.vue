@@ -33,21 +33,9 @@ const getMinusSubject = async () => {
 }
 
 const selectedSubjectA = ref([
-    // n: '',
-    // subjectId: '',
-    // amount: ''
 ])
-// const A = (i) => {
-//     selectedSubjectA[i].value.empId = trial.value.salaryMonthRecordDto.empId
-// }
-// const D = (i) => {
-//     selectedSubjectD[i].value.empId = trial.value.salaryMonthRecordDto.empId
 
-// }
 const selectedSubjectD = ref([
-    // n: '',
-    // subjectId: '',
-    // amount: ''
 ])
 
 // 加項新增欄位
@@ -322,87 +310,87 @@ onMounted(loadData)
                     <div class="row g-5">
                         <div class="col-md-6 col-lg-6">
                             <div class="card">
-                                <div class="card-body">
-                                    <div class="card-header">
+                                <!-- <div class="card-body"> -->
+                                <div class="card-header">
 
-                                        <h5 class="card-title" style="margin:0;font-weight: bold;"> <span><button
-                                                    @click.prevent="addForm"
-                                                    style="border: transparent;background-color:transparent;"><i class=" bi
+                                    <h5 class="card-title" style="margin:0;font-weight: bold;"> <span><button
+                                                @click.prevent="addForm"
+                                                style="border: transparent;background-color:transparent;"><i class=" bi
                                     bi-plus-circle"></i></button></span>加項明細</h5>
-                                    </div>
-                                    <div class="card-body">
-                                        <table class="table table-sm">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col" class="hidden-column">#</th>
-                                                    <th scope="col" class="hidden-column">項目id</th>
-                                                    <th scope="col">科目名稱</th>
-                                                    <th scope="col">金額</th>
-                                                    <th scope="col" class="hidden-column">recordId</th>
-                                                    <th scope="col" class="hidden-column">createdDate</th>
-                                                    <th scope="col"></th>
-
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr v-for="(a, index) in addList" :key="index">
-                                                    <th scope="row" class="hidden-column ">
-                                                        <input type="text" class="form-control fc" id="add" disabled
-                                                            readonly v-model="a.id">
-                                                    </th>
-                                                    <th scope="row" class="hidden-column">
-                                                        <input type="text" class="form-control fc" id="add" readonly
-                                                            v-model="a.subjectId">
-                                                    </th>
-                                                    <th scope="row">
-                                                        <input type="text" class="form-control fc text-center" id="add"
-                                                            readonly v-model="a.subjectName">
-                                                    </th>
-                                                    <th scope="row">
-                                                        <input type="text" class="form-control fc text-center" id="add"
-                                                            v-model="a.amount">
-                                                    </th>
-                                                    <th scope="row" class="hidden-column"> <input type="text"
-                                                            class="form-control " id="add" v-model="a.recordId"></th>
-                                                    <th scope="row"> <input type="text" class="form-control hidden-column"
-                                                            id="add" v-model="a.createdDate"></th>
-                                                </tr>
-
-
-                                                <template v-for="(n, index) in formCountA   " :key="n">
-                                                    <tr>
-                                                        <!-- <div class="row"> -->
-                                                        <th>
-                                                            <div class=" form-floating text-center">
-                                                                <select class="form-control  text-center"
-                                                                    v-model="selectedSubjectA[index].subjectId"
-                                                                    @change="changeAmountA(selectedSubjectA[index].subjectId, index)">
-                                                                    <option value="">科目名稱</option>
-                                                                    <option v-for="s in subjectPlus" :value="s.subjectId"
-                                                                        :key="s.subjectId">{{
-                                                                            s.subjectName }}</option>
-                                                                </select>
-                                                            </div>
-
-                                                        </th>
-                                                        <th>
-                                                            <div class="form-floating ">
-                                                                <input v-model.trim="selectedSubjectA[index].amount"
-                                                                    type="text" class="form-control  text-center" id="price"
-                                                                    placeholder="請輸入數字" @change="calculateAddSum">
-
-                                                            </div>
-                                                        </th>
-                                                        <th>
-                                                            <button @click.prevent="deleteAddItem(index)" class="btn1"><i
-                                                                    class="bi bi-trash3"></i></button>
-                                                        </th>
-                                                    </tr>
-                                                </template>
-                                            </tbody>
-                                        </table>
-                                    </div>
                                 </div>
+                                <div class="card-body">
+                                    <table class="table table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col" class="hidden-column">#</th>
+                                                <th scope="col" class="hidden-column">項目id</th>
+                                                <th scope="col">科目名稱</th>
+                                                <th scope="col">金額</th>
+                                                <th scope="col" class="hidden-column">recordId</th>
+                                                <th scope="col" class="hidden-column">createdDate</th>
+                                                <th scope="col"></th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="(a, index) in addList" :key="index">
+                                                <th scope="row" class="hidden-column ">
+                                                    <input type="text" class="form-control fc" id="add" disabled readonly
+                                                        v-model="a.id">
+                                                </th>
+                                                <th scope="row" class="hidden-column">
+                                                    <input type="text" class="form-control fc" id="add" readonly
+                                                        v-model="a.subjectId">
+                                                </th>
+                                                <th scope="row">
+                                                    <input type="text" class="form-control fc text-center" id="add" readonly
+                                                        v-model="a.subjectName">
+                                                </th>
+                                                <th scope="row">
+                                                    <input type="text" class="form-control fc text-center" id="add"
+                                                        v-model="a.amount">
+                                                </th>
+                                                <th scope="row" class="hidden-column"> <input type="text"
+                                                        class="form-control " id="add" v-model="a.recordId"></th>
+                                                <th scope="row"> <input type="text" class="form-control hidden-column"
+                                                        id="add" v-model="a.createdDate"></th>
+                                            </tr>
+
+
+                                            <template v-for="(n, index) in formCountA   " :key="n">
+                                                <tr>
+                                                    <!-- <div class="row"> -->
+                                                    <th>
+                                                        <div class=" form-floating text-center">
+                                                            <select class="form-control  text-center"
+                                                                v-model="selectedSubjectA[index].subjectId"
+                                                                @change="changeAmountA(selectedSubjectA[index].subjectId, index)">
+                                                                <option value="">科目名稱</option>
+                                                                <option v-for="s in subjectPlus" :value="s.subjectId"
+                                                                    :key="s.subjectId">{{
+                                                                        s.subjectName }}</option>
+                                                            </select>
+                                                        </div>
+
+                                                    </th>
+                                                    <th>
+                                                        <div class="form-floating ">
+                                                            <input v-model.trim="selectedSubjectA[index].amount" type="text"
+                                                                class="form-control  text-center" id="price"
+                                                                placeholder="請輸入數字" @change="calculateAddSum">
+
+                                                        </div>
+                                                    </th>
+                                                    <th>
+                                                        <button @click.prevent="deleteAddItem(index)" class="btn1"><i
+                                                                class="bi bi-trash3"></i></button>
+                                                    </th>
+                                                </tr>
+                                            </template>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- </div> -->
                             </div>
                         </div>
                         <div class="col-md-6 col-lg-6">
@@ -507,22 +495,22 @@ table {
     vertical-align: middle;
 }
 
-/* 去除输入框边框 */
+/* 去除輸入框邊框 */
 .fc {
     background-color: transparent;
     border: none;
     /* border-radius: 0; */
     text-align: justify;
-    /* 可选，去除圆角 */
+    /* 可選，去除圓角 */
     /* border-bottom: 1px solid #333; */
     text-align: center;
 }
 
-/* 设置底部边线的样式和颜色 */
-/* 鼠标悬停时的效果，可选 */
+/* 設置底部邊線的樣式和顏色 */
+/* 滑鼠懸停時的效果，可選 */
 input.form-control:hover {
     border-color: #333;
-    /* 更改底部边线的颜色 */
+    /* 更改底部邊線的顏色 */
 }
 
 .f {
@@ -530,25 +518,25 @@ input.form-control:hover {
     border: none;
     border-radius: 0;
     text-align: justify;
-    /* 可选，去除圆角 */
+    /* 可選，去除圓角 */
     border-bottom: 1px solid #333;
     text-align: center;
 }
 
-/* 输入框聚焦时的效果，可选 */
+/* 輸入框聚焦時的效果，可選 */
 input.form-control:focus {
     border-color: #555;
-    /* 更改底部边线的颜色 */
+    /* 更改底部邊線的顏色 */
     box-shadow: none;
-    /* 去除默认的聚焦时阴影效果 */
+    /* 去除預設的聚焦時陰影效果 */
 }
 
 .no-background {
     background-color: transparent;
     border: none;
-    /* 可选，去除边框 */
+    /* 可選，去除邊框 */
     border-radius: 0;
-    /* 可选，去除圆角 */
+    /* 可選，去除圓角 */
 }
 
 .btn1 {

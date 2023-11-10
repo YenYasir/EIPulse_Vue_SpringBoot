@@ -19,27 +19,15 @@
     <div class="chat-messages" ref="scrollContainer">
       <div v-for="messagea in messages">
         <div v-if="messagea.mymsg == false" class="message left">
-          <img
-            v-if="
-              findUser(messagea.empId)[2] != null &&
-              findUser(messagea.empId)[2] != ''
-            "
-            :src="findUser(messagea.empId)[2]"
-            class="avatar"
-          />
-          <img
-            v-else
-            src="https://eipulseimages.blob.core.windows.net/images/ce2cc2511903a619a519d801b61e1d9d.jpg"
-            class="avatar"
-          />
+          <img v-if="findUser(messagea.empId)[2] != null &&
+            findUser(messagea.empId)[2] != ''
+            " :src="findUser(messagea.empId)[2]" class="avatar" />
+          <img v-else src="https://eipulseimages.blob.core.windows.net/images/ce2cc2511903a619a519d801b61e1d9d.jpg"
+            class="avatar" />
           <div class="message-content">
             <div class="name">{{ findUser(messagea.empId)[1] }}</div>
-            <img
-              v-if="messagea.file != ''"
-              :src="messagea.file"
-              :alt="messagea.file"
-              style="max-width: 300px; max-height: 200px"
-            />
+            <img v-if="messagea.file != ''" :src="messagea.file" :alt="messagea.file"
+              style="max-width: 300px; max-height: 200px" />
             <div v-else class="text">{{ messagea.message }}</div>
             <div class="timestamp">
               {{ formatStartDate(messagea.createdAt) }}
@@ -47,18 +35,10 @@
           </div>
         </div>
 
-        <div
-          v-else-if="messagea.mymsg == true"
-          class="message right"
-          style="text-align: right"
-        >
+        <div v-else-if="messagea.mymsg == true" class="message right" style="text-align: right">
           <div class="message-content">
-            <img
-              v-if="messagea.file != ''"
-              :src="messagea.file"
-              :alt="messagea.file"
-              style="max-width: 300px; max-height: 200px"
-            />
+            <img v-if="messagea.file != ''" :src="messagea.file" :alt="messagea.file"
+              style="max-width: 300px; max-height: 200px" />
             <div v-else class="text">{{ messagea.message }}</div>
             <div class="timestamp">
               {{ formatStartDate(messagea.createdAt) }}
@@ -69,27 +49,14 @@
     </div>
 
     <div class="chat-input">
-      <textarea
-        v-model="newMessage"
-        style="resize: none"
-        class="msg"
-        @keydown.enter.prevent="sendmsg"
-      ></textarea>
-      <input
-        type="file"
-        id="selectedFile"
-        accept=".jpg, .jpeg, .png, .gif"
-        style="display: none"
-        @change="fileChange"
-        ref="fileInput"
-      />
-      <input
-        type="button"
-        value="圖檔"
-        onclick="document.getElementById('selectedFile').click();"
-        class="button"
-      />
-      <button @click="sendmsg" class="button">傳送訊息</button>
+      <textarea v-model="newMessage" style="resize: none" class="msg" @keydown.enter.prevent="sendmsg"></textarea>
+      <input type="file" id="selectedFile" accept=".jpg, .jpeg, .png, .gif" style="display: none" @change="fileChange"
+        ref="fileInput" />
+      <span value="圖檔" onclick="document.getElementById('selectedFile').click();" class="button"
+        style="margin-right:10px"><i class="bi bi-file-earmark-arrow-up"></i></span>
+
+
+      <button @click="sendmsg" class="sendbutton">傳送訊息</button>
     </div>
   </div>
 </template>
@@ -326,7 +293,7 @@ const formatStartDate = (dateString) => {
 .chat-container {
   display: flex;
   flex-direction: column;
-  height:60%;
+  height: 60%;
 }
 
 .chat-header {
@@ -407,7 +374,13 @@ const formatStartDate = (dateString) => {
   border: none;
   cursor: pointer;
 }
-
-.file {
+.sendbutton {
+  float: right;
+  padding: 6px 10px;
+  border-radius: 4px;
+  background: rgb(86, 86, 84);
+  color: white;
+  border: none;
+  cursor: pointer;
 }
 </style>

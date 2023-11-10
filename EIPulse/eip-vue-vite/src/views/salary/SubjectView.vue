@@ -42,37 +42,18 @@ const loadSubject = async () => {
 }
 
 const changeStatus = async (s) => {
-    // if (s.status === true) {
-    //     s.status = '1';
-    // } else if (s.status === false) {
-    //     s.status = '0';
-    // }
-
     s.status = !s.status; // 切換布林值
-    // if (s.status === true) {
-    //     s.status = '1';
-    // } else if (s.status === false) {
-    //     s.status = '0';
-    // }
-    // const statusString = s.status ? '1' : '0'; // 將布林值轉換為字串
-    // s.status = s.status === true ? '1' : '0';
-    console.log(`outputPPPP->`, s.status)
-    // const params = {
-    //     status: subject.status,
-    //     subjectId: subject.subjectId
 
     console.log(`status=${s.status}`);
     console.log(`subjectId=${s.subjectId}`);
 
     const API_URL = `${import.meta.env.VITE_API_JAVAURL}payroll/subject/status?status=${s.status}&subjectId=${s.subjectId}`
 
-    // const API_URL = `${import.meta.env.VITE_API_JAVAURL}payroll/subject/status`
     try {
         const response = await axios.post(API_URL, {
             status: s.status,
             subjectId: s.subjectId
         })
-        console.log(`outputDDD->`, response.status)
         if (response.status === 200) {
 
             Swal.fire({
@@ -80,9 +61,6 @@ const changeStatus = async (s) => {
                 icon: 'success',
                 confirmButtonText: "OK"
             })
-            // .then(() => {
-            //     loadSubject()
-            // })
 
             console.log(`outputBSSS->`, response.data)
         }
@@ -107,8 +85,8 @@ onMounted(loadSubject);
     <div class="container c">
         <div class="row mb-1 mt-2">
             <div class="col-3">
-                <button class="btn btn-warning" type="button"  data-bs-toggle="modal"
-                    data-bs-target="#exampleModal" data-bs-whatever="@fat"><i class="bi bi-plus-lg" ></i>新增</button>
+                <button class="btn btn-warning btn-sm mb-3" type="button" data-bs-toggle="modal"
+                    data-bs-target="#exampleModal" data-bs-whatever="@fat"><i class="bi bi-plus-lg"></i>新增</button>
             </div>
             <div class="col-6"></div>
             <div class="col-3">
@@ -196,7 +174,6 @@ onMounted(loadSubject);
                     </thead>
                     <tbody>
                         <tr v-for="s in subject" :key="s.subjectId">
-                            <!-- <th scope="row">1</th> -->
                             <td class="hidden-column">{{ s.subjectId }}</td>
                             <td class="t1">{{ s.subjectName }}</td>
                             <td class="t1" v-if="s.calculateType == 'P'">加項</td>
@@ -204,23 +181,13 @@ onMounted(loadSubject);
                             <td class="t1" v-if="s.frequency == '1'">固定</td>
                             <td class="t1" v-else>變動</td>
                             <td>{{ s.amountDefault }}</td>
-                            <!-- <td> {{ s.status }} </td> -->
-                            <!-- <td class="t1" v-if="s.status == '1'">啟用</td>
-                            <td class="t1" v-else>停止</td> -->
-                            <!-- <td v-if="s.status === '1'"> -->
-                            <td style="text-align: center; line-height: 1;">
+                            <td style="text-align: center; line-height: 1; vertical-align: middle;">
                                 <div class="form-check form-switch">
                                     <input class="form-check-input" type="checkbox" role="switch"
-                                        id="flexSwitchCheckChecked" @click="changeStatus(s)" v-model="s.status">
+                                        id="flexSwitchCheckChecked" @click="changeStatus(s)" v-model="s.status"
+                                        style="text-align: center">
                                 </div>
                             </td>
-                            <!-- </td> -->
-                            <!-- <td v-else>
-                                <div class="form-check form-switch">
-                                    <input class=" form-check-input" type="checkbox" role="switch"
-                                        id="flexSwitchCheckDefault" v-model="open">
-                                </div>
-                            </td> -->
                             <td>
                                 <!-- 互動視窗(更新) -->
                                 <button class="btn btn-secondary btn-sm mx-1" data-bs-toggle="modal"
@@ -322,6 +289,11 @@ table {
 
 td {
     width: 80px;
+
+}
+
+.td.t1 {
+    width: 100px;
 }
 
 th {
@@ -357,5 +329,35 @@ th {
     margin: 2px;
     font-size: 20px;
     text-align: center;
+}
+
+.form-check.form-switch {
+    width: 0px;
+    text-align: center;
+    padding-left: 100px;
+}
+
+.custom-checkbox {
+    display: inline-block;
+    margin: 0;
+    /* Remove any margin */
+    padding: 0;
+    /* Remove any padding */
+}
+
+.custom-checkbox .form-check-label {
+    margin: 0;
+    /* Remove margin around the label */
+    padding: 0;
+    /* Remove padding around the label */
+}
+
+.custom-checkbox .form-check-input {
+    width: auto;
+    /* Make the input element width auto, so it doesn't create extra space */
+    height: auto;
+    /* Make the input element height auto, so it doesn't create extra space */
+    margin: 0;
+    /* Remove any margin */
 }
 </style>

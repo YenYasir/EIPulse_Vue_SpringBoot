@@ -2,7 +2,7 @@
   <section class="card border-0 shadow-sm ">
     <div class="card-header text-center mb-2">待審核表單
 
-      <table class="table table-light" style="height: 300px">
+      <table class="table table-light" style="height: 100px">
         <thead>
           <tr>
             <th scope="col" data-sortable="true">表單編號</th>
@@ -34,7 +34,7 @@
         @page-change="loadUncompletedProducts" />
     </div>
     <div class="card-header text-center mb-2"> 未完成表單
-      <table class="table table-light" style="height: 300px">
+      <table class="table table-light" style="height: 100px">
         <thead>
           <tr>
             <th scope="col" data-sortable="true">表單編號</th>
@@ -175,4 +175,8 @@ onMounted(() => {
 </script>
 
 
-<style scoped></style>
+<style scoped>
+td {
+  height: 50px;
+}
+</style>

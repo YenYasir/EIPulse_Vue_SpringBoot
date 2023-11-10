@@ -74,10 +74,12 @@
         </div>
       </div>
       <div class="chat-input">
-        <textarea v-model="msg" class="msg" @keydown.enter.prevent="sendMsg(msg)" />
+        <textarea v-model="msg" class="msg" @keydown.enter.prevent="sendMsg(msg)"></textarea>
+        <button @click="sendMsg(msg)" class="sendbutton">傳送訊息</button>
         <input type="file" id="selectedFile" @change="fileChange" style="display: none;" ref="fileInput">
-        <button onclick="document.getElementById('selectedFile').click();">傳圖檔</button>
-        <button @click="sendMsg(msg)" class="button">Send</button>
+        <span value="圖檔" onclick="document.getElementById('selectedFile').click();" class="button"
+          style="margin-right:10px"><i class="bi bi-file-earmark-arrow-up"></i></span>
+
       </div>
     </div>
   </div>
@@ -451,11 +453,23 @@ onMounted(() => {
   padding: 10px;
 }
 
-button {
+.button {
   float: right;
   padding: 6px 10px;
   border-radius: 4px;
   background: rgb(255, 204, 0);
   color: white;
   border: none;
-}</style>
+  cursor: pointer;
+}
+
+.sendbutton {
+  float: right;
+  padding: 6px 10px;
+  border-radius: 4px;
+  background: rgb(86, 86, 84);
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+</style>

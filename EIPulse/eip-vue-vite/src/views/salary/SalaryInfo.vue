@@ -68,7 +68,7 @@ onMounted(() => {
     <div class="container c">
         <div class="row mb-2 mt-3">
             <div class="col-3 ">
-                <RouterLink class="btn btn-warning btn-sm mb-3" :to="{ name: 'salaryForm' }">
+                <RouterLink class="btn btn-warning btn-sm mb-2" :to="{ name: 'salaryForm' }">
                     <i class="bi bi-plus-lg"></i>新增
                 </RouterLink>
             </div>
@@ -131,8 +131,8 @@ onMounted(() => {
                                 <router-link class="btn btn-secondary  btn-sm mx-1"
                                     :to="'/salary/info/update/' + salaryInfo.empId"><i
                                         class="bi bi-pencil-square "></i></router-link>
-                                <button class="btn btn-secondary  btn-sm mx-1"
-                                    @click="deleteSalaryInfo(salaryInfo.empId)"><i class="bi bi-bucket"></i></button>
+                                <!-- <button class="btn btn-secondary  btn-sm mx-1"
+                                    @click="deleteSalaryInfo(salaryInfo.empId)"><i class="bi bi-bucket"></i></button> -->
                             </td>
                         </tr>
                     </tbody>

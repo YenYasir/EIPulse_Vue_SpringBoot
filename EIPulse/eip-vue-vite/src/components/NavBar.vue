@@ -126,9 +126,7 @@ const getMallLink = computed(()=>{
     return `/mall`;
 })
 
-const getChatLink = computed(()=>{
-  return `/manage/chats`;
-}) 
+
 
 const getManageChatLink = computed(() => `/manage/chats`);
 const getUserChatLink = computed(() => `/user/chats`);
@@ -151,6 +149,7 @@ const logout =  () => {
   }).then((result) => {
     if (result.isConfirmed) {
     store.isLogin = false;
+    store.permissionId = false;
     sessionStorage.clear();
     router.push({ name: 'login' });
   } 
