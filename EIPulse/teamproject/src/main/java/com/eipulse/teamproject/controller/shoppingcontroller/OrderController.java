@@ -17,13 +17,14 @@ import org.springframework.web.bind.annotation.*;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 
 @RestController
 public class OrderController {
     private OrderService orderService;
-    private final ProductTypeRepository productTypeRepository;
+    private  ProductTypeRepository productTypeRepository;
 
     @Autowired
     public OrderController(OrderService orderService,
@@ -43,10 +44,11 @@ public class OrderController {
         return new ResponseEntity<>("付款成功", HttpStatus.OK);
     }
 
-    @GetMapping("/order/{empId}")
-    public ResponseEntity<?> findByEmpOrder(@PathVariable Integer empId) {
-        return new ResponseEntity<>(orderService.findOrderByEmp(empId), HttpStatus.OK);
+    @GetMapping("/order/{empId}/{startDate}/{endDate}/{pageNumber}")
+    public ResponseEntity<?> findByEmpOrder(@PathVariable Integer empId,@PathVariable LocalDate startDate, @PathVariable LocalDate endDate, @PathVariable Integer pageNumber) {
+        return new ResponseEntity<>(orderService.findOrderByEmp(empId,startDate,endDate,pageNumber), HttpStatus.OK);
     }
+
 
     @GetMapping("/order/details/{empId}")
     public ResponseEntity<?> findByLastOrder(@PathVariable Integer empId) {
@@ -58,9 +60,9 @@ public class OrderController {
         return new ResponseEntity<>(orderService.findByOrderId(orderId), HttpStatus.OK);
     }
 
-    @GetMapping("/orders")
-    public ResponseEntity<?> findAllOrder() {
-        return new ResponseEntity<>(orderService.findAllOrder(), HttpStatus.OK);
+    @GetMapping("/orders/{startDate}/{endDate}/{pageNumber}")
+    public ResponseEntity<?> findAllOrder(@PathVariable LocalDate startDate, @PathVariable LocalDate endDate, @PathVariable Integer pageNumber) {
+        return new ResponseEntity<>(orderService.findAllOrder(startDate,endDate,pageNumber), HttpStatus.OK);
     }
 
     @PutMapping("/order")

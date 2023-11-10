@@ -26,6 +26,9 @@
 
 
   <card title="訂單管理" >
+    <template #findSearch>
+      <find-search @sendSearchDate="getOrders"></find-search>
+    </template>
     <template #body>
       <table class="table table-hover">
         <thead>
@@ -39,7 +42,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr v-for="item in orders">
+        <tr v-for="item in orders" :key="item.orderId">
           <td>{{ item.orderId }}</td>
           <td>{{ item.empId }}</td>
           <td>{{ item.totalPrice }}</td>
@@ -51,6 +54,9 @@
         </tbody>
       </table>
     </template>
+    <template #page>
+        <page :total-pages="totalPages" :current-page="currentPage" @select-page="updateCurrentPage"></page>
+    </template>
   </card>
 </template>
 
@@ -60,14 +66,26 @@ import axios from "axios";
 import Card from "../../components/Card.vue";
 import WindowModal from "../../components/mall/WindowModal.vue";
 import Swal from "sweetalert2";
-const orders = reactive({});
+import Page from "../../components/Page.vue";
+import FindSearch from "../../components/clocktime/FindSearch.vue";
+const orders = ref({});
 const orderModal =ref(null);
 const order = reactive({});
 const status=ref("");
+const URL = import.meta.env.VITE_API_JAVAURL;
+const totalPages = ref(0);
+const currentPage = ref(1);
+const currentSearchDate = ref(null); // 用於保存當前的搜索條件
 //獲取全部訂單
-const getOrders=()=>{
-  axios.get('http://localhost:8090/eipulse/orders').then((res)=>{
-    Object.assign(orders,res.data)
+const getOrders=(date)=>{
+  currentSearchDate.value =date;
+  let url =`${URL}orders/${date.startDate}/${date.endDate}/${currentPage.value}`;
+  if(date.empId){
+    url =`${URL}order/${date.empId}/${date.startDate}/${date.endDate}/${currentPage.value}`;
+  }
+  axios.get(url).then((res)=>{
+    orders.value = res.data.content
+    totalPages.value=res.data.totalPages;
     console.log(orders)
   }).catch((e)=>{
 
@@ -108,7 +126,7 @@ const changeStatus=async ()=>{
    if(result.isConfirmed) {
      order.status = status.value;
      const res =await axios.put('http://localhost:8090/eipulse/order',order)
-     getOrders();
+     getOrders(currentSearchDate.value);
      Swal.fire({
        title: '狀態更改成功',
        timer: 1000,
@@ -122,10 +140,12 @@ const changeStatus=async ()=>{
  }
 
 }
+const updateCurrentPage = (newPage) => {
+  currentPage.value = newPage;
+  getOrders(currentSearchDate.value)
+  // 這裡加載新頁面的數據
+};
 
-onMounted(()=>{
-  getOrders();
-})
 
 </script>
 

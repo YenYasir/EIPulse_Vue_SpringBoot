@@ -70,7 +70,7 @@ const ecPlayPage = async () => {
   try {
     const res = await axios.post('http://localhost:8090/eipulse/order/ecPlay', {empId: cart.empId})
     await Swal.fire({
-      title: '訂單已建即將跳轉至付款畫面',
+      title: '訂單已建立即將跳轉至付款畫面',
       timer: 3000,
       timerProgressBar: true,
       icon: 'success'

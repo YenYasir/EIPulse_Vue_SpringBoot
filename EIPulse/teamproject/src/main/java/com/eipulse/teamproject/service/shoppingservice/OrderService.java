@@ -17,8 +17,11 @@ import ecpay.payment.integration.domain.AioCheckOutOneTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -79,8 +82,9 @@ public class OrderService {
     }
 
     //單員工所有訂單查詢
-    public List<Order> findOrderByEmp(Integer empId){
-        return orderRepository.findByEmployee_EmpId(empId);
+    public Page<OrderDTO> findOrderByEmp(Integer empId,LocalDate startDate, LocalDate endDate,Integer pageNumber){
+        Pageable pageable = PageRequest.of(pageNumber-1,8);
+        return orderRepository.findByEmployee_EmpId(empId,startDate,endDate,pageable);
     }
 
 
@@ -101,13 +105,9 @@ public class OrderService {
     }
     
     //抓取所有訂單
-    public List<OrderDTO> findAllOrder(){
-        List<Order>orderList =orderRepository.findAll();
-        List<OrderDTO> result = new ArrayList<>();
-        for(Order order :orderList){
-            result.add(new OrderDTO(order));
-        }
-        return result;
+    public Page<OrderDTO> findAllOrder(LocalDate startDate, LocalDate endDate, Integer pageNumber){
+        Pageable pageable = PageRequest.of(pageNumber-1,8);
+        return orderRepository.findAllPage(startDate,endDate,pageable);
     }
 
 

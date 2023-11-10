@@ -106,7 +106,6 @@ import ProductType from "../../components/mall/ProdcutType.vue";
 import axios from "axios";
 import Swal from "sweetalert2";
 import IndexClockTime from "../../components/clocktime/IndexClockTime.vue";
-
 const emp = empStore();
 const showModal = ref(null);
 const center = reactive({ lat: 22.99297785113601, lng: 120.18681223016014 });

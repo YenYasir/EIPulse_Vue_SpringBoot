@@ -26,6 +26,9 @@
 
 
   <card title="我的訂單" class="w-75 mx-auto">
+    <template #findSearch>
+      <user-find-search  @sendSearchDate="getEmpOrder"></user-find-search>
+    </template>
     <template #body>
       <table class="table table-hover">
         <thead>
@@ -48,6 +51,9 @@
         </tbody>
       </table>
     </template>
+    <template #page>
+      <page :total-pages="totalPages" :current-page="currentPage" @select-page="updateCurrentPage"></page>
+    </template>
   </card>
 
 </template>
@@ -60,15 +66,23 @@ import {onMounted, reactive,ref} from "vue";
 import index from "../manage/Index.vue";
 import WindowModal from "../../components/mall/WindowModal.vue";
 import Swal from "sweetalert2";
+import Page from "../../components/Page.vue";
+import FindSearch from "../../components/clocktime/FindSearch.vue";
+import UserFindSearch from "../../components/clocktime/UserFindSearch.vue";
 
 const emp = empStore()
-const orders = reactive({});
+const orders = ref({});
 const order = reactive({});
 const orderModal =ref(null);
-const getEmpOrder=()=>{
-  axios.get(`http://localhost:8090/eipulse/order/${emp.empId}`).then((res)=>{
-    Object.assign(orders,res.data)
-    console.log(orders)
+const URL = import.meta.env.VITE_API_JAVAURL;
+const totalPages = ref(0);
+const currentPage = ref(1);
+const currentSearchDate = ref(null); // 用於保存當前的搜索條件
+const getEmpOrder=(date)=>{
+  currentSearchDate.value =date;
+  axios.get(`${URL}order/${emp.empId}/${date.startDate}/${date.endDate}/${currentPage.value}`).then((res)=>{
+    orders.value= res.data.content;
+    totalPages.value = res.data.totalPages
   }).catch((e)=>{
 
   })
@@ -101,6 +115,7 @@ const pickUpOrder= async (order)=>{
       if(result.isConfirmed) {
         order.status ='已取貨'
         const res =await axios.put('http://localhost:8090/eipulse/order',order)
+        getEmpOrder(currentSearchDate.value);
         Swal.fire({
           title: '取貨成功',
           timer: 1000,
@@ -117,9 +132,13 @@ const pickUpOrder= async (order)=>{
     Swal.fire('錯誤!', '訂單異常，請聯絡福委課。', 'error');
   }
 }
+const updateCurrentPage = (newPage) => {
+  currentPage.value = newPage;
+  getEmpOrder(currentSearchDate.value)
+  // 這裡加載新頁面的數據
+};
 
 onMounted(()=>{
-  getEmpOrder();
 })
 </script>
 
