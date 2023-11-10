@@ -10,7 +10,7 @@
       <img src="../assets/logo/logo.png" height="40" alt="Logo" loading="lazy"/>
       EIPulse
     </h3>
-    <ul class="nav nav-pills flex-column mb-auto">
+    <ul v-if="!isCollapsed" class="nav nav-pills flex-column mb-auto">
       <li class="nav-item">
         <router-link :to="homePath" class="nav-link text-warning">
           <i class="bi bi-house-door">主頁</i>
@@ -26,22 +26,19 @@
       <!-- 下拉選單 -->
       <!-- ... 其他選項 ... -->
     </ul>
-   
   </div>
+ 
+
 </template>
 <script setup>
 import Swal from 'sweetalert2';
-const sidebarVisible = ref(true); // Initially, the sidebar is visible
-
-const toggleSidebar = () => {
-  sidebarVisible.value = !sidebarVisible.value;
-}
 import DropDown from "./DropDown.vue";
 import {empStore} from "../stores/employee.js";
 
 import ClockTime from "./clocktime/ClockTime.vue";
 import {nextTick, ref} from "vue";
 import router from "../router/index.js";
+
 
 const clockModal = ref(null);
 const store = empStore();
@@ -52,7 +49,7 @@ const props = defineProps({
   }
 })
 
- 
+
 
 const showModal = () => {
     nextTick(() => {
@@ -61,6 +58,11 @@ const showModal = () => {
       modal.show();
   });
 }
+
+
+
+
+
 </script>
 
 
@@ -69,13 +71,33 @@ const showModal = () => {
   display: none; 
 }
 
+.sidebar {
+  transition: transform 0.3s ease;
+}
+
+.sidebar.collapsed {
+  transform: translateX(-100%);
+}
+
 @media screen and (max-width: 767px) {
   .sidebar {
-    display: none; 
+    transform: translateX(-100%); /* Initially collapsed on smaller screens */
   }
 
   .hamburger-icon {
     display: block; 
+  }
+}
+
+.dropdown-menu {
+  display: none;
+}
+.dropdown {
+  display: none;
+}
+@media screen and (max-width: 767px) {
+  .dropdown-menu {
+    display: block;
   }
 }
 </style>

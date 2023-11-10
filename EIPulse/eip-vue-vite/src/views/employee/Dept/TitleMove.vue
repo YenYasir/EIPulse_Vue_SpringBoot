@@ -35,7 +35,7 @@ const loadDept = async () => {
     const res = await axios.get(url);
     console.log(res.data.content);
     moveData.value = res.data.content;
-    totalPages.value = res.data.length;
+    totalPages.value = res.data.totalPages;
   } catch (e) {
     console.log(e);
   }
@@ -47,11 +47,11 @@ const updateCurrentPage = (newPage) => {
 };
 
 const addDept = () => {
-  router.push(`/xukai/add-dept`);
+  router.push(`/employee/add-dept`);
 };
 
 const updateDept = (deptId) => {
-  router.push(`/xukai/updateDept/${deptId}`);
+  router.push(`/employee/updateDept/${deptId}`);
 };
 
 const deleteDept = async (deptId) => {
