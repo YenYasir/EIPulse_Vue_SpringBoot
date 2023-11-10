@@ -81,6 +81,7 @@ const getOrders=(date)=>{
   currentSearchDate.value =date;
   let url =`${URL}orders/${date.startDate}/${date.endDate}/${currentPage.value}`;
   if(date.empId){
+    currentPage.value=1;
     url =`${URL}order/${date.empId}/${date.startDate}/${date.endDate}/${currentPage.value}`;
   }
   axios.get(url).then((res)=>{
