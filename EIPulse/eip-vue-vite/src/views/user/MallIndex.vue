@@ -16,7 +16,7 @@ const mall = mallStore();
 
 <style scoped>
 section {
-  max-height: 600px;
+  max-height: 90vh;
   overflow-x: auto;
 }
 </style>

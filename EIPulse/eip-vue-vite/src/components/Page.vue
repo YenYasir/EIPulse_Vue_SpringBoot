@@ -5,8 +5,8 @@
       <li class="page-item" :class="{ 'disabled': currentPage <= 1 }">
         <a class="page-link" @click="currentPage <= 1 ? null : selectPage(currentPage - 1)">Previous</a>
       </li>
-      <li class="page-item" v-for="page in totalPages" :key="page">
-        <a class="page-link" @click="selectPage(page)">{{ page }}</a>
+      <li class="page-item" v-for="page in totalPages" :key="page" :class="{'active' :currentPage ===page}">
+        <a class="page-link"  @click="selectPage(page)">{{ page }}</a>
       </li>
       <li class="page-item" :class="{ 'disabled': currentPage >= totalPages }">
         <a class="page-link" @click="currentPage >= totalPages ? null : selectPage(currentPage + 1)">Next</a>

@@ -6,6 +6,7 @@
     class="modal-m"
   >
     <h3>{{ emp.empId }}{{ emp.empName }}，您好</h3>
+    <p class="text-center">現在時間:{{ clock }}</p>
     <!-- 調整 Google Maps 的高度和寬度 -->
     <GMapMap
       :center="center"
@@ -37,6 +38,7 @@ const URL = import.meta.env.VITE_API_JAVAURL;
 //預設地圖經緯度
 const center = reactive({ lat: 22.99297785113601, lng: 120.18681223016014 });
 const emp = empStore();
+const clock = ref(new Date().toLocaleTimeString());
 const userLocation = navigator.geolocation;
 const timeInfo = reactive({
   empId: emp.empId,
@@ -106,6 +108,9 @@ const getLastTime = () => {
 onBeforeMount(() => {
   getUserMaps();
   getLastTime();
+  const interval = setInterval(() => {
+    clock.value = new Date().toLocaleTimeString();
+  }, 1000);
 });
 </script>
 

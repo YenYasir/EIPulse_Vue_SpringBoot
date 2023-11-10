@@ -62,7 +62,7 @@ const emp = empStore();
 <style scoped>
 section {
   background-color: #f0f0f0;
-  max-height: 700px;
+  max-height: 100vh;
   overflow-x: auto;
 }
 </style>

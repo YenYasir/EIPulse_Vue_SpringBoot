@@ -313,11 +313,17 @@ router.beforeEach(async(to, from, next) => {
     if (!isLogin) {
       return next({ name: "login" });
     }
-      
-      store.toggleClockVisibility(false);
+
+    if (to.name === 'manage-index' || to.name === 'user-index') {
+      store.toggleClockVisibility(true);
       return next();
 
-  } else if (from.path === "/mall/order") {
+    }
+    store.toggleClockVisibility(false);
+    return next();
+
+
+  } else if (from.path === '/mall/order') {
     mall.setChangeOrderPage(false);
   }
   next();
