@@ -193,4 +193,11 @@ public class EmpController {
 		return new ResponseEntity<>(employeeService.findAllName(), HttpStatus.OK);
 	}
 
+	//  簽核專用，查詢同部門員工
+	@GetMapping("/employee/dept/form/{empId}")
+	public ResponseEntity<?> findFormSameDeptEmp(@PathVariable Integer empId) {
+		return new ResponseEntity<>(employeeService.findFormSameDeptEmp(empId), HttpStatus.OK);
+	}
+
+
 }

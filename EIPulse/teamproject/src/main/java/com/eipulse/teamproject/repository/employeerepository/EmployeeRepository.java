@@ -33,6 +33,10 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
 	@Query("select new com.eipulse.teamproject.dto.employeedto.EmpDTO(e) from Employee e where e.title.dept.deptId=?1")
 	List<EmpDTO> findSameDeptEmp(Integer deptId);
 
+	// 簽核專用
+	@Query("select e.empId,e.empName from Employee e where e.title.dept.deptId=?1 and e.permissionInfo.permission.permissionId = 6")
+	List<Object> findFormSameDeptEmp(Integer deptId);
+
 	@Query("from Employee e where e.empLineId=?1")
 	Optional<Employee> findByEmpLineId(String empLineId);
 

@@ -169,13 +169,12 @@ stompClient.onConnect = (frame) => {
   console.log('Connected: ' + frame);
   stompClient.subscribe(`/user/chat/contact`, async function (frame) {
     const entity = JSON.parse(frame.body)
-    if (parseInt(entity.sender) == parseInt(presentTarget.value[0])) {
+
       if (messages.value == null) {
         messages.value = entity
       } else {
         messages.value.push(entity)
       }
-    }
     updateObjects(entity, false)
   })
 }

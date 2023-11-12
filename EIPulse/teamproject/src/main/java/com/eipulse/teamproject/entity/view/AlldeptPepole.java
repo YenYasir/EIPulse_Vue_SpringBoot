@@ -35,7 +35,7 @@ public class AlldeptPepole {
     @Size(max = 50)
     @NotNull
     @Column(name = "emp_id", nullable = false, length = 50)
-    private String empId;
+    private Integer empId;
 
     @Size(max = 50)
     @NotNull

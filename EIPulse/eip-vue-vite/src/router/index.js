@@ -52,7 +52,7 @@ const router = createRouter({
         {
           path: "/manage/form/apply",
           component: () => import("@/views/form/Apply.vue"),
-          name: "apply",
+          name: "applyM",
         },
         {
           path: "/manage/form/audit",
@@ -240,6 +240,11 @@ const router = createRouter({
         {
           path: "/user/:empId/profile",
           component: () => import("@/views/manage/Profile.vue"),
+        },
+        {
+          path: "/user/form/apply",
+          component: () => import("@/views/form/Apply.vue"),
+          name: "applyU",
         },
         {
           path: "/user/chats",

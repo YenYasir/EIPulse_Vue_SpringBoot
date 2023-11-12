@@ -17,6 +17,7 @@ export const empStore = defineStore({
         photoUrl: sessionStorage.getItem('photoUrl') || null,
         isLogin:sessionStorage.getItem('isLogin') ||false,
         permissionId:sessionStorage.getItem('permissionId') || null,
+        hireDate:sessionStorage.getItem('hireDate') || null,
         password:'',
         otp:'',
         endDate: '',
@@ -42,6 +43,7 @@ export const empStore = defineStore({
             this.deptName = emp.deptName;
             this.photoUrl = emp.photoUrl;
             this.permissionId = emp.permissionId.toString();
+            this.hireDate = emp.hireDate;
             sessionStorage.setItem('empId',this.empId)
             sessionStorage.setItem('empName',this.empName)
             sessionStorage.setItem('isLogin',this.isLogin)
@@ -56,6 +58,7 @@ export const empStore = defineStore({
             sessionStorage.setItem('titleName',this.titleName)
             sessionStorage.setItem('deptName',this.deptName)
             sessionStorage.setItem('photoUrl',this.photoUrl)
+            sessionStorage.setItem('hireDate',this.hireDate)
             if(this.empId===''){
                 this.empId=sessionStorage.getItem('empId')
         

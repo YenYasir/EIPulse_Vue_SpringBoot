@@ -19,6 +19,14 @@
         menuId="submenu1"
       ></drop-down>
       <drop-down
+        title="表單申請"
+        iconName="pen"
+        :items="[
+          { name: '申請表單', path: '/user/form/apply' }
+        ]"
+        menuId="submenu3"
+      ></drop-down>
+      <drop-down
         title="聊天室"
         iconName="chat-left-text"
         :items="[

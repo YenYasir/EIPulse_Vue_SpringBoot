@@ -181,7 +181,7 @@ public class EmployeeService {
 		Optional<Employee> optional = empRepo.findById(empDTO.getEmpId());
 
 		optional.ifPresentOrElse(employee -> {
-			// TODO: 使用更安全的方式比對密碼，例如bcrypt
+			// 使用更安全的方式比對密碼，例如bcrypt
 			if (empDTO.getPassword() != null && employee.getPassword() != null
 					&& empDTO.getPassword().equals(employee.getPassword())
 					|| securityConfig.passwordEncoder().matches(empDTO.getPassword(), employee.getPassword())) {
@@ -196,14 +196,15 @@ public class EmployeeService {
 				empDTO.setTitleName(employee.getTitle().getTitleName());
 				empDTO.setDeptName(employee.getTitle().getDept().getDeptName());
 				empDTO.setPhotoUrl(employee.getPhotoUrl());
+				empDTO.setHireDate(employee.getHireDate());
 				// 設置權限ID
 				empDTO.setPermissionId(employee.getPermissionInfo().getPermission().getPermissionId());
 			} else {
-				// TODO: 抛出更具體的異常
+				// 抛出更具體的異常
 				throw new SecurityException("密碼不匹配");
 			}
 		}, () -> {
-			// TODO: 抛出更具體的異常
+			// 抛出更具體的異常
 			throw new NoSuchElementException("員工代號不存在");
 		});
 
@@ -216,6 +217,12 @@ public class EmployeeService {
 		return empRepo.findSameDeptEmp(employee.getTitle().getDept().getDeptId());
 	}
 
+	//  簽核專用，查詢同部門
+	public List<Object> findFormSameDeptEmp(Integer empId) {
+		Employee employee = empRepo.findById(empId).orElseThrow(() -> new RuntimeException("error"));
+		return empRepo.findFormSameDeptEmp(employee.getTitle().getDept().getDeptId());
+	}
+	
 	// 忘記密碼
 	public EmpDTO forgetPassword(EmpDTO empDTO, Integer otpVal) {
 		Optional<Employee> optional = empRepo.findByEmail(empDTO.getEmail());
