@@ -231,10 +231,10 @@ public class EmployeeService {
 //進階版Thread
 			CompletableFuture.runAsync(() -> {
 				SimpleMailMessage message = new SimpleMailMessage();
-				message.setFrom("anddie0904@gmail.com");
+				message.setFrom("EIPulse 科技 <blueyykai@gmail.com>");
 				message.setTo(employee.getEmail());
 				message.setSubject("Eipulse員工驗證碼");
-				message.setText("您的驗證碼：" + otpVal);
+				message.setText("您的驗證碼為：" + otpVal);
 				javaMailSender.send(message);
 			}).exceptionally(ex -> {
 				throw new UnsupportedOperationException("mail發送失敗");

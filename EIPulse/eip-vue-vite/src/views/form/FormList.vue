@@ -88,7 +88,6 @@ const selectForm = async (nowpage) => {
   }
   const URLAPI = `${URL}form/selectForms?pageNumber=${nowpage - 1}&pageSize=5`;
   const response = await axios.post(URLAPI, tempFormSelect);
-  console.log(tempFormSelect)
   forms.value = response.data.content;
   page.totalPages = parseInt(response.data.totalPages);
   page.currentPage = parseInt(response.data.pageable.pageNumber) + 1;
@@ -129,36 +128,84 @@ const formatStartDate = (dateString) => {
   const date = new Date(dateString);
   return date.toLocaleDateString("zh-TW", options);
 };
+
+const dateReset = () => {
+  formSelect.startTime = "";
+  formSelect.endTime = "";
+}
+
+const selectReset = () => {
+  formSelect.type = 0;
+}
+
+const assessAge = () => {
+  const now = new Date();
+  const age = new Date(emp.hireDate);
+  return ((now.getFullYear()-age.getFullYear())*12 + now.getMonth() - age.getMonth())
+}
 </script>
 <template>
-  <div class="card text-center div1">
-    <h2 style="margin: 20px 0">查詢自己送出的表單</h2>
-    <select v-model="formSelect.formType">
-      <option v-for="(type, index) in types" :value="index">{{ type }}</option>
-    </select>
-    <select v-model="formSelect.type" v-if="(formSelect.formType != 0) & (formSelect.formType != 3)">
-      <option v-for="(type, index) in leave" :value="index" v-if="formSelect.formType == 1">
-        {{ type }}
-      </option>
-      <option v-for="(type, index) in overtime" :value="index" v-if="formSelect.formType == 2">
-        {{ type }}
-      </option>
-    </select>
-    <select v-model="formSelect.stustId">
-      <option v-for="(stust, index) in stusts" :value="index">
-        {{ stust }}
-      </option>
-    </select>
-    <label>
-      <input type="checkbox" v-model="startDate" value="option1" />
-      日期搜尋
-    </label>
-    <template v-if="startDate == true">
-      開始日期
-      <input type="date" v-model="formSelect.startTime" />
-      結束日期
-      <input type="date" v-model="formSelect.endTime" />
-    </template>
+  <div class="card div1">
+
+    <h2 class="text-center" style="margin: 20px 0">查詢自己送出的表單</h2>
+<span>
+    <div class="select-div">
+      <span style="margin-right: 5%">選擇表單類型:
+        <select v-model="formSelect.formType" @change="selectReset">
+          <option v-for="(type, index) in types" :value="index">{{ type }}</option>
+        </select>
+      </span>
+
+      <span v-if="(formSelect.formType != 0) & (formSelect.formType != 3)">
+        <template v-if="formSelect.formType == 1">選擇請假類別:</template>
+        <template v-if="formSelect.formType == 2">選擇加班時段:</template>
+        <select v-model="formSelect.type">
+          <template v-if="formSelect.formType == 1">
+            <option value="0" >全部</option>
+            <option value="2" v-if="assessAge()>=12">一年特休</option>
+            <option value="1" v-else-if="assessAge()>=6">半年特休</option>
+            <option value="3">半薪病假</option>
+            <option value="4" v-if="emp.gender == '女'">生理假</option>
+            <option value="5">事假</option>
+            <option value="6">婚假</option>
+            <option value="7">喪假</option>
+            <option value="8" v-if="emp.gender == '女'">產假</option>
+          </template>
+
+          <option v-for="(type, index) in overtime" :value="index" v-if="formSelect.formType == 2">
+            {{ type }}
+          </option>
+        </select>
+      </span>
+    </div>
+
+    <div class="select-div">
+      <span>請選擇表單狀態:
+        <select v-model="formSelect.stustId">
+          <option v-for="(stust, index) in stusts" :value="index">
+            {{ stust }}
+          </option>
+        </select>
+      </span>
+    </div>
+
+    <div class="select-div">
+      <label>
+        <input type="checkbox" v-model="startDate" value="option1" @change="dateReset" />
+        日期搜尋
+      </label>
+      <div>
+        <template v-if="startDate == true">
+          開始日期
+          <input type="date" v-model="formSelect.startTime" />
+          結束日期
+          <input type="date" v-model="formSelect.endTime" />
+        </template>
+      </div>
+    </div>
+</span>
+
+
     <button @click="savevalue">進階搜尋</button>
     <div class="card-header"></div>
     <div class="card-body">
@@ -193,7 +240,7 @@ const formatStartDate = (dateString) => {
 </template>
 
 <style>
-.currentPage {
-  background-color: red;
+.select-div {
+  margin: 0 0 10px 5%  ;
 }
 </style>

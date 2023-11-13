@@ -3,7 +3,7 @@
   <div class="newpassword">
   <div class="card text-center div1">
     <div class="card-header">
-      EIPulse
+      EIPulse人事入口網站
     </div>
     <div class="card-body">
       <form @submit.prevent="sendOtp">
@@ -21,9 +21,10 @@
         </div>
         <div v-if="!passwordMatch" class="waring">請確認新密碼是否相同</div>
         <div class="form-floating">
-          <input :disabled="!passwordMatch" class="btn btn-secondary " type="submit" value="送出">
+          <input :disabled="!passwordMatch" class="btn btn-warning" type="submit" value="送出">
         </div>
       </form>
+      <button @click="goToLogin" class="btn btn-secondary mt-3">返回登入</button>
     </div>
     <div class="card-footer text-body-secondary">
       Copyright ©  EIPulse科技 All Rights Reserved.
@@ -77,6 +78,9 @@ export default {
         })
       }
     },
+  goToLogin() {
+      this.$router.push({ name: 'login' });
+    }
   },
   computed:{
     passwordMatch(){

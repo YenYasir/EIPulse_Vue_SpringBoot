@@ -7,10 +7,6 @@ const router = useRouter()
 
 </script>
 <template>
-    <!-- <SalaryBar
-        :items="[{ name: '薪資設定', path: '/info' }, { name: '薪資科目', path: '/subject' }, { name: '薪資結算', path: '/salary/calculate' }]">
-    </SalaryBar> -->
-
     <nav>
         <div class="nav nav-tabs" id="nav-tab" role="tablist">
             <router-link :to="{ name: 'salaryInfo' }"> <button class="nav-link active" id="nav-home-tab"
@@ -39,7 +35,8 @@ section {
 a {
     text-decoration: none;
 }
-.nav-link{
+
+.nav-link {
     color: #000;
 }
 </style>

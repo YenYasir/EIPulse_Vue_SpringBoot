@@ -1,43 +1,40 @@
 <script setup>
 import axios from "axios";
-import { ref, reactive } from "vue"
+import { ref } from "vue"
 import { onMounted } from 'vue';
 import Swal from "sweetalert2"
+import { useRouter } from 'vue-router';
+const router = useRouter()
 
 const subject = ref([]);
 const subjectInput = ref({})
-// const open = ref({
-//     subjectId: s.subjectId,
-//     status: s.status
-// })
 
 const handleSubmit = async () => {
-    const API_URL = `${import.meta.env.VITE_API_JAVAURL}payroll/subject/edit`
-    const response = await axios.post(API_URL, subjectInput.value)
-    subjectInput.value = {}
-    loadSubject()
+    try {
+        const API_URL = `${import.meta.env.VITE_API_JAVAURL}payroll/subject/edit`
+        const response = await axios.post(API_URL, subjectInput.value)
+        subjectInput.value = {}
+        if (response.status === 200)
+            Swal.fire({
+                title: '新增成功',
+                icon: 'success',
+                confirmButtonText: "確定"
+            }).then((result) => {
+                console.log(`output->>>>>>>>>>`)
+                if (result.isConfirmed) {
+                    router.push('/subject')///為什麼不會去
+                }
+            })
+        loadSubject()
+    }
+    catch (e) {
+    }
 }
-
 
 const loadSubject = async () => {
     const API_URL = `${import.meta.env.VITE_API_JAVAURL}payroll/subjects`
     const { data } = await axios.get(API_URL)
     subject.value = data;
-    console.log(`output->121212`, 121212)
-    console.log(`outputZZZZ->`, subject.value)
-    // const newStatus = {
-    //     subjectId: '',
-    //     status: ''
-    // }
-    // statusList.value.push(newStatus)
-    // for (let a = 0; a < subject.value.length; a++) {
-    //     if (subject.value[a].status === ) {
-    //         subject.value[a].status = true
-    //     } else {
-    //         subject.value[a].status = false
-    //     }
-    // }
-    console.log(`outputSSS->`, subject.value.status)
 
 }
 
@@ -49,26 +46,33 @@ const changeStatus = async (s) => {
 
     const API_URL = `${import.meta.env.VITE_API_JAVAURL}payroll/subject/status?status=${s.status}&subjectId=${s.subjectId}`
 
-    try {
-        const response = await axios.post(API_URL, {
-            status: s.status,
-            subjectId: s.subjectId
-        })
-        if (response.status === 200) {
-
-            Swal.fire({
-                title: '更新成功',
-                icon: 'success',
-                confirmButtonText: "OK"
+    const result = await Swal.fire({
+        title: `確認更新薪資科目「${s.subjectName}」`,
+        text: `是否確定更新科目狀態?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: '確定',
+        cancelButtonText: '取消',
+    })
+    if (result.isConfirmed) {
+        try {
+            const response = await axios.post(API_URL, {
+                status: s.status,
+                subjectId: s.subjectId
             })
-
-            console.log(`outputBSSS->`, response.data)
+            if (response.status === 200) {
+                Swal.fire({
+                    title: '更新成功',
+                    icon: 'success',
+                    confirmButtonText: "OK"
+                })
+            }
+        } catch (error) {
         }
-    } catch (error) {
-        console.error(error);
     }
 }
-
 const openModal = async (subjectId) => {
 
     const API_URL = `${import.meta.env.VITE_API_JAVAURL}payroll/subject/${subjectId}`
@@ -144,7 +148,6 @@ onMounted(loadSubject);
                                         <option :value="false">暫停</option>
                                     </select>
                                 </div>
-
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -265,9 +268,6 @@ onMounted(loadSubject);
                 </div>
             </div>
         </div>
-
-
-
     </div>
 </template>
     

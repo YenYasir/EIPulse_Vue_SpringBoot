@@ -13,9 +13,10 @@
           <label for="email">email</label>
         </div>
         <div class="form-floating">
-          <input class="btn btn-secondary " type="submit" value="送出">
+          <input class="btn btn-warning " type="submit" value="送出">
         </div>
       </form>
+      <button @click="goToLogin" class="btn btn-secondary mt-3">返回登入</button>
     </div>
     <div class="card-footer text-body-secondary">
       Copyright ©  EIPulse科技 All Rights Reserved.
@@ -63,23 +64,11 @@ export default {
           icon: 'error'
         })
       });
-      // try {
-      //   const response = await axios.post('http://localhost:8090/eipulse/login/forgetPassword',{
-      //     email:this.email
-      //   },{
-      //     withCredentials:true
-      //   });
-      //   console.log(response.status)
-      //   console.log(response.data)
-      //   this.empId = response.data
-      //   alert('已寄送驗證碼至信箱請確認');
-      //   this.showIsForget=false;
-      //   this.$emit('email-verified',this.empId)
-      // }catch (e){
-      //   console.log('errMessage'+e)
-      //   alert('信箱不存在請重新確認')
-      // }
-    }
+   
+    },
+    goToLogin() {
+      this.$router.push({ name: 'login' });
+    },
   },
 }
 

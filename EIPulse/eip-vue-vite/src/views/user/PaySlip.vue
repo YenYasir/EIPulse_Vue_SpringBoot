@@ -1,19 +1,15 @@
 <script setup>
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import axios from "axios";
 import { empStore } from '../../stores/employee';
+import Swal from "sweetalert2"
 const route = useRoute()
 const router = useRouter()
-const selectYear = ref(123);
-const selectMonth = ref()
+const selectYear = ref('請選擇(年)')
+const selectMonth = ref('請選擇(月)')
 const isShow = ref(false)
-// const paySlips = ref([])
-// const datas = ref({
-//     empId: route.params.empId,
-//     slYear: '',
-//     slMonth: ''
-// })
+
 const trial = ref({
     salaryMonthRecordDto: {},
     detaildDto: []
@@ -28,51 +24,51 @@ const loadData = async () => {
     addList.value = []
     deduList.value = []
 
-    console.log(`outputyyy->`, selectYear)
-    console.log(`outputType->`, typeof parseInt(selectYear.value))
-
-    const params = {
-        empId: route.params.empId,
-        slYear: parseInt(selectYear.value),
-        slMonth: parseInt(selectMonth.value)
-
-    }
-    console.log(params);
-    const empId = route.params.empId
-    console.log(empId)
-    const API_URL = `${import.meta.env.VITE_API_JAVAURL}payroll/record`
-    const { data } = await axios.get(API_URL, { params })
-    console.log(data)
-    trial.value = data
-    console.log(`output->`, 11111111111)
-    console.log(`outputPPP->`, trial.value)
-    // for (let a = 0; a < paySlips.value.length; a++) {
-    //     paySlips.value[a].switch = false;
-    // }
-
-    // console.log(`outputY->`, year.value)
-    // console.log(`outputM->`, month.value)
-    // 分別取出加項或減項明細
-    for (let b = 0; b < trial.value.detaildDto.length; b++) {
-
-        if (trial.value.detaildDto[b].calculateType === 'P') {
-            // const addItem = ({})
-            // addItem.value =
-            addList.value.push(trial.value.detaildDto[b]);
-        } else {
-            // const deduItem = ({})
-            // deduItem.value = trial.value.detaildDto[b]
-            deduList.value.push(trial.value.detaildDto[b])
+    try {
+        const params = {
+            empId: route.params.empId,
+            slYear: parseInt(selectYear.value),
+            slMonth: parseInt(selectMonth.value)
         }
+        const empId = route.params.empId
+        const API_URL = `${import.meta.env.VITE_API_JAVAURL}payroll/record`
+        const response = await axios.get(API_URL, { params })
+
+        console.log(response)
+        if (response.status === 200) {
+            trial.value = response.data
+
+            // 分別取出加項或減項明細
+            for (let b = 0; b < trial.value.detaildDto.length; b++) {
+
+                if (trial.value.detaildDto[b].calculateType === 'P') {
+                    addList.value.push(trial.value.detaildDto[b]);
+                } else {
+                    deduList.value.push(trial.value.detaildDto[b])
+                }
+            }
+            // $ 千進位
+            trial.value.salaryMonthRecordDto.netSalary = trial.value.salaryMonthRecordDto.netSalary.toLocaleString();
+            trial.value.salaryMonthRecordDto.addSum = trial.value.salaryMonthRecordDto.addSum.toLocaleString();
+            trial.value.salaryMonthRecordDto.deduSum = trial.value.salaryMonthRecordDto.deduSum.toLocaleString();
+        }
+    } catch (e) {
+        trial.value = {
+            salaryMonthRecordDto: {
+                // slMonth: selectMonth.value,
+                // slYear: selectYear,
+
+            },
+            detaildDto: []
+        };
+        Swal.fire({
+            title: '查無薪資紀錄',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: "確定",
+        })
     }
-    // $ 千進位
-    trial.value.salaryMonthRecordDto.netSalary = trial.value.salaryMonthRecordDto.netSalary.toLocaleString();
-    trial.value.salaryMonthRecordDto.addSum = trial.value.salaryMonthRecordDto.addSum.toLocaleString();
-    trial.value.salaryMonthRecordDto.deduSum = trial.value.salaryMonthRecordDto.deduSum.toLocaleString();
 }
-
-
-
 
 const year = ref([])
 const month = ref([])
@@ -80,6 +76,7 @@ const month = ref([])
 const selectYearAndMonth = () => {
     let currentYear = new Date().getFullYear()  // 2023
     let currentMonth = new Date().getMonth() + 1   // 9
+    year.value.push('請選擇(年)')
 
     for (let i = currentYear; i >= currentYear - 2; i--) {
         year.value.push(i)
@@ -87,6 +84,7 @@ const selectYearAndMonth = () => {
     // 預設10號發薪水,10號之前看不到號之前看不到
     let dateNow = new Date()
     console.log(`outputNow->`, dateNow)
+    month.value.push('請選擇(月)')
     if (dateNow.getDate() >= 10) {
         for (let j = 1; j < currentMonth; j++) {
             month.value.push(j)
@@ -97,10 +95,6 @@ const selectYearAndMonth = () => {
         }
     }
 }
-
-// created(() => {
-//     loadData()
-// }),
 
 const show = () => {
     isShow.value = true
@@ -122,15 +116,14 @@ onMounted(() => {
             <div class="col-12">
 
                 <select class="form-select" id="selectYear" v-model.trim="selectYear">
-                    <option selected>Choose...</option>
+                    <option selected></option>
                     <option v-for="y in year">{{ y }}</option>
                 </select>
             </div>
-
             <div class="col-12">
                 <label class="visually-hidden" for="inlineFormSelectPref">Year</label>
                 <select class="form-select" id="selectMonth" v-model.trim="selectMonth">
-                    <option selected>Choose...</option>
+                    <option selected></option>
                     <option v-for="m in month">{{ m }}</option>
                 </select>
             </div>
@@ -146,15 +139,17 @@ onMounted(() => {
 
             <div class="card">
                 <div class="card-body">
-                    <th>
-                        <!-- <div class="col-md-2"> -->
-                        <!-- <label for="empId" class="form-label">員工編號</label> -->
-                        員工編號
-                    </th>
-                    <th> {{ trial.salaryMonthRecordDto.empId }}
-                    </th>
-                    <td>員工姓名</td>
-                    <td> {{ trial.salaryMonthRecordDto.empName }}</td>
+                    <tr>
+                        <th>
+                            員工編號：
+                        </th>
+                        <th> {{ trial.salaryMonthRecordDto.empId }}
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>員工姓名：</th>
+                        <th> {{ trial.salaryMonthRecordDto.empName }}</th>
+                    </tr>
                     <table class="table table-bordered">
                         <tr>
                             <th>計薪區間(年)</th>

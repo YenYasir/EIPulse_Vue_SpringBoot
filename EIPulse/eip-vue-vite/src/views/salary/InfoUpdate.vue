@@ -29,12 +29,7 @@ const loadData = async () => {
     const empId = route.params.empId
     const API_URL = `${import.meta.env.VITE_API_JAVAURL}payroll/${empId}`
     const { data } = await axios.get(API_URL)
-
     info.value = data
-    console.log(`output->`, info.value)
-    console.log(`output->`, typeof info.value.welfareBenefitsDeduction)
-    console.log(`output->`, info.value.welfareBenefitsDeduction)
-    info.value.welfareBenefitsDeduction
 }
 const handleSubmit = async () => {
     const API_URL = `${import.meta.env.VITE_API_JAVAURL}payroll/newSalaryInfo`
@@ -46,7 +41,6 @@ const handleSubmit = async () => {
             Swal.fire({
                 title: '更新成功',
                 icon: 'success',
-
                 confirmButtonText: "OK"
             }).then(() => {
                 router.push('/info')
@@ -65,32 +59,23 @@ const handleSubmit = async () => {
         console.error(error);
     }
 
-
 }
-
-
-
-
 
 const updateHistory = async () => {
 
     salaryHistory.value.empId = info.value.empId
     salaryHistory.value.adjustSalary = info.value.basicSalary
     salaryHistory.value.remark = info.value.remark
-    // console.log(`編號` + info.value.empId)
 
     const API_URL = `${import.meta.env.VITE_API_JAVAURL}salaryHistory/new`
     try {
         const response =
-            // console.log(salaryHistory.value)
             await axios.post(API_URL, salaryHistory.value);
 
         if (response.status === 200) {
-
             Swal.fire({
                 title: '已新增調薪紀錄',
                 icon: 'success',
-
                 confirmButtonText: "OK"
             })
         }
@@ -98,7 +83,6 @@ const updateHistory = async () => {
             Swal.fire({
                 title: '薪資未異動，不用更薪拉',
                 icon: 'warning',
-
                 confirmButtonText: "OK"
             });
         }
@@ -115,19 +99,16 @@ onMounted(loadData);
 <template>
     <div class="container">
         <form @submit.prevent="handleSubmit">
-
             <div class="row justify-content-md-center mx-auto ">
                 <form @submit.prevent="updateHistory">
                     <div class="row">
                         <div class="col-md-4">
                             <label for="empId" class="form-label">員工編號</label>
-                            <input type="text" class="form-control" id="empId" v-model="info.empId" placeholder="" disabled
-                                readonly>
+                            <input type="text" class="form-control" id="empId" v-model="info.empId" readonly>
                         </div>
                         <div class="col-md-4">
                             <label for="empName" class="form-label">員工姓名</label>
-                            <input type="text" class="form-control" id="empName" v-model="info.empName" disabled readonly
-                                placeholder="" required="">
+                            <input type="text" class="form-control" id="empName" v-model="info.empName" readonly>
                         </div>
                     </div>
                     <div class="row">
@@ -138,21 +119,14 @@ onMounted(loadData);
                         </div>
                         <div class="col-md-4">
                             <label for="welfare" class="form-label">福利金扣款</label>
-
-
                             <select class="form-select" aria-label="welfare" v-model="info.welfareBenefitsDeduction">
                                 <option :value="'1'" :selected="info.welfareBenefitsDeduction === '1'">是</option>
-
                                 <option :value="'0'" :selected="info.welfareBenefitsDeduction === '0'">否</option>
                             </select>
-
-
-
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-8">
-
                             <label for="empId" class="form-label">薪資調整原因</label>
                             <div class="input-group">
                                 <input type="text" class="form-control" id="empId" placeholder="若薪資有調整，請說明"
@@ -222,7 +196,7 @@ onMounted(loadData);
                     </div>
                 </div>
             </div>
-            <button type="submit" class="btn btn-warning btn-sm mt-3">儲存</button>
+            <button type="submit" class="btn btn-warning btn-sm mt-3" style="margin-left:10px">儲存</button>
         </form>
     </div>
 </template>

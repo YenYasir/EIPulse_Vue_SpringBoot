@@ -1,6 +1,5 @@
 <script setup>
 import { ref } from 'vue';
-
 import axios from "axios";
 import { onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
@@ -17,7 +16,6 @@ const trial = ref({
 
 const subjectPlus = ref([])
 const getPlusSubject = async () => {
-
     const API_URL = `${import.meta.env.VITE_API_JAVAURL}payroll/subject/plus`
     const response = await axios.get(API_URL)
     subjectPlus.value = response.data
@@ -110,7 +108,6 @@ const loadData = async () => {
 
     trial.value = response.data
 
-
     // 分別取出加項或減項明細
     for (let b = 0; b < trial.value.detaildDto.length; b++) {
 
@@ -161,7 +158,6 @@ const handleSubmit = async () => {
     const API_URL = `${import.meta.env.VITE_API_JAVAURL}payroll/record/update`
     try {
         const response = await axios.post(API_URL, sendData.value)
-        console.log(`outputRRR->`, response)
         if (response.status === 200) {
             Swal.fire({
                 title: '更新成功',
@@ -182,7 +178,7 @@ const handleSubmit = async () => {
 const changeAmountA = (Obj, index) => {
     console.log('index');
     console.log(Obj);
-    // selectedSubjectA[index].value.amount=
+
     const newObj = subjectPlus.value.find(item => item.subjectId === Obj)
 
     if (newObj.amountDefault != undefined) {
@@ -190,13 +186,14 @@ const changeAmountA = (Obj, index) => {
     } else {
         selectedSubjectA.value[index].amount = 0
     }
-    console.log(`output$$->`, newObj.amountDefault)
+    calculateAddSum();
+
 }
 
 const changeAmountD = (Obj, index) => {
     console.log('index');
     console.log(Obj);
-    // selectedSubjectA[index].value.amount=
+
     const newObj = subjectPlus.value.find(item => item.subjectId === Obj)
 
     if (newObj.amountDefault != undefined) {
@@ -204,37 +201,78 @@ const changeAmountD = (Obj, index) => {
     } else {
         selectedSubjectD.value[index].amount = 0
     }
-    console.log(`output$$->`, newObj.amountDefault)
+    calculateDeduSum()
+
+}
+// 修改從資料庫取出的減項明細金額
+const calculateDeduFromDB = (index) => {
+    trial.value.salaryMonthRecordDto.deduSum = 0
+    let d = 0
+    for (let j = 0; j < deduList.value.length; j++) {
+        d = parseInt(deduList.value[j].amount) + d
+
+    }
+    trial.value.salaryMonthRecordDto.deduSum = d
+
+    trial.value.salaryMonthRecordDto.netSalary = 0
+
+    trial.value.salaryMonthRecordDto.netSalary = trial.value.salaryMonthRecordDto.netSalary + trial.value.salaryMonthRecordDto.addSum - d
+
 }
 
+// 修改從資料庫取出的加項明細金額
+const calculateAddFromDB = (index) => {
+    trial.value.salaryMonthRecordDto.addSum = 0
+    let a = 0
+    for (let j = 0; j < addList.value.length; j++) {
+        a = parseInt(addList.value[j].amount) + a
 
-// 計算加項總和
-const calculateAddSum = () => {
-    let a = trial.value.salaryMonthRecordDto.addSum;
-    for (let i = 0; i < selectedSubjectA.value.length; i++) {
-        a = parseInt(selectedSubjectA.value[i].amount) + a;
     }
+    trial.value.salaryMonthRecordDto.addSum = a
+
+    trial.value.salaryMonthRecordDto.netSalary = 0
+
+    trial.value.salaryMonthRecordDto.netSalary = trial.value.salaryMonthRecordDto.netSalary + a - trial.value.salaryMonthRecordDto.deduSum
+
+}
+
+// 新增加項後計算加項總和
+const calculateAddSum = () => {
+    let size = selectedSubjectA.value.length
+    // trial.value.salaryMonthRecordDto.netSalary = 0
+    // let a = trial.value.salaryMonthRecordDto.addSum;
+    trial.value.salaryMonthRecordDto.addSum = trial.value.salaryMonthRecordDto.addSum + parseInt(selectedSubjectA.value[size - 1].amount)
+    // 修改從資料庫取的加項金額後計算加項總和
+    // let a = 0
+    // for (let j = 0; j < addList.value.length; j++) {
+    //     a += parseInt(addList.value[j].amount)
+    //     console.log(`outputaa->`, a)
+    // }
+
+    // trial.value.salaryMonthRecordDto.netSalary = trial.value.salaryMonthRecordDto.netSalary + a
+    // for (let i = 0; i < selectedSubjectA.value.length; i++) {
+    //     a = parseInt(selectedSubjectA.value[i].amount) + a;
+    // }
 
     // 取出最後一筆被新增的項目
-    let size = selectedSubjectA.value.length
 
-    console.log(`output->`, selectedSubjectA.value[size - 1].amount)
-    trial.value.salaryMonthRecordDto.addSum = a
+
+    // trial.value.salaryMonthRecordDto.addSum = a
     trial.value.salaryMonthRecordDto.netSalary = trial.value.salaryMonthRecordDto.netSalary + parseInt(selectedSubjectA.value[size - 1].amount)
 }
 
-// 計算減項總和
+// 新增減項後計算減項總和
 const calculateDeduSum = () => {
-    let d = trial.value.salaryMonthRecordDto.deduSum;
-    for (let i = 0; i < selectedSubjectD.value.length; i++) {
-        d = parseInt(selectedSubjectD.value[i].amount) + d;
-    }
-    console.log(d);
-
-    trial.value.salaryMonthRecordDto.deduSum = d
-    // 取出最後一筆被新增的項目
+    // let d = trial.value.salaryMonthRecordDto.deduSum;
     let size = selectedSubjectD.value.length
-    trial.value.salaryMonthRecordDto.deduSum = d
+
+    trial.value.salaryMonthRecordDto.deduSum = trial.value.salaryMonthRecordDto.deduSum + parseInt(selectedSubjectD.value[size - 1].amount)
+
+    // for (let i = 0; i < selectedSubjectD.value.length; i++) {
+    //     d = parseInt(selectedSubjectD.value[i].amount) + d;
+    // }
+    // 取出最後一筆被新增的項目
+    // trial.value.salaryMonthRecordDto.deduSum = d
     trial.value.salaryMonthRecordDto.netSalary = trial.value.salaryMonthRecordDto.netSalary - parseInt(selectedSubjectD.value[size - 1].amount)
 
 }
@@ -263,44 +301,48 @@ onMounted(loadData)
                                 <td><input type="text" class="form-control-sm" id="recordId"
                                         v-model="trial.salaryMonthRecordDto.createdDate" disabled readonly></td>
                             </div>
-                            <div class="col-md-2">
-                                <label for="empId" class="form-label">計薪區間(年)</label>
-                                <input type="text" class="form-control f" id="empId" readonly
-                                    v-model="trial.salaryMonthRecordDto.slYear">
+                            <div class="col-md-3">
+                                <td><label for="empId" class="form-label">計薪區間(年/月)：</label>{{
+                                    trial.salaryMonthRecordDto.slYear
+                                }}/{{ trial.salaryMonthRecordDto.slMonth }}</td>
+                                <!-- <input type="text" class="form-control f" id="empId" readonly
+                                    v-model="trial.salaryMonthRecordDto.slYear"> -->
                             </div>
-                            <div class="col-md-2">
+                            <!-- <div class="col-md-2">
                                 <label for="empId" class="form-label">計薪區間(月)</label>
                                 <input type="text" class="form-control f" id="empId" readonly
                                     v-model="trial.salaryMonthRecordDto.slMonth">
 
+                            </div> -->
+                            <div class="col-md-3">
+                                <td> <label for="empId" class="form-label">員工編號：</label>{{ trial.salaryMonthRecordDto.empId
+                                }}</td>
+                                <!-- <input type="text" class="form-control f" id="empId" readonly
+                                    v-model="trial.salaryMonthRecordDto.empId"> -->
                             </div>
-                            <div class="col-md-2">
-                                <label for="empId" class="form-label">員工編號</label>
-                                <input type="text" class="form-control f" id="empId" readonly
-                                    v-model="trial.salaryMonthRecordDto.empId">
-                            </div>
-                            <div class="col-md-2">
-                                <label for="empId" class="form-label">員工姓名</label>
-                                <input type="text" class="form-control f" id="empName" readonly
-                                    v-model="trial.salaryMonthRecordDto.empName">
+                            <div class="col-md-3">
+                                <td><label for="empId" class="form-label">員工姓名：</label>{{ trial.salaryMonthRecordDto.empName
+                                }}</td>
+                                <!-- <input type="text" class="form-control f" id="empName" readonly
+                                    v-model="trial.salaryMonthRecordDto.empName"> -->
                             </div>
                         </div>
                         <div class="div2">
                             <div class="row">
-                                <div class="col-md-2">
+                                <div class="col-md-3">
                                     <label for="empId" class="form-label">實領薪資</label>
-                                    <input type="text" class="form-control f" id="empName" readonly
+                                    <input type="text" class="form-control f" id="empName"
                                         v-model="trial.salaryMonthRecordDto.netSalary">
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-3">
                                     <label for="empId" class="form-label">加項加總</label>
-                                    <input type="text" class="form-control f" id="empName" readonly
+                                    <input type="text" class="form-control f" id="empName"
                                         v-model="trial.salaryMonthRecordDto.addSum">
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-3">
                                     <label for="empId" class="form-label">減項加總</label>
-                                    <input type="text" class="form-control f" id="empName" readonly
-                                        v-model="trial.salaryMonthRecordDto.deduSum">
+                                    <input type="text" class="form-control f" id="empName"
+                                        v-model="trial.salaryMonthRecordDto.deduSum" @input="">
                                 </div>
                             </div>
                         </div>
@@ -348,7 +390,7 @@ onMounted(loadData)
                                                 </th>
                                                 <th scope="row">
                                                     <input type="text" class="form-control fc text-center" id="add"
-                                                        v-model="a.amount">
+                                                        v-model="a.amount" @change=calculateAddFromDB(index)>
                                                 </th>
                                                 <th scope="row" class="hidden-column"> <input type="text"
                                                         class="form-control " id="add" v-model="a.recordId"></th>
@@ -423,7 +465,8 @@ onMounted(loadData)
                                                         v-model="d.subjectName">
                                                 </th>
                                                 <th scope="row">
-                                                    <input type="text" class="form-control fc" id="add" v-model="d.amount">
+                                                    <input type="text" class="form-control fc" id="add" v-model="d.amount"
+                                                        @change=calculateDeduFromDB>
                                                 </th>
                                                 <th scope="row" class="hidden-column fc"> <input type="text"
                                                         class="form-control" id="add" v-model="d.recordId"></th>

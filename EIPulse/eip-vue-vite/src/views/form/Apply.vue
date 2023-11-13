@@ -10,8 +10,8 @@
       <div v-if="form.name === '請假'">
         <select v-model="form.type" placeholder="請選擇請假類別" @change="getRemaining(form.type)">
           <option value="-1" disabled>請選擇請假類別</option>
-          <option value="1">半年特休</option>
-          <option value="2">一年特休</option>
+          <option value="2" v-if="assessAge()>=12">一年特休</option>
+          <option value="1" v-else-if="assessAge()>=6">半年特休</option>
           <option value="3">半薪病假</option>
           <option value="4" v-if="emp.gender == '女'">生理假</option>
           <option value="5">事假</option>
@@ -83,18 +83,19 @@
       <ul style="text-align: left">
         <li style="margin: 10px">請提供合理的理由</li>
         <li style="margin: 10px">請先提前通知</li>
-        <li style="margin: 10px; color: red;">老闆說code沒打完前只能送審加班單,請假單一律拒絕</li>
+        <li style="margin: 10px; color: red;">未經主管簽核的表單將在7天後失效</li>
         <br>
+
+        <ul>
+          <h4>加班單申請注意事項</h4>
+          <li style="margin: 10px">加班開始時間請勿低於結束時間</li>
+        </ul>
+
         <ul>
           <h4>請假單申請注意事項</h4>
           <li style="margin: 10px">請假時數只會計算平日早上八點到下午五點</li>
           <li style="margin: 10px">中午午休時間一小時不計算</li>
           <li style="margin: 10px">請注意自己剩餘的時數</li>
-        </ul>
-
-        <ul>
-          <h4>加班單申請注意事項</h4>
-          <li style="margin: 10px">加班開始時間請勿低於結束時間</li>
         </ul>
 
         <ul>
@@ -141,6 +142,11 @@ watch(endDateTime, (newValue) => updateTime(newValue, endDateTime));
 
 const date = ref(formattedDate);
 
+const assessAge = () => {
+  const now = new Date();
+  const age = new Date(emp.hireDate);
+  return ((now.getFullYear()-age.getFullYear())*12 + now.getMonth() - age.getMonth())
+}
 //檔案部分
 const file = ref([]);
 const fileInput = ref(null);
@@ -288,7 +294,6 @@ const applyForm = async () => {
       reason: form.value.reason,
       startTime: startDateTime.value.replace(" ", "T") + ":00",
     };
-    console.log(datas.value);
   } else if (form.value.name == "加班") {
 
     applyType = "applyForOvertime";
@@ -300,7 +305,6 @@ const applyForm = async () => {
       startTime: startDateTime.value + ":00",
       endTime: endDateTime.value + ":00",
     };
-    console.log(getFileName(file.value));
   } else if (form.value.name == "離職") {
     applyType = "applyResign";
     datas.value = {
@@ -316,7 +320,6 @@ const applyForm = async () => {
     type: "application/json",
   });
   formData.append("data", blob);
-  console.log(formData);
 
   const URLAPI = `${URL}form/${applyType}?empId=${user.value}&audit=${aduit.value}`;
 
@@ -393,7 +396,6 @@ const checkform = () => {
     }
 
   } else {
-    console.log(new Date(date.value))
     const selectDay = new Date();
     if (new Date(date.value) < selectDay.setDate(selectDay.getDate() + 9)) {
       Swal.fire({
@@ -433,7 +435,6 @@ function calculateTimeDifference(startDateTime, endDateTime) {
     let endMinute = 0;
     const startWork = 8;
     const endWork = 17;
-    console.log(day.getDay);
     // 略過周末
     if (day.getDay() === 0 || day.getDay() === 6) {
       continue;
@@ -476,7 +477,6 @@ function calculateTimeDifference(startDateTime, endDateTime) {
       totalHours += dayHours;
     }
   }
-  console.log(totalHours);
   if (totalHours <= 0) {
     Swal.fire({
       icon: "error",
@@ -489,7 +489,7 @@ function calculateTimeDifference(startDateTime, endDateTime) {
 }
 
 onMounted(() => {
-  axios.get(`http://localhost:8090/eipulse/employee/dept/${emp.empId}`).then((res) => {
+  axios.get(`http://localhost:8090/eipulse/employee/dept/form/${emp.empId}`).then((res) => {
     Object.assign(sameDeptEmp, res.data);
   })
 })
@@ -576,6 +576,6 @@ textarea {
 
 input[type="date"] {
   appearance: none;
-  /* 清除默认样式 */
+  /* 清除默認樣式 */
 }
 </style>

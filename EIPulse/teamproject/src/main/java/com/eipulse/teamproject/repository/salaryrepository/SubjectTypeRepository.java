@@ -20,11 +20,11 @@ public interface SubjectTypeRepository extends JpaRepository<SubjectType, Intege
 	 List<SubjectType>findByStatus();
 	
 	// 搜尋計算類型為"加 (P)" & 啟用的科目
-	@Query( value = "select * from subject_type where status = '1' and calculate_type='P'" , nativeQuery = true)
+	@Query( value = "select * from subject_type where status = 'true' and calculate_type='P'" , nativeQuery = true)
 	 List<SubjectType>findTypeIsP();
 	
 	// 搜尋計算類型為"減 (M)"科目啟用的科目
-	@Query( value = "select * from subject_type where status = '1' and calculate_type='M'" , nativeQuery = true)
+	@Query( value = "select * from subject_type where status = 'true' and calculate_type='M'" , nativeQuery = true)
 	 List<SubjectType>findTypeIsM();
 	
 	

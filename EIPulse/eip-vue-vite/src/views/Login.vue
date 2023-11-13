@@ -6,8 +6,12 @@
           <div
             class="d-flex align-items-center h-custom-2 px-5 ms-xl-4 mt-5 pt-5 pt-xl-0 mt-xl-n5"
           >
-            <form style="width: 40rem" @submit.prevent="handleSubmit">
+            <div class="loginform">
+            <form style="width: 40rem;flex-direction: column;" 
+            @submit.prevent="handleSubmit">
+           
               <h3 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px solid">
+                <img class="logo" src="@/assets/logo/logo.png">
                 EIPulse人事入口網站
               </h3>
 
@@ -44,16 +48,14 @@
                   登入
                 </button>
               </div>
-              <div class="card-footer text-body-secondary">
-                Copyright © EIPulse科技 All Rights Reserved.
-              </div>
             </form>
-            <button
-              @click="toggleForgetPassword"
-              class="btn btn-secondary btn-sm"
-            >
+            <button @click="toggleForgetPassword" class="btn btn-secondary btn-lg">
               忘記密碼
             </button>
+            <div class="card-footer text-body-secondary">
+              Copyright © EIPulse科技 All Rights Reserved.
+            </div>
+          </div>
           </div>
         </div>
 
@@ -151,6 +153,9 @@ export default {
 
 </style> -->
 <style>
+.logo{
+  height: 7vh;
+}
 .bg-image-vertical {
   position: relative;
   overflow: hidden;
@@ -171,6 +176,10 @@ export default {
   height: 100%;
   background-color: antiquewhite;
 }
+.btn.btn.btn-secondary.btn-lg{
+margin-bottom: 3vh;
+}
+
 html,
 body {
   overflow: hidden;

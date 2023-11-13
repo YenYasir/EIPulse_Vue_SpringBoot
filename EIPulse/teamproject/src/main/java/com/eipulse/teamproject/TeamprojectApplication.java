@@ -11,6 +11,14 @@ public class TeamprojectApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(TeamprojectApplication.class, args);
+		System.out.println(" EIPulse 後端啟動成功     \n" + 
+				  " ______    _____  _____          _        \n"
+				+ "|  ____|  |_   _||  __ \\        | |  \n"
+				+ "| |__       | |  | |__) | _   _ | | ___  ___      \n"
+				+ "|  __|      | |  |  ___/ | | | || |/ __|/  _ \\      \n"
+				+ "| |____    _| |_ |  |    | |_| || |\\__  \\ |__/       \n"
+				+ "|______|  |_____||_ |    \\ ____||_||___/ \\___|     \n");
 	}
+	
 
 }

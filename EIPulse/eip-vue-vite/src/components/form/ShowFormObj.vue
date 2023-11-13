@@ -32,9 +32,19 @@ const  calculateDaysDifference = () => {
   let day1 = 0;
   if(sestartDate.getHours()>13){
     day1 = 17-sestartDate.getHours();
+    if(sestartDate.getHours()+allHours<17){
+      return sestartDate.setHours(sestartDate.getHours()+allHours);
+    }
   }else{
     day1 = 17-sestartDate.getHours()-1;
+    if(sestartDate.getHours()+allHours<=16){
+      if(sestartDate.getHours()+allHours>=13){
+        return sestartDate.setHours(sestartDate.getHours()+allHours+1)
+      }else
+        return sestartDate.setHours(sestartDate.getHours()+allHours)
+    }
   }
+
 
   const daysDiff = Math.ceil((allHours-day1)/8);
   const dayLast = (allHours-day1)%8;
@@ -48,17 +58,14 @@ const  calculateDaysDifference = () => {
   if(dayLast!=0){
     sestartDate.setHours(8+dayLast);
   }
-  console.log(sestartDate)
   return sestartDate;
 }
-
-
 calculateDaysDifference()
 </script>
 
 <template>
   <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
-    :data-bs-target="'#exampleModal' + datas.form.formId" data-bs-whatever="@mdo" style="margin-right: 15px;">詳細資料</button>
+    :data-bs-target="'#exampleModal' + datas.form.formId" data-bs-whatever="@mdo" style="margin-left: 15px;">詳細資料</button>
 
   <div class="modal fade" :id="'exampleModal' + datas.form.formId" tabindex="-1" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
@@ -134,11 +141,5 @@ calculateDaysDifference()
   height: auto;
   margin: 10px 0;
   object-fit: contain;
-}
-.no-active-style:active {
-  background-color: inherit !important;
-}
-.btn.btn-secondary{
-  color: black;
 }
 </style>
