@@ -112,7 +112,7 @@ export default {
 
       // 模糊收尋
       if (this.EMPname !== null && this.EMPname !== '') {
-        url = `http://localhost:8090/eipulse/employee/paged/${this.EMPname}/${this.currentPage}` ;
+        url = `http://localhost:8090/eipulse/employee/paged/${this.EMPname}/${this.currentPage}`;
       }
       try {
         const res = await axios.get(url);

@@ -47,11 +47,11 @@ const updateCurrentPage = (newPage) => {
 };
 
 const addDept = () => {
-  router.push(`/employee/add-dept`);
+  router.push(`/xukai/add-dept`);
 };
 
 const updateDept = (deptId) => {
-  router.push(`/employee/updateDept/${deptId}`);
+  router.push(`/xukai/updateDept/${deptId}`);
 };
 
 const deleteDept = async (deptId) => {

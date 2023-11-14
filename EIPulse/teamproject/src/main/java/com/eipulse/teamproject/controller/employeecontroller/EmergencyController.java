@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 public class EmergencyController {
-
+    
     private EmergencyService emergencyService;
 
     @Autowired
@@ -42,12 +42,19 @@ public class EmergencyController {
         return new ResponseEntity<>(emergencyService.findAllEmergency(), HttpStatus.OK);
     }
 
+    // find all by empId
+    @GetMapping("/emergency/{id}/{pageNumber}")
+    public ResponseEntity<?> findDeptsName(@PathVariable Integer id,@PathVariable Integer pageNumber){
+        return new ResponseEntity<>(((Object) emergencyService).findEmergencyByEmpId(id,pageNumber),HttpStatus.OK);
+    }
+
 
     // 更新緊急聯絡人
     @Transactional
     @PutMapping("/emergency/update")
     public ResponseEntity<?> update(@RequestBody EmergencyDTO dto){
         try {
+            System.out.println("777");
             return new ResponseEntity<>(emergencyService.updateEmergency(dto),HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);

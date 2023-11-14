@@ -37,7 +37,7 @@ const deptData = ref(
     "deptName": "",
     "deptOffice": "",
   }
-)
+);
 const addHandler = async () => {
   const API_URL = `${import.meta.env.VITE_API_JAVAURL}dept/add`;
   try {
@@ -59,6 +59,16 @@ const addHandler = async () => {
     console.log('emp.value before sending:', deptData.value);
   }
 };
+const quickEnter = async () => {
+  console.log(123);
+  const quickData = {
+    deptName: '軟體部',
+    deptOffice: 'N12',
+  };
+  for (const key in quickData) {
+    deptData.value[key] = quickData[key];
+  }
+}
 </script>
     
 
@@ -98,8 +108,8 @@ h2 {
 .form-table th {
   text-align: center;
   background-color: black;
-  color:white;
-  
+  color: white;
+
 }
 
 .form-control {

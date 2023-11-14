@@ -50,13 +50,12 @@ const savaEdit = async () => {
 }
 const backPage = () => {
     Swal.fire({
-        title: '即將返回部門列表',
-        text: "若有編輯資料將不保存",
+        title: 'Are you sure?',
+        text: "即將返回部門列表，若有編輯資料將不保存",
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: '確定',
-        cancelButtonText: '取消',
+        confirmButtonText: '確定'
     }).then((result) => {
         if (result.isConfirmed) {
 
@@ -73,7 +72,7 @@ loadData();
         <div style=" margin-top: 10px; ">
             <h2>編輯資料</h2>
             <table class="form-table" style="width: 410px; ">
-                <div><i class="bi bi-box-arrow-left" style="font-size: 30px;cursor: pointer;" @click="backPage"></i></div>
+                <div><i class="bi bi-box-arrow-left" style="font-size: 30px;" @click="backPage"></i></div>
                 <!-- 部門名稱 -->
                 <tr>
                     <th><label for="deptName" class="form-label">部門名稱</label></th>

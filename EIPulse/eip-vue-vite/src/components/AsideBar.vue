@@ -17,9 +17,9 @@
         </router-link>
       </li>
       <li class="nav-item">
-        <button class="nav-link text-warning" @click="showModal">
+        <!-- <button class="nav-link text-warning" @click="showModal">
           <i class="bi bi-clock">打卡</i>
-        </button> 
+        </button>  -->
       </li>
       <!-- ... 其他選項 ... -->
       <slot></slot>

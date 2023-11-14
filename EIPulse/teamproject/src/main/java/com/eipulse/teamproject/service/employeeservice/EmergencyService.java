@@ -6,6 +6,7 @@ import com.eipulse.teamproject.dto.employeedto.EmergencyDTO;
 import com.eipulse.teamproject.entity.employee.Dept;
 import com.eipulse.teamproject.entity.employee.Emergency;
 import com.eipulse.teamproject.entity.employee.Employee;
+import com.eipulse.teamproject.entity.view.AlldeptPepole;
 import com.eipulse.teamproject.repository.employeerepository.EmergencyRepository;
 import com.eipulse.teamproject.repository.employeerepository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,9 +58,16 @@ public class EmergencyService {
         return emergencyRepository.findAll();
     }
 
+    // find all by empId
+    public Page<EmergencyDTO> findEmergencyByEmpId( Integer id,Integer pageNumber){
+        Pageable pgb = PageRequest.of(pageNumber - 1, 5);
+        Page<EmergencyDTO> page = emergencyRepository.findEmergencyByEmpId(id, pgb);
+        return page;
+    }
+
     // update(緊急聯絡人姓名、電話、關係)
     public Emergency updateEmergency(EmergencyDTO dto) {
-        Emergency oldData = emergencyRepository.findById(dto.getEmpId())
+        Emergency oldData = emergencyRepository.findById(dto.getEmergencyId())
                 .orElseThrow(() -> new RuntimeException("Emergency with ID  not found."));
 
         oldData.setEmergencyName(dto.getEmergencyName());

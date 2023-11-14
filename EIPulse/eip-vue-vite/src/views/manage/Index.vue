@@ -1,35 +1,32 @@
 <template>
   <div class="d-flex">
     <aside-bar :home-path="`/manage/${emp.empId}`" style="flex: 1">
-      <drop-down
-        title="員工管理"
-        iconName="person-circle"
-        :items="[
-          { name: '員工查詢', path: '/employee/find-emp' },
-          { name: '員工資料新增', path: '/employee/add-emp' },
-          { name: '員工權限異動列表', path: '/employee/permission' },
-          { name: '離職員工紀錄', path: '/employee/resign-record' },
-          { name: '員工緊急聯絡人列表', path: '/employee/emergencyList' },
-        ]"
-        menuId="submenu0"
+      <drop-down 
+      title="員工管理" 
+      iconName="person-circle" 
+      :items="[
+        { name: '員工查詢', path: '/employee/find-emp' },
+        { name: '依部門查詢員工', path: '/employee/alldeptpepole' },
+        { name: '員工緊急聯絡人列表', path: '/employee/emergencyList' },
+        { name: '離職員工紀錄', path: '/employee/resign-record' },
+      ]" menuId="submenu0"
       ></drop-down>
-      <drop-down
-        title="部門管理"
-        iconName="people"
-        :items="[
-          { name: '部門查詢', path: '/employee/find-dept' },
-          { name: '依部門查詢員工', path: '/employee/alldeptpepole' },
-          { name: '部門資料新增', path: '/employee/add-dept' },
-          { name: '部門異動紀錄', path: '/employee/dept-move' },
-          { name: '權限管理', path: '/employee/permission' },
-          { name: '權限異動紀錄', path: '/employee/permission/history' },
+         <drop-down 
+         title="部門管理" 
+         iconName="people" 
+         :items="[
+        { name: '部門查詢', path: '/employee/find-dept' },
+        { name: '部門資料新增', path: '/employee/add-dept' },
+        { name: '部門異動紀錄', path: '/employee/dept-move' },
+        { name: '權限管理', path: '/employee/permission' },
+        { name: '權限異動紀錄', path: '/employee/permission/history' },
         ]"
         menuId="submenu1"
       ></drop-down>
       <drop-down
         title="薪資管理"
         iconName="coin"
-        :items="[{ name: '薪資設定', path: '/salary' }]"
+        :items="[{ name: '薪資作業', path: '/salary' }]"
         menuId="submenu2"
       ></drop-down>
       <drop-down

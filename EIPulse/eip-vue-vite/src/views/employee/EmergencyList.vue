@@ -47,7 +47,7 @@ onMounted(loadData);
             <table class="table table-bordered text-center">
                 <thead>
                     <tr style="background-color: rgb(255, 204, 0); border-color: rgb(0, 0, 0);">
-                        <th>編號</th>
+                        <!-- <th>編號</th> -->
                         <th>員工編號</th>
                         <th>員工姓名</th>
                         <th>聯絡人姓名</th>
@@ -57,7 +57,7 @@ onMounted(loadData);
                 </thead>
                 <tbody style="background-color: rgb(255, 255, 255);border-color: rgb(0, 0, 0);;">
                     <tr v-for="data in dataList" :key="data.id">
-                        <td>{{ data.emergencyId }}</td>
+                        <!-- <td>{{ data.emergencyId }}</td> -->
                         <td>{{ data.empId }}</td>
                         <td>{{ data.empName }}</td>
                         <td>{{ data.emergencyName }}</td>

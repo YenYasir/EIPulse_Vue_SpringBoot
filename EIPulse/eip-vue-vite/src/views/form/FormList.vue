@@ -228,7 +228,7 @@ const assessAge = () => {
           <td>{{ form.statusName }}</td>
           <td>
             <ShowFormObj :datas="form" :formType="form.typeId" />
-            <button class="btn btn-warning" @click="revokeForm(form.empId, form.formId)" v-if="form.statusId == 1">
+            <button class="btn btn-danger" @click="revokeForm(form.empId, form.formId)" v-if="form.statusId == 1" style="color: black;">
               撤回
             </button>
           </td>

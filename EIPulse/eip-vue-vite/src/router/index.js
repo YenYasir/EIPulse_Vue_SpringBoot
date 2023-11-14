@@ -269,7 +269,12 @@ const router = createRouter({
             path: "/user/:empId/bulletinboard",
             component: () => import("@/views/user/BulletinBoard.vue"),
             name: "bulletinboardU",
-          }
+          },
+           {
+            path: "/user/form/myform",
+            component: () => import("@/views/form/FormList.vue"),
+            name: "my-form-user",
+          },
       ],
     },
 

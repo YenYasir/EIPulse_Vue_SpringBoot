@@ -5,7 +5,7 @@
         title="個人管理"
         iconName="person-circle"
         :items="[
-          { name: '薪資查詢', path: `/user/${emp.empId}/paySlip` },
+          { name: '薪資單查詢', path: `/user/${emp.empId}/paySlip` },
         ]"
         menuId="submenu0"
       ></drop-down>
@@ -22,7 +22,9 @@
         title="表單申請"
         iconName="pen"
         :items="[
-          { name: '申請表單', path: '/user/form/apply' }
+          { name: '申請表單', path: '/user/form/apply' },
+          { name: '查詢表單', path: '/user/form/myform' },
+        
         ]"
         menuId="submenu3"
       ></drop-down>
@@ -52,7 +54,6 @@
     </aside-bar>
     <section style="flex: 3" class="border-0 shadow-sm">
       <nav-bar></nav-bar>
-      <h5>777</h5>
       <index-clock-time
       v-if="emp.showClock"
         class="d-flex justify-content-end"
