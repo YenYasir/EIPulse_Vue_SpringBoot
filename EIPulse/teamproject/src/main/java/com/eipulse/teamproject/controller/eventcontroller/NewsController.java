@@ -1,5 +1,7 @@
 package com.eipulse.teamproject.controller.eventcontroller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,8 +13,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.eipulse.teamproject.dto.employeedto.EmpDTO;
 import com.eipulse.teamproject.dto.eventdto.NewsDTO;
 import com.eipulse.teamproject.entity.evententity.News;
 import com.eipulse.teamproject.service.eventservice.NewsService;
@@ -30,8 +35,11 @@ public class NewsController {
 	    }
 	    
 	    // 新增
-	    @PostMapping("/")
-	    public ResponseEntity<?> createNews(@RequestBody News news) {
+	    @PostMapping("/add")
+	    public ResponseEntity<?> createNews(@RequestPart(value = "file", required = false)List<MultipartFile> files,
+				@RequestPart(value = "data") News news) {
+	    	String path = newsService.uploadNewsImage((List<MultipartFile>) files, news.getNewsId());
+			news.setFile(path);
 	         newsService.saveNews(news);
 	         return new ResponseEntity<>(HttpStatus.OK);
 	    }
@@ -76,7 +84,7 @@ public class NewsController {
 	        return newsService.findAllRemovedNews(page-1, size);
 	    }
 	    
-
+	    
 
 
 }

@@ -2,7 +2,8 @@
     <div class="container">
         <el-tabs v-model="message">
             <div style="display: flex; justify-content: space-between; align-items: center;">
-                <el-input v-model="searchQuery" placeholder="請輸入消息標題查詢" style="width: 200px;" />
+                <el-input v-if="message === 'normal'" v-model="searchQuery" placeholder="請輸入消息標題查詢" style="width: 200px;"
+                    @input="handleLikeSearch" />
                 <div class="add-button-container">
                     <el-button v-if="message === 'normal'" type="primary" @click="addNews()">新增</el-button>
                 </div>
@@ -27,8 +28,16 @@
                     </el-table-column>
                 </el-table>
                 <!-- 全部消息的分頁 -->
-                <el-pagination background layout="prev, pager, next" :total="totalPage * 10"
-                    :current-page.sync="currentPage" @current-change="handlePageChange" />
+                <br />
+
+                <!-- 全部消息的分頁 -->
+                <el-pagination v-if="message === 'normal' && !useTitlePage" background layout="prev, pager, next"
+                    :total="totalPage * 10" :current-page.sync="currentPage" @current-change="handlePageChange" />
+
+                <!-- 模糊搜尋的分頁 -->
+                <el-pagination v-if="message === 'normal' && useTitlePage" background layout="prev, pager, next"
+                    :total="titleTotalPage * 10" :current-page.sync="titleCurrentPage" @current-change="titlePageChange" />
+
             </el-tab-pane>
             <!-- 下架消息區塊 -->
             <el-tab-pane :label="`已下架消息`" name="off">
@@ -50,6 +59,7 @@
                         </el-table-column>
                     </el-table>
                     <!-- 下架消息的分頁 -->
+                    <br />
                     <el-pagination background layout="prev, pager, next" :total="offTotalPage * 10"
                         :current-page.sync="offCurrentPage" @current-change="handleOldageChange" />
                 </div>
@@ -76,7 +86,11 @@
                     <el-input v-model="addFormData.content" />
                 </el-form-item>
                 <el-form-item label="檔案">
-                    <el-input v-model="addFormData.file" />
+                    <el-upload v-model="files" class="upload-demo" action="${import.meta.env.VITE_API_JAVAURL}news/add"
+                        :multiple="true" :file-list="fileList" :on-change="fileChange">
+                        <el-button size="small" type="primary">選擇檔案</el-button>
+                        <div slot="tip" class="el-upload__tip">只能上傳 pdf 檔案</div>
+                    </el-upload>
                 </el-form-item>
                 <el-form-item label="發佈者">
                     <el-input v-model="addFormData.publisher" :readonly="true" />
@@ -135,9 +149,9 @@
 import Swal from "sweetalert2";
 import { empStore } from "../../stores/employee.js";
 import axios from "axios";
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted } from 'vue';
 import { ElDialog, ElInput, ElFormItem, ElButton } from 'element-plus'
-
+import { news } from "@/model/News";
 const emp = empStore();
 const URL = import.meta.env.VITE_API_JAVAURL;
 
@@ -145,7 +159,9 @@ const normalNews = ref([]); // 全部消息
 const offNews = ref([]); // 下架消息
 const totalPage = ref(null); // 全部消息的總頁數
 const offTotalPage = ref(null); // 下架消息的總頁數
-const searchQuery = ref(); // 模糊搜尋標題
+const searchQuery = ref(''); // 搜尋框
+const titleTotalPage = ref(null); // 模糊搜尋的總頁數
+const useTitlePage = ref(0); // 三元判斷式，確認是否有使用模糊搜尋
 
 // 設置一開始進入的頁面為全部消息
 const message = ref('normal');
@@ -153,6 +169,7 @@ const message = ref('normal');
 // 預設第一頁開始
 const currentPage = ref(1);
 const offCurrentPage = ref(1);
+const titleCurrentPage = ref(1);
 
 // 預設詳細消息視窗為false(不彈出)
 const showFormVisible = ref(false);
@@ -168,6 +185,63 @@ const editFormData = ref({}); // 編輯消息
 const addFormData = ref({}); // 新增消息
 const resetFormData = ref({}); // 重新上架消息
 
+const newsData = ref(news)
+const files = ref([]);
+const fileList = ref([]);
+const fileChange = (e) => {
+    file.value = '';
+    const selectedFiles = e.target.files; // 獲取第N個選擇的檔案
+    const maxSizeInBytes = 1024 * 1024 * 5; // 5MB
+
+    Array.from(selectedFiles).forEach(selectedFile => {
+        if (selectedFile.size > maxSizeInBytes) {
+            Swal.fire({
+                icon: 'error',
+                title: '檔案超過大小',
+                text: `${selectedFile.name}超過5MB`,
+            });
+        } else {
+            files.value.push(selectedFile);
+        }
+    });
+};
+const addHandler = async () => {
+    // 利用 formData 處理檔案
+    const formData = new FormData();
+    files.value.forEach((file, index) => {
+        formData.append(`file${index}`, file);
+    });
+    // 其他表單數據轉為 JSON，添加到 formData
+    const json = JSON.stringify(newsData.value);
+    const blob = new Blob([json], {
+        type: 'application/json'
+    });
+    formData.append('data', blob);
+    formData.append('file', file.value);
+    const API_URL = `${import.meta.env.VITE_API_JAVAURL}news/add`;
+    try {
+        const response = await axios.post(API_URL, formData);
+        console.log(newsData.value);
+        console.log(response);
+
+        if (response.status === 200) {
+            Swal.fire(
+                '儲存成功',
+                '',
+                'success'
+            );
+            // 清空檔案陣列
+            files.value = [];
+            router.push('/manage/:empId/bulletinboard');
+        } else {
+            alert(response.data.message);
+        }
+    } catch (error) {
+        console.error("An error occurred while adding: ", error);
+        console.log('emp.value before sending:', newsData.value);
+    }
+}
+
 // 全部消息的換頁
 const handlePageChange = async (newPage) => {
     currentPage.value = newPage;
@@ -178,6 +252,12 @@ const handlePageChange = async (newPage) => {
 const handleOldageChange = async (oldPage) => {
     offCurrentPage.value = oldPage;
     await readOffNewsFromDB();
+};
+
+// 模糊搜尋的換頁
+const titlePageChange = async (titlePage) => {
+    titleCurrentPage.value = titlePage;
+    await handleLikeSearch(searchQuery.value);
 };
 
 // 讀取資料庫的消息
@@ -294,6 +374,33 @@ const readOffNewsFromDB = async () => {
         console.error('獲取消息時發生錯誤', error);
     }
 };
+
+// 模糊搜尋
+const handleLikeSearch = async (newQuery) => {
+    if (newQuery !== '') {
+        useTitlePage.value = 1; // 改為true，告訴程式啟用模糊搜尋
+        try {
+            const response = await axios.get(`${URL}news/search`, {
+                params: {
+                    title: newQuery,
+                    page: titleCurrentPage.value,
+                    size: 8,
+                },
+            });
+            // 將搜尋結果賦值給normalNews
+            normalNews.value = response.data.content;
+            // 賦予總頁數
+            titleTotalPage.value = response.data.totalPages;
+        } catch (error) {
+            console.error('搜尋時發生錯誤', error);
+        }
+    } else {
+        // 如果搜索框為空，重新讀取所有消息
+        useTitlePage.value = 0;
+        await readNewsFromDB();
+        await readOffNewsFromDB();
+    }
+}
 
 // content 就是傳入的 scope.row
 const showMessageDetails = content => {

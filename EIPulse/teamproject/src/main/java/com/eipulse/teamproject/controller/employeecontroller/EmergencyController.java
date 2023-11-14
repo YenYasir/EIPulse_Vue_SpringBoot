@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 public class EmergencyController {
-    
+
     private EmergencyService emergencyService;
 
     @Autowired
@@ -45,7 +45,7 @@ public class EmergencyController {
     // find all by empId
     @GetMapping("/emergency/{id}/{pageNumber}")
     public ResponseEntity<?> findDeptsName(@PathVariable Integer id,@PathVariable Integer pageNumber){
-        return new ResponseEntity<>(((Object) emergencyService).findEmergencyByEmpId(id,pageNumber),HttpStatus.OK);
+        return new ResponseEntity<>(emergencyService.findEmergencyByEmpId(id,pageNumber),HttpStatus.OK);
     }
 
 
