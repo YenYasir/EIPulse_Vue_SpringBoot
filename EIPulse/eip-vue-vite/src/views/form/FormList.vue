@@ -102,12 +102,12 @@ const revokeForm = async (empId, formId) => {
     showCancelButton: true,
     confirmButtonText: "確定",
     cancelButtonText: "取消",
-  }).then((result) => {
+  }).then(async (result) => {
     if (result.isConfirmed) {
       const URLAPI = `${URL}form/revoke?empId=${empId}&formId=${formId}`;
-      const response = axios.put(URLAPI);
+      const response = await axios.put(URLAPI);
       Swal.fire("操作已執行", "", "success");
-      selectForm(pg.value);
+      await selectForm(pg.value);
     } else {
       Swal.fire("操作已取消", "", "info");
     }

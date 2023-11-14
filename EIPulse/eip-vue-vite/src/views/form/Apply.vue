@@ -507,7 +507,6 @@ const onReset = () => {
     startTime.value = "08:00";
     endTime.value = "17:00";
     difference.value = { hours: 0, days: 0 };
-    dayCount();
   } else if (form.value.name === '加班') {
     startDateTime.value = "17:00";
     endDateTime.value = "";
@@ -576,6 +575,6 @@ textarea {
 
 input[type="date"] {
   appearance: none;
-  /* 清除默認樣式 */
+  /* 清除默认样式 */
 }
 </style>

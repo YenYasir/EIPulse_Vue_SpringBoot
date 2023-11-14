@@ -12,7 +12,6 @@
             <button class="btn btn-outline-secondary " type="button" id="button-addon2">查詢</button>
           </div>
         </form>
-        <span>目前員工總數:${{}}</span>
       </div>
       <table class="table table-bordered text-center">
         <thead>

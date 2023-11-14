@@ -21,9 +21,10 @@ public interface EventRepository extends JpaRepository<Event, Integer> {
 	@Query("SELECT e FROM Event e WHERE e.title LIKE %:keyword%")
     List<Event> findEventsByKeyword(@Param("keyword") String keyword);
 	
-//	// 依照開始時間讀取自身的所有活動
-//	@Query("SELECT e FROM Event e WHERE e.userId = :userId ORDER BY e.start") 
-//	List<Event> findByUserId(Integer userId);
+	// 依照開始時間讀取自身的所有活動
+	@Query("SELECT e FROM Event e WHERE e.userId = :userId ORDER BY e.start") 
+	List<Event> findByUserId(Integer userId);
+	
 	
 //	// 依照開始時間讀取所有活動
 	@Query("SELECT e FROM Event e ORDER BY e.start") 

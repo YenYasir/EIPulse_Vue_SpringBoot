@@ -37,6 +37,11 @@ public class EventController {
 	        return new ResponseEntity<>(eventService.findAllEventByTime(),HttpStatus.OK);
 	    }
 	 
+	 @GetMapping("self/{userId}")
+	 public List<Event> getEvents(@PathVariable Integer userId) {
+		  return eventService.findAllEventBySelf(userId); 
+		}
+	 
 //	 @GetMapping("/")
 //	 public List<Event> getEvents(Integer userId) {
 //		  return eventService.findAllEventBySelf(userId); 

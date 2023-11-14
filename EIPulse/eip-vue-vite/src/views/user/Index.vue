@@ -46,11 +46,15 @@
         { name: '行事曆', path: '/user/calendar' },
       ]" menuId="submenu7">
       </drop-down>
+      <drop-down title="消息快訊" iconName="info-circle" :items="[
+        { name: '消息一覽', path: '/user/:empId/bulletinboard' },
+      ]" menuId="submenu8"></drop-down>
     </aside-bar>
     <section style="flex: 3" class="border-0 shadow-sm">
       <nav-bar></nav-bar>
+      <h5>777</h5>
       <index-clock-time
-        v-if="emp.showClock"
+      v-if="emp.showClock"
         class="d-flex justify-content-end"
       ></index-clock-time>
       <router-view></router-view>

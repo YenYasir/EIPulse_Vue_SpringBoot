@@ -161,6 +161,12 @@ const router = createRouter({
         component: () => import("@/views/manage/Calendar.vue"),
         name: "calendarM",
         },
+        // 布告欄
+        {
+          path: "/manage/:empId/bulletinboard",
+          component: () => import("@/views/manage/BulletinBoard.vue"),
+          name: "bulletinboardM",
+        },
         {
           path: "/salary",
           component: () => import("@/views/salary/SalaryView.vue"),
@@ -258,6 +264,12 @@ const router = createRouter({
           path: "/user/:empId/paySlip",
           component: () => import("@/views/user/PaySlip.vue"),
         },
+          // 布告欄
+          {
+            path: "/user/:empId/bulletinboard",
+            component: () => import("@/views/user/BulletinBoard.vue"),
+            name: "bulletinboardU",
+          }
       ],
     },
 

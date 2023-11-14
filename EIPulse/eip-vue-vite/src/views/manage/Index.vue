@@ -82,6 +82,9 @@
       <drop-down title="行事曆" iconName="calendar-check" :items="[
         { name: '行事曆', path: '/manage/calendar' },
       ]" menuId="submenu7"></drop-down>
+      <drop-down title="消息快訊" iconName="info-circle" :items="[
+        { name: '公告欄', path: '/manage/:empId/bulletinboard' },
+      ]" menuId="submenu8"></drop-down>
     </aside-bar>
     <section style="flex: 3" class="shadow-sm">
       <nav-bar></nav-bar>

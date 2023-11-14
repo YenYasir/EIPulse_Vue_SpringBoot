@@ -27,11 +27,12 @@ public class EventService {
     	return eventRepo.findAllByStartDate();  	
       }
     
-    // 依照開始時間讀取自身的所有活動 
-//    public List<Event> findAllEventBySelf(Integer userId) {
-//    	return eventRepo.findByUserId(userId);  	
-//      }
-//    
+
+    
+//  依照開始時間讀取自身的所有活動 
+ public List<Event> findAllEventBySelf(Integer userId) {
+ 	return eventRepo.findByUserId(userId);  	
+   }   
     
     // 使用模糊搜尋查詢活動
     public List<Event> findEventsByKeyword(String keyword) {
