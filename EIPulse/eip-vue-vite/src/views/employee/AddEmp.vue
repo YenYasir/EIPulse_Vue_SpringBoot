@@ -165,6 +165,7 @@ const fileChange = (e) => {
 };
 </script>
 <template>
+    <div class="card-body">
   <form @submit.prevent="addHandler">
     <div class="container">
       <h2>新增員工資料</h2>
@@ -287,6 +288,7 @@ const fileChange = (e) => {
     </div>
     <button type="button" @click="quickEnter">快速輸入</button>
   </form>
+</div>
 </template>
 
 
@@ -334,8 +336,8 @@ h2 {
   box-sizing: border-box;
 }
 
-.btn {
-  width: 50%;
+.btn.btn-warning {
+
   display: block;
   margin: 2px auto;
 }

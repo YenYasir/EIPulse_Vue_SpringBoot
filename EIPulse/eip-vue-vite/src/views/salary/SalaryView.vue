@@ -29,7 +29,6 @@ const router = useRouter()
 <style scoped>
 section {
     max-height: 800px;
-    overflow-y: auto;
 }
 
 a {

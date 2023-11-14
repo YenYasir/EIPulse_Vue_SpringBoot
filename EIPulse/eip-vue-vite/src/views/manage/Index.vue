@@ -16,7 +16,6 @@
          iconName="people" 
          :items="[
         { name: '部門查詢', path: '/employee/find-dept' },
-        { name: '部門資料新增', path: '/employee/add-dept' },
         { name: '部門異動紀錄', path: '/employee/dept-move' },
         { name: '權限管理', path: '/employee/permission' },
         { name: '權限異動紀錄', path: '/employee/permission/history' },
@@ -80,7 +79,7 @@
         { name: '行事曆', path: '/manage/calendar' },
       ]" menuId="submenu7"></drop-down>
       <drop-down title="消息快訊" iconName="info-circle" :items="[
-        { name: '公告欄', path: '/manage/:empId/bulletinboard' },
+        { name: '公告欄', path: `/manage/${emp.empId}/bulletinboard` },
       ]" menuId="submenu8"></drop-down>
     </aside-bar>
     <section style="flex: 3" class="shadow-sm">

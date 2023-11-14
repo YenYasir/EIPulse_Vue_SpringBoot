@@ -95,12 +95,12 @@ onMounted(() => {
                             <th>員工姓名</th>
                             <th>基本薪資(元)</th>
                             <th>勞保投保級距</th>
-                            <th>勞保費</th>
+                            <!-- <th>勞保費</th> -->
                             <th>勞退自願提撥率</th>
                             <!-- <th>勞退自願提繳退休金</th> -->
                             <th>健保投保級距</th>
                             <th>眷屬扶養人數</th>
-                            <th>健保費</th>
+                            <!-- <th>健保費</th> -->
                             <th>福利金扣繳(Y/N)</th>
                             <th>動作</th>
                         </tr>
@@ -113,18 +113,18 @@ onMounted(() => {
                             <td>{{ salaryInfo.empName }}</td>
                             <td>{{ salaryInfo.basicSalary.toLocaleString() }}</td>
                             <td>{{ salaryInfo.laborInsuranceGrade.toLocaleString() }}</td>
-                            <td>{{ Math.round(salaryInfo.laborInsuranceGrade * laborInsuranceRateEmp *
+                            <!-- <td>{{ Math.round(salaryInfo.laborInsuranceGrade * laborInsuranceRateEmp *
                                 employmentInsuranceRate)
                                 .toLocaleString() }}
-                            </td>
+                            </td> -->
                             <td>{{ salaryInfo.laborVolunteerPensionRate * 100 }}%</td>
                             <!-- <td>{{ Math.round(salaryInfo.laborVolunteerPensionRate * salaryInfo.laborInsuranceGrade) }}
                         </td> -->
                             <td>{{ salaryInfo.healthInsuranceGrade.toLocaleString() }} </td>
                             <td>{{ salaryInfo.familyDependantsNum }} </td>
-                            <td>{{ Math.round(salaryInfo.healthInsuranceGrade * healthInsuranceRate
+                            <!-- <td>{{ Math.round(salaryInfo.healthInsuranceGrade * healthInsuranceRate
                                 * healthInsuranceRateEmp * (1 + salaryInfo.familyDependantsNum)).toLocaleString() }}
-                            </td>
+                            </td> -->
                             <td v-if="salaryInfo.welfareBenefitsDeduction == 0">否</td>
                             <td v-else>是</td>
                             <td>

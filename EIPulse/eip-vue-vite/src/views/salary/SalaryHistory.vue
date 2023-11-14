@@ -1,13 +1,15 @@
 <script setup>
 import { ref } from 'vue';
 import axios from "axios";
-import { onMounted } from 'vue';
+import { onMounted, computed } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 const route = useRoute()
 const router = useRouter()
+const empId = computed(() => route.params.empId);
 
+const empName = ref()
 const personalHistory = ref()
-const empId = ref(0)
+
 const loadData = async () => {
     const empId = route.params.empId
     console.log(empId)
@@ -15,7 +17,14 @@ const loadData = async () => {
     const { data } = await axios.get(API_URL)
     console.log(data)
     personalHistory.value = data
-    empId = personalHistory.value[0].empId
+    empName.value = personalHistory.value[0].empName
+    console.log(`outputDD->`, personalHistory.value[0].adjustedDate)
+    for (let i = 0; i < personalHistory.value.length; i++) {
+        const dateDB = new Date(personalHistory.value[i].adjustedDate)
+        personalHistory.value[i].adjustedDate = dateDB.toISOString().split('T')[0];
+        console.log(`output->`, personalHistory.value[0].adjustedDate)
+    }
+
 }
 
 
@@ -23,51 +32,50 @@ onMounted(loadData)
 </script>
 
 <template>
-    <!-- <div class="nav1">
+    <div class="nav1">
         <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <router-link :to="{ name: 'infoPersonal', params: { empId: empId } }">
-                    <li class="breadcrumb-item"><i class="bi bi-person-fill"></i>{{ empId }} 薪資資訊</li>
-                </router-link>
+                    <li class="breadcrumb-item"><i class="bi bi-person-fill"></i>&nbsp{{ empName }} 薪資資訊</li>
+                </router-link><span>&nbsp＞&nbsp</span>
                 <li class="breadcrumb-item active" aria-current="page">
-                    <router-link :to="{ name: 'historyPersonal', params: { empId: info.empId } }"><i
-                            class="bi bi-tag-fill"></i>
-                        薪資異動紀錄</router-link>
+                    <!-- <i class="bi bi-tag-fill"></i> -->
+                    薪資異動紀錄
                 </li>
             </ol>
         </nav>
-    </div> -->
-    <div class="div1" style=" margin-top:20px;">
-        <table class="table table-sm table-hover">
-            <thead>
-                <tr>
-                    <th scope="col" class="hidden-column">紀錄單號</th>
-                    <th scope="col">員工編號</th>
-                    <th scope="col">員工姓名</th>
-                    <th scope="col">異動前薪資</th>
-                    <th scope="col">異動後薪資</th>
-                    <th scope="col">備註</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="(history, index) in personalHistory" :key="history.empId">
-                    <!-- <td><router-Link :to="'/info/' + salaryInfo.empId" @click="handleLinkClick"><i
-                                class="bi bi-zoom-in"></i></router-Link></td> -->
-                    <td class="hidden-column">{{ history.id }}</td>
-                    <td>{{ history.empId }}</td>
-                    <td>{{ history.empName }}</td>
-                    <td>{{ history.originalSalary }}</td>
-                    <td>{{ history.adjustSalary }}</td>
-                    <td>{{ history.remark }}</td>
-                    <!-- <td>
-                        <router-link class="btn btn-secondary mx-1" :to="'/salary/update/' + history.id"><i
-                                class="bi bi-pencil-square"></i></router-link>
-                        <button class="btn btn-secondary mx-1" @click="deleteHistory(history.id)"><i
-                                class="bi bi-bucket"></i></button>
-                    </td> -->
-                </tr>
-            </tbody>
-        </table>
+    </div>
+    <div class="container">
+        <div class="div1" style=" margin-top:20px;">
+            <div class="card">
+                <div class="card-body">
+                    <table class="table table-sm table-hover">
+                        <thead>
+                            <tr>
+                                <!-- <th scope="col" class="hidden-column" >紀錄單號</th> -->
+                                <th scope="col" style="width:100px;" class="hidden-column">員工編號</th>
+                                <th scope="col" style="width:100px;" class="hidden-column">員工姓名</th>
+                                <th scope="col" style="width:100px;">異動日期</th>
+                                <th scope="col" style="width:100px;">異動前薪資</th>
+                                <th scope="col" style="width:100px;">異動後薪資</th>
+                                <th scope="col" style="width:150px;">備註</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(history, index) in personalHistory" :key="history.empId">
+                                <!-- <td class="hidden-column">{{ history.id }}</td> -->
+                                <td style="width:100px;" class="hidden-column">{{ history.empId }}</td>
+                                <td style="width:100px;" class="hidden-column">{{ history.empName }}</td>
+                                <td style="width:100px;">{{ history.adjustedDate }}</td>
+                                <td style="width:100px;">{{ history.originalSalary }}</td>
+                                <td style="width:100px;">{{ history.adjustSalary }}</td>
+                                <td style="width:150px;">{{ history.remark }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -80,5 +88,15 @@ onMounted(loadData)
 
 table {
     text-align: center;
+}
+
+a {
+    text-decoration: none;
+}
+
+.nav1 {
+    font-size: 15px;
+    margin-top: 10px;
+    margin-left: 30px;
 }
 </style>

@@ -35,7 +35,7 @@ loadData()
     <div class="nav1">
         <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><i class="bi bi-person-fill"></i>{{ info.empName }} 薪資資訊</li>
+                <li class="breadcrumb-item"><i class="bi bi-person-fill"></i>&nbsp{{ info.empName }} 薪資資訊</li>
                 <li class="breadcrumb-item active" aria-current="page">
                     <router-link :to="{ name: 'historyPersonal', params: { empId: info.empId } }">
                         薪資異動紀錄</router-link>
@@ -136,7 +136,7 @@ a {
 }
 
 .nav1 {
-    font-size: 18px;
+    font-size: 15px;
     margin-top: 10px;
     margin-left: 30px;
 }
@@ -144,6 +144,7 @@ a {
 .container {
     margin-left: 40px;
     margin-top: 5px;
+    overflow-x: hidden;
 
 }
 </style>

@@ -49,7 +49,7 @@
       ]" menuId="submenu7">
       </drop-down>
       <drop-down title="消息快訊" iconName="info-circle" :items="[
-        { name: '消息一覽', path: '/user/:empId/bulletinboard' },
+        { name: '消息一覽', path: `/user/${emp.empId}/bulletinboard` },
       ]" menuId="submenu8"></drop-down>
     </aside-bar>
     <section style="flex: 3" class="border-0 shadow-sm">

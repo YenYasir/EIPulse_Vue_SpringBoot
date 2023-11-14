@@ -9,7 +9,7 @@
           <div class="input-group w-25">
             <input type="text" class="form-control custom-width" placeholder="輸入員工姓名" aria-label="Recipient's username"
               aria-describedby="button-addon2" v-model="EMPname">
-            <button class="btn btn-outline-secondary " type="button" id="button-addon2">查詢</button>
+            <button class="btn btn-outline-secondary" type="button" id="button-addon2">查詢</button>
           </div>
         </form>
       </div>

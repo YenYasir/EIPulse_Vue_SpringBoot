@@ -35,11 +35,8 @@ public class NewsController {
 	    }
 	    
 	    // 新增
-	    @PostMapping("/add")
-	    public ResponseEntity<?> createNews(@RequestPart(value = "file", required = false)List<MultipartFile> files,
-				@RequestPart(value = "data") News news) {
-	    	String path = newsService.uploadNewsImage((List<MultipartFile>) files, news.getNewsId());
-			news.setFile(path);
+	    @PostMapping("/")
+	    public ResponseEntity<?> createNews(@RequestBody News news) {
 	         newsService.saveNews(news);
 	         return new ResponseEntity<>(HttpStatus.OK);
 	    }

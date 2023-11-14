@@ -86,11 +86,7 @@
                     <el-input v-model="addFormData.content" />
                 </el-form-item>
                 <el-form-item label="檔案">
-                    <el-upload v-model="files" class="upload-demo" action="${import.meta.env.VITE_API_JAVAURL}news/add"
-                        :multiple="true" :file-list="fileList" :on-change="fileChange">
-                        <el-button size="small" type="primary">選擇檔案</el-button>
-                        <div slot="tip" class="el-upload__tip">只能上傳 pdf 檔案</div>
-                    </el-upload>
+               
                 </el-form-item>
                 <el-form-item label="發佈者">
                     <el-input v-model="addFormData.publisher" :readonly="true" />

@@ -7,20 +7,22 @@
     <!-- Left elements -->
     <div class="d-flex">
  
-      <!-- Search form 
-      <form class="input-group w-auto my-auto d-none d-sm-flex">
+      <!-- Search form -->
+      <!-- <form class="input-group w-auto my-auto d-none d-sm-flex">
         <input
           autocomplete="off"
           type="search"
           class="form-control rounded"
           placeholder="Search"
           style="min-width: 125px;"
+          v-model="searchTerm" 
+          @input="filterNavItems"
         />
         <span class="input-group-text border-0 d-none d-lg-flex"
           ><i class="fas fa-search"></i
         ></span>
       </form>-->
-    </div>
+    </div> 
     <!-- Left elements -->
 
     <!-- Center elements -->
@@ -98,7 +100,7 @@
 <!-- Navbar -->
 </template>
 <script setup>
-import { computed } from 'vue';
+import { computed,ref } from 'vue';
 import {empStore} from "../stores/employee.js";
 import Swal from 'sweetalert2';
 import router from "../router/index.js";
@@ -158,7 +160,22 @@ const logout =  () => {
   });
 }); 
 };
+//搜尋菜單
+const searchTerm = ref('');
+const navItems = [
+{label: '主頁',route: `/manage/${store.empId}`},
 
+];
+const filteredNavItems= ref([...navItems]);
+const filterNavItems= () =>{
+  const search = searchTerm.value.toLowerCase.trim();
+
+
+  const filterNavItems = [
+   
+
+  ]
+}
 </script>
 
 <style scoped>

@@ -6,6 +6,7 @@
             <label for="price" class="form-label">請選擇部門</label>
             <select class="form-select form-control w-25" id="deptSelect" aria-label="Floating label select example"
                 v-model="selectedDept">
+                <option selected disabled  value="">--選擇部門--</option>
                 <option v-for="dept in depts" :key="dept.deptId" :value="dept.deptId">
                     {{ dept.deptName }}
                 </option>

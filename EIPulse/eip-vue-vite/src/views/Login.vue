@@ -20,7 +20,7 @@
                   v-model="empId"
                   type="text"
                   class="form-control form-control-lg"
-                  placeholder="員工代號"
+                  placeholder="員工編號"
                 />
               </div>
 

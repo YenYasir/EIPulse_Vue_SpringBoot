@@ -15,10 +15,10 @@
           <td><input type="text" class="form-control" id="deptOffice" v-model="deptData.deptOffice" required></td>
         </tr>
       </table>
-
-      <button class="btn btn-warning" type="submit" style="width: 400px;">
+      <button class="btn btn-warning" type="submit" style="margin-left:85vh ;">
         新增
       </button>
+
       <button type="button" @click="quickEnter">快速輸入</button>
     </div>
   </form>
@@ -121,8 +121,6 @@ h2 {
 }
 
 .btn {
-  width: 50%;
   display: block;
-  margin: 2px auto;
 }
 </style>
