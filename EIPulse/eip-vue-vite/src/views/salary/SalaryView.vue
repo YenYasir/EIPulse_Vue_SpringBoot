@@ -17,7 +17,7 @@ const router = useRouter()
                     aria-selected="false">薪資科目</button></router-link>
             <router-link :to="{ name: 'trial' }"> <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab"
                     data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact"
-                    aria-selected="false">薪資結算</button></router-link>
+                    aria-selected="false">薪資試算</button></router-link>
         </div>
     </nav>
     <section>

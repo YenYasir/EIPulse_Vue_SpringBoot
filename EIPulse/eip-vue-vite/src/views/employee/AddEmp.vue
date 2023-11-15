@@ -286,6 +286,7 @@ const fileChange = (e) => {
         </div>
       </div>
     </div>
+    <br>
     <button type="button" @click="quickEnter">快速輸入</button>
   </form>
 </div>
@@ -336,9 +337,5 @@ h2 {
   box-sizing: border-box;
 }
 
-.btn.btn-warning {
 
-  display: block;
-  margin: 2px auto;
-}
 </style>

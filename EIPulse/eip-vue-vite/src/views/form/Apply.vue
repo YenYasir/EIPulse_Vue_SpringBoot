@@ -101,6 +101,7 @@
         <ul>
           <h4>離職單申請注意事項</h4>
           <li style="margin: 10px">如果有離職單正在審核或者已核准，則無法送出離職單</li>
+          <li style="margin: 10px">離職單必須提前10天申請</li>
         </ul>
 
       </ul>
@@ -400,7 +401,7 @@ const checkform = () => {
     if (new Date(date.value) < selectDay.setDate(selectDay.getDate() + 9)) {
       Swal.fire({
         icon: "error",
-        title: "離職日必須提前10天申請",
+        title: "離職單必須提前10天申請",
         text: `離職日請選${selectDay.getMonth() + 1}月${selectDay.getDate()}日之後`,
       });
       return false;
@@ -507,6 +508,7 @@ const onReset = () => {
     startTime.value = "08:00";
     endTime.value = "17:00";
     difference.value = { hours: 0, days: 0 };
+    dayCount();
   } else if (form.value.name === '加班') {
     startDateTime.value = "17:00";
     endDateTime.value = "";

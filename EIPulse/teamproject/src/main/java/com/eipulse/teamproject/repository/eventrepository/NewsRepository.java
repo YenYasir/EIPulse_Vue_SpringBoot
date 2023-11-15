@@ -23,8 +23,8 @@ public interface NewsRepository extends JpaRepository<News, Integer> {
 	 Page<NewsDTO> findAllNewsByPostTime(Pageable pageable);
 	 
     // 顯示下架的消息，給管理端執行
-	 @Query("SELECT n FROM News n WHERE n.visible = false ORDER BY n.postTime DESC ")
-	 Page<NewsDTO> findRemovedNews(Pageable pageable);
+	 @Query("SELECT n FROM News n WHERE n.visible = false and n.publisher = publisher ORDER BY n.postTime DESC ")
+	 Page<NewsDTO> findRemovedNews(@Param("publisher") Integer publisher,Pageable pageable);
 	 
 	// 依照消息id修改消息
 	@Modifying

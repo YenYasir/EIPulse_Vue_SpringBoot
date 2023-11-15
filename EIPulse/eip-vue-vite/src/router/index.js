@@ -86,6 +86,12 @@ const router = createRouter({
           name: "Emergency",
         },
         {   
+          // 更新員工緊急聯絡人
+          path: '/employee/updateEmergency/:id',
+          component: () => import('@/views/employee/UpdateEmergency.vue'),
+          name: 'UpdateEmergency',
+        }  ,
+        {   
           // 員工緊急聯絡人列表
           path: '/employee/emergencyList',
           component: () => import('@/views/employee/EmergencyList.vue'),
@@ -245,7 +251,7 @@ const router = createRouter({
         },
         {
           path: "/user/:empId/profile",
-          component: () => import("@/views/manage/Profile.vue"),
+          component: () => import("@/views/user/Profile.vue"),
         },
         {
           path: "/user/form/apply",
@@ -329,7 +335,7 @@ router.beforeEach(async(to, from, next) => {
   const mall = mallStore();
 
   const isLogin = store.isLogin || sessionStorage.getItem("isLogin");
-  const permissionId = store.permissionId || sessionStorage.getItem("permissionId");
+
 
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     if (!isLogin) {
@@ -348,7 +354,11 @@ router.beforeEach(async(to, from, next) => {
   } else if (from.path === '/mall/order') {
     mall.setChangeOrderPage(false);
   }
+
+   
+
   next();
+
 });
 
 export default router;

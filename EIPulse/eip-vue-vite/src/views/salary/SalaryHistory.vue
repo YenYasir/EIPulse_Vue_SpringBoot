@@ -18,13 +18,11 @@ const loadData = async () => {
     console.log(data)
     personalHistory.value = data
     empName.value = personalHistory.value[0].empName
-    console.log(`outputDD->`, personalHistory.value[0].adjustedDate)
+
     for (let i = 0; i < personalHistory.value.length; i++) {
         const dateDB = new Date(personalHistory.value[i].adjustedDate)
         personalHistory.value[i].adjustedDate = dateDB.toISOString().split('T')[0];
-        console.log(`output->`, personalHistory.value[0].adjustedDate)
     }
-
 }
 
 
@@ -39,7 +37,6 @@ onMounted(loadData)
                     <li class="breadcrumb-item"><i class="bi bi-person-fill"></i>&nbsp{{ empName }} 薪資資訊</li>
                 </router-link><span>&nbsp＞&nbsp</span>
                 <li class="breadcrumb-item active" aria-current="page">
-                    <!-- <i class="bi bi-tag-fill"></i> -->
                     薪資異動紀錄
                 </li>
             </ol>
@@ -52,7 +49,6 @@ onMounted(loadData)
                     <table class="table table-sm table-hover">
                         <thead>
                             <tr>
-                                <!-- <th scope="col" class="hidden-column" >紀錄單號</th> -->
                                 <th scope="col" style="width:100px;" class="hidden-column">員工編號</th>
                                 <th scope="col" style="width:100px;" class="hidden-column">員工姓名</th>
                                 <th scope="col" style="width:100px;">異動日期</th>
@@ -63,7 +59,6 @@ onMounted(loadData)
                         </thead>
                         <tbody>
                             <tr v-for="(history, index) in personalHistory" :key="history.empId">
-                                <!-- <td class="hidden-column">{{ history.id }}</td> -->
                                 <td style="width:100px;" class="hidden-column">{{ history.empId }}</td>
                                 <td style="width:100px;" class="hidden-column">{{ history.empName }}</td>
                                 <td style="width:100px;">{{ history.adjustedDate }}</td>

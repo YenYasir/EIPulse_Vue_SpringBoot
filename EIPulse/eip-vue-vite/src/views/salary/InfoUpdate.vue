@@ -1,6 +1,5 @@
 <script setup>
-// const route = useRoute()
-// router = useRouter()
+
 import { ref } from 'vue';
 import SalaryBar from "@/components/salary/SalaryBar.vue";
 import axios from "axios";
@@ -10,7 +9,6 @@ import Swal from "sweetalert2"
 
 const route = useRoute()
 const router = useRouter()
-// const info = ref(SalaryInfo)
 const info = ref({})
 
 //同步更新調薪紀錄
@@ -19,7 +17,7 @@ const salaryHistory = ref({
     adjustSalary: info.value.basicSalary,
     remark: '',
 })
-// const salaryHistory = ref({})
+
 const laborGrades = [26400, 27600, 28800, 30300, 31800, 33300, 34800, 36300, 38200, 40100, 42000, 43900, 45800]
 const pensionRate = [0, 0.01, 0.02, 0.03, 0.04, 0.05, 0.06]
 const healthGrades = [26400, 27600, 28800, 30300, 31800, 33300, 34800, 36300, 38200, 40100, 42000, 43900, 45800, 48200, 50600, 53000, 55400, 57800, 60800, 69800, 72800, 76500]
@@ -91,7 +89,6 @@ const updateHistory = async () => {
         console.error(error);
     }
 }
-// loadData()
 
 onMounted(loadData);
 </script>
@@ -182,16 +179,6 @@ onMounted(loadData);
                         </div>
                     </div>
                     <div class="row">
-                        <!-- <div class="col-md-4">
-                            <label for="welfare" class="form-label">福利金扣款</label>
-
-                            <select class="form-select" aria-label="welfare" v-model="info.welfareBenefitsDeduction">
-                                <option :value="1">是</option>
-                                <option :value="0">否</option>
-                            </select>
-
-
-                        </div> -->
                         <div class="col-md-6"></div>
                     </div>
                 </div>

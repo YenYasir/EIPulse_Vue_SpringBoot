@@ -99,14 +99,12 @@ const selectYearAndMonth = () => {
 const show = () => {
     isShow.value = true
 }
-// onMounted(loadData);
 onMounted(() => {
     selectYearAndMonth()
     loadData()
 
 })
 
-// onMounted(selectYearAndMonth)
 </script>
 
 <template>

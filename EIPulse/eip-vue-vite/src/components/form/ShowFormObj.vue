@@ -77,7 +77,11 @@ calculateDaysDifference()
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
 
-        <div class="modal-body">
+        <div class="modal-body" style="align-content: ">
+          <div v-if="props.formType == 1">
+
+          </div>
+
           <template v-if="datas.endDate != null">
             <span v-if="datas.statusId == 2">
               主管{{ datas.auditor }}已於{{ formatStartDate(datas.endDate) }}核准<br><br>
@@ -95,6 +99,7 @@ calculateDaysDifference()
               給員工的訊息:{{ datas.message }}<br><br>
             </span>
           </template>
+          <hr>
           <div v-if="props.formType == 1">
             請假類別:<span> {{ datas.form.typeName }} </span><br>
             請假緣由:<span> {{ datas.form.reason }} </span><br>
@@ -102,21 +107,24 @@ calculateDaysDifference()
             到<span>{{ formatStartDate(calculateDaysDifference()) }}</span>
             總共請<span> {{ datas.form.days }} </span>天
             <span> {{ datas.form.hours }} </span>小時<br>
+            <hr>
           </div>
           <div v-if="props.formType == 2">
             加班日期:<span> {{ datas.form.date }} ({{ datas.form.typeName }})</span><br>
             從:<span> {{ datas.form.startTime.split(":")[0] }}點 </span><br>
             到:<span> {{ datas.form.endTime.split(":")[0] }}點 </span><br>
             加班緣由:<span> {{ datas.form.reason }} </span><br>
+            <hr>
           </div>
           <div v-if="props.formType == 3">
             離職日期:<span> {{ datas.form.leaveDate }} </span><br>
             離職原因:<span> {{ datas.form.reason }} </span><br>
             <template v-if="datas.form.quit == true || datas.form.transferForm == true">
               申請了:
-              <span v-if="datas.form.quit == true"> 離職證明書 </span>
+              <span v-if="datas.form.quit == true"><br> 離職證明書 </span>
               <span v-if="datas.form.transferForm == true"><br> 勞健保轉出單 </span>
             </template>
+            <hr>
           </div>
 
 

@@ -90,7 +90,7 @@ export default {
           <div class="input-group">
             <input type="text" class="form-control custom-width" placeholder="輸入部門名稱" aria-label="輸入部門名稱"
               aria-describedby="button-addon2" v-model="DEPTName">
-            <button class="btn btn-outline-secondary" type="button" id="button-addon2">查詢</button>
+            <!-- <button class="btn btn-outline-secondary" type="button" id="button-addon2">查詢</button> -->
           </div>
         </form>
       </div>

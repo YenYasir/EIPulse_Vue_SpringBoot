@@ -11,7 +11,7 @@
       ></drop-down>
       <drop-down
         title="出勤管理"
-        iconName="bi-clipboard2-check"
+        iconName="clipboard2-check"
         :items="[
           { name: '個人出席紀錄', path: `/user/${emp.empId}/attendance` },
           { name: '個人打卡記錄', path: `/user/${emp.empId}/clocktime` },

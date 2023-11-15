@@ -24,7 +24,7 @@ export const empStore = defineStore({
         showClock:true
     }),
     getters:{
-       
+     
     }
     ,
     actions:{
@@ -77,6 +77,7 @@ export const empStore = defineStore({
         setphotoUrl(photoUrl){
             this.photoUrl = photoUrl;
             sessionStorage.setItem('photoUrl', photoUrl);
+            
         }
     }
 })

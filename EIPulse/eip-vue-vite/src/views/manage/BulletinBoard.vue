@@ -71,7 +71,6 @@
             <!-- 顯示詳細內容的內容 -->
             <p><strong>標題：</strong>{{ showFormContent.title }}</p>
             <p><strong>內文：</strong>{{ showFormContent.content }}</p>
-            <p><strong>檔案：</strong>{{ showFormContent.file }}</p>
             <p><strong>發布時間：</strong>{{ showFormContent.postTime }}</p>
             <p><strong>發布人：</strong>{{ showFormContent.publisherTitle }}&nbsp;{{ showFormContent.publisherName }}</p>
         </el-dialog>
@@ -84,9 +83,6 @@
                 </el-form-item>
                 <el-form-item label="內文" required>
                     <el-input v-model="addFormData.content" />
-                </el-form-item>
-                <el-form-item label="檔案">
-               
                 </el-form-item>
                 <el-form-item label="發佈者">
                     <el-input v-model="addFormData.publisher" :readonly="true" />
@@ -108,9 +104,6 @@
                 <el-form-item label="內文" required>
                     <el-input v-model="editFormData.content" />
                 </el-form-item>
-                <el-form-item label="檔案">
-                    <el-input v-model="editFormData.file" />
-                </el-form-item>
             </el-form>
             <template #footer>
                 <div style="display:flex; justify-content: flex-end;">
@@ -128,9 +121,6 @@
                 <el-form-item label="內文" required>
                     <el-input v-model="resetFormData.content" />
                 </el-form-item>
-                <el-form-item label="檔案">
-                    <el-input v-model="resetFormData.file" />
-                </el-form-item>
             </el-form>
             <template #footer>
                 <div style="display:flex; justify-content: flex-end;">
@@ -147,7 +137,6 @@ import { empStore } from "../../stores/employee.js";
 import axios from "axios";
 import { ref, onMounted } from 'vue';
 import { ElDialog, ElInput, ElFormItem, ElButton } from 'element-plus'
-import { news } from "@/model/News";
 const emp = empStore();
 const URL = import.meta.env.VITE_API_JAVAURL;
 
@@ -157,7 +146,7 @@ const totalPage = ref(null); // 全部消息的總頁數
 const offTotalPage = ref(null); // 下架消息的總頁數
 const searchQuery = ref(''); // 搜尋框
 const titleTotalPage = ref(null); // 模糊搜尋的總頁數
-const useTitlePage = ref(0); // 三元判斷式，確認是否有使用模糊搜尋
+const useTitlePage = ref(0); // 確認是否有使用模糊搜尋
 
 // 設置一開始進入的頁面為全部消息
 const message = ref('normal');
@@ -180,63 +169,6 @@ const showFormContent = ref({}); // 消息詳情
 const editFormData = ref({}); // 編輯消息
 const addFormData = ref({}); // 新增消息
 const resetFormData = ref({}); // 重新上架消息
-
-const newsData = ref(news)
-const files = ref([]);
-const fileList = ref([]);
-const fileChange = (e) => {
-    file.value = '';
-    const selectedFiles = e.target.files; // 獲取第N個選擇的檔案
-    const maxSizeInBytes = 1024 * 1024 * 5; // 5MB
-
-    Array.from(selectedFiles).forEach(selectedFile => {
-        if (selectedFile.size > maxSizeInBytes) {
-            Swal.fire({
-                icon: 'error',
-                title: '檔案超過大小',
-                text: `${selectedFile.name}超過5MB`,
-            });
-        } else {
-            files.value.push(selectedFile);
-        }
-    });
-};
-const addHandler = async () => {
-    // 利用 formData 處理檔案
-    const formData = new FormData();
-    files.value.forEach((file, index) => {
-        formData.append(`file${index}`, file);
-    });
-    // 其他表單數據轉為 JSON，添加到 formData
-    const json = JSON.stringify(newsData.value);
-    const blob = new Blob([json], {
-        type: 'application/json'
-    });
-    formData.append('data', blob);
-    formData.append('file', file.value);
-    const API_URL = `${import.meta.env.VITE_API_JAVAURL}news/add`;
-    try {
-        const response = await axios.post(API_URL, formData);
-        console.log(newsData.value);
-        console.log(response);
-
-        if (response.status === 200) {
-            Swal.fire(
-                '儲存成功',
-                '',
-                'success'
-            );
-            // 清空檔案陣列
-            files.value = [];
-            router.push('/manage/:empId/bulletinboard');
-        } else {
-            alert(response.data.message);
-        }
-    } catch (error) {
-        console.error("An error occurred while adding: ", error);
-        console.log('emp.value before sending:', newsData.value);
-    }
-}
 
 // 全部消息的換頁
 const handlePageChange = async (newPage) => {
@@ -329,6 +261,7 @@ const submitAddForm = async () => {
         Swal.fire('新增失敗!', '請再次確認消息內容。', 'error');
         console.error('新增消息時發生錯誤', error);
     }
+    addFormData.value = {};
 };
 
 // 重新上架消息
@@ -357,6 +290,7 @@ const readOffNewsFromDB = async () => {
     try {
         const response = await axios.get(`${URL}news/remove`, {
             params: {
+                publisher: emp.empId,
                 page: offCurrentPage.value,
                 size: 8,
             },

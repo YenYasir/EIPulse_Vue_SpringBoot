@@ -47,11 +47,11 @@ const updateCurrentPage = (newPage) => {
 };
 
 const addDept = () => {
-  router.push(`/xukai/add-dept`);
+  router.push(`/employee/add-dept`);
 };
 
 const updateDept = (deptId) => {
-  router.push(`/xukai/updateDept/${deptId}`);
+  router.push(`/employee/updateDept/${deptId}`);
 };
 
 const deleteDept = async (deptId) => {
@@ -76,12 +76,12 @@ onMounted(loadDept);
     <div class="card-header text-center text-bg-dark">部門/職位異動紀錄表</div>
     <div class="card-body ">
       <div class="mb-3" style="text-align:left; position:left;">
-        <button type="button" class="btn btn-outline-success w-40 mb-2" @click="addDept">新增紀錄</button>
+    
         <form @submit.prevent="loadDept" style="text-align: left">
           <div class="input-group">
             <input type="text" class="form-control custom-width" placeholder="輸入員工姓名" aria-label="輸入員工姓名"
               aria-describedby="button-addon2" v-model="eMPname">
-            <button class="btn btn-outline-secondary" type="button" id="button-addon2">查詢</button>
+            <!-- <button class="btn btn-outline-secondary" type="button" id="button-addon2">查詢</button> -->
           </div>
         </form>
       </div>

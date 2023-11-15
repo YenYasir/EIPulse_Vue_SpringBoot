@@ -154,7 +154,7 @@ loadData();
                     <td><input type="text" class="form-control" id="fullAddress" v-model="empData.address"></td>
                 </tr>
             </table>
-            <button class="btn btn-warning" type="submit" @click="savaEdit" style="width: 400px;">
+            <button class="btn btn-warning" type="submit" @click="savaEdit" style="width: 100px;margin-left: 80vh;">
                 儲存更新
             </button>
         </div>
@@ -206,9 +206,9 @@ h2 {
     border-color: #0161c7;
 }
 
-.btn {
+/* .btn {
     width: 50%;
     display: block;
     margin: 2px auto;
-}
+} */
 </style>    

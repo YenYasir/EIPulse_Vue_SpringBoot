@@ -86,7 +86,7 @@ public class EmpFileService {
             blobClient.upload(file.getInputStream(), file.getSize(), true);
         } catch (IOException e) {
             e.printStackTrace();
-            return "Error occurred while uploading the file.";
+            return "上傳圖片發生錯誤.";
         }
 
         // 返回 Blob 的 URL

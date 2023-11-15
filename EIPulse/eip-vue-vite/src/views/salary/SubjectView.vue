@@ -9,6 +9,7 @@ const router = useRouter()
 const subject = ref([]);
 const subjectInput = ref({})
 
+//新增
 const handleSubmit = async () => {
     try {
         const API_URL = `${import.meta.env.VITE_API_JAVAURL}payroll/subject/edit`
@@ -17,6 +18,28 @@ const handleSubmit = async () => {
         if (response.status === 200)
             Swal.fire({
                 title: '新增成功',
+                icon: 'success',
+                confirmButtonText: "確定"
+            }).then((result) => {
+                console.log(`output->>>>>>>>>>`)
+                if (result.isConfirmed) {
+                    router.push('/subject')///為什麼不會去
+                }
+            })
+        loadSubject()
+    }
+    catch (e) {
+    }
+}
+
+const handleSubmit2 = async () => {
+    try {
+        const API_URL = `${import.meta.env.VITE_API_JAVAURL}payroll/subject/edit`
+        const response = await axios.post(API_URL, subjectInput.value)
+        subjectInput.value = {}
+        if (response.status === 200)
+            Swal.fire({
+                title: '更新成功',
                 icon: 'success',
                 confirmButtonText: "確定"
             }).then((result) => {
@@ -47,7 +70,7 @@ const changeStatus = async (s) => {
     const API_URL = `${import.meta.env.VITE_API_JAVAURL}payroll/subject/status?status=${s.status}&subjectId=${s.subjectId}`
 
     const result = await Swal.fire({
-        title: `確認更新薪資科目「${s.subjectName}」`,
+        title: `確認更新「${s.subjectName}」`,
         text: `是否確定更新科目狀態?`,
         icon: 'warning',
         showCancelButton: true,
@@ -210,7 +233,7 @@ onMounted(loadSubject);
                         <h5 class="modal-title " id="Modal2">更新薪資科目</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <form @submit.prevent="handleSubmit">
+                    <form @submit.prevent="handleSubmit2">
                         <div class="modal-body">
                             <div class="row">
                                 <div class="col mb-3 hidden-column">

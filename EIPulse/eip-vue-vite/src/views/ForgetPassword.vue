@@ -78,7 +78,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100%;
+  height: 120%;
   background-image: url("../assets/images/chpassword.jpg");
   background-size: cover;
 }

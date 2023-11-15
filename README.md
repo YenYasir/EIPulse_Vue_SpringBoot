@@ -16,6 +16,8 @@ EIPulse 前後端 整合功能
 11/13: 裕凱 路由加強 新增員工申請表單 版面修正 | 承員 修改表單 聊天室
 </br>
 11/13: 1+ 薪資 VUE | 員 表單 | 裕凱 版面
+</br> SQL 地端總表 放在sql_script裡面    1+ 版面 | 映君 布告欄 | 承員 版面 | 裕凱 路由 上傳頭像
+
 ## TODOLIST:
 ### BUG:
 - 1+ 版面皆無熱處理 須重啟server才會更新
@@ -30,20 +32,16 @@ EIPulse 前後端 整合功能
 按鈕(橘) btn-warning |(深灰) btn-secondary
 文字(橘) text-warninig |(深灰) text-secondary
 
-快速輸入按鈕 新增
-部門 緊急聯絡人
 
 - 可擴充
 全局 RWD響應設置
 較嚴重的
 find-emp.vue 
 
-表單:
-列表的按鈕
 
 
 profile.vue
-click 頭像(V) 並用cropper裁圖上傳 即時顯示更新
+click 頭像(V) 並用cropper裁圖上傳 即時顯示更新(V)
 
 
 

@@ -13,7 +13,7 @@
           autocomplete="off"
           type="search"
           class="form-control rounded"
-          placeholder="Search"
+          placeholder="菜單搜尋"
           style="min-width: 125px;"
           v-model="searchTerm" 
           @input="filterNavItems"
@@ -21,12 +21,15 @@
         <span class="input-group-text border-0 d-none d-lg-flex"
           ><i class="fas fa-search"></i
         ></span>
-      </form>-->
+      </form> -->
     </div> 
     <!-- Left elements -->
 
     <!-- Center elements -->
     <ul class="navbar-nav flex-row d-none d-md-flex">
+      <li v-for="(item, index) in filteredNavItems" :key="index" class="nav-item">
+      <!-- <dropdown @click="navigateTo(item.route)" class="nav-link">{{ item.label }}</dropdown> -->
+    </li>
       <li v-if="isManager" class="nav-item me-3 me-lg-3">
           <router-link :to="getManageHomeLink" title="主頁">
             <span><i class="bi bi-house"></i></span>
@@ -167,15 +170,24 @@ const navItems = [
 
 ];
 const filteredNavItems= ref([...navItems]);
-const filterNavItems= () =>{
-  const search = searchTerm.value.toLowerCase.trim();
 
+const filterNavItems = () => {
+  const search = searchTerm.value.toLowerCase().trim();
 
-  const filterNavItems = [
-   
+  // Filter the navigation items based on their labels
+  if (search === '') {
+    filteredNavItems.value = [...navItems]; // Reset to display all items when search is empty
+  } else {
+    filteredNavItems.value = navItems.filter(
+      item => item.label.toLowerCase().includes(search)
+    );
+  }
+};
 
-  ]
-}
+// Function to handle navigation when an item is clicked
+const navigateTo = route => {
+  router.push(route);
+};
 </script>
 
 <style scoped>

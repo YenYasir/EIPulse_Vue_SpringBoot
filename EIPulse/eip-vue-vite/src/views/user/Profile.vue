@@ -149,7 +149,7 @@ const router = useRouter();
 const store = empStore();
 
 const getHomeLink = computed(() => {
-      return `/manage/${store.empId}`; 
+      return `/user/${store.empId}`; 
     })
 
 
@@ -199,7 +199,7 @@ const addHandler = async () => {
         '',
         'success'
       )
-      router.push(`/manage/${store.empId}/profile`);
+      router.push(`/user/${store.empId}/profile`);
       
     } else {
       alert(response.data.message);

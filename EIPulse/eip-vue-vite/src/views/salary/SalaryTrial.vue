@@ -7,7 +7,7 @@ const emp = empStore();
 const route = useRoute()
 const router = useRouter()
 const date = new Date();
-const formater = date.toISOString().split('T')[0];
+// const formater = date.toISOString().split('T')[0];
 
 const slYear = ref()
 const slMonth = ref()
@@ -37,6 +37,7 @@ const getMonth = () => {
 }
 
 const getSalaryTrial = async () => {
+    console.log(`outputDATE->`, endDate)
     const params = {
         date: endDate.value
     }
@@ -69,19 +70,25 @@ const sendTrial = async () => {
 const saveSearchData = () => {
     emp.setSearchDate(endDate.value);
     endDate.value = emp.endDate;
+    console.log(`outputD->`, endDate.value)
 }
 
 onMounted(() => {
-    if (endDate.value === '') {
-        console.log("formater!!!!");
-        endDate.value = formater;
-    }
+
+    // endDate.value = date;
+    // if (endDate.value === '') {
+    //     // console.log("formater!!!!");
+    //     endDate.value = emp.endDate;
+    // }
+    endDate.value = emp.endDate;
+    console.log(`outputDDDDDDD->`, endDate.value)
     getSalaryTrial();
+
 })
-const isShow = ref(false)
-const show = () => {
-    isShow.value = true
-}
+// const isShow = ref(false)
+// const show = () => {
+//     isShow.value = true
+// }
 </script>
 <template>
     <div class="container c">
@@ -108,88 +115,88 @@ const show = () => {
                 </div>
             </div>
         </form>
-        <div class="table" v-show="isShow">
-            <form @submit.prevent="sendTrial">
-                <!-- <button type="submit" class="btn btn-primary btn-sm mb-3">儲存</button> -->
-                <div class="card">
-                    <div class="card-header">
-                        <p class="head">薪資試算表</p>
-                    </div>
-                    <div class="card-body">
-                        <table class="table table-sm table-hover">
-                            <thead>
-                                <tr>
-                                    <th scope="col" class="hidden-column">紀錄單號</th>
-                                    <th scope="col">員工編號</th>
-                                    <th scope="col">姓名</th>
-                                    <th scope="col">加項總和</th>
-                                    <!-- <th scope="col">應領薪資grossSalary</th> -->
-                                    <th scope="col">減項總和</th>
-                                    <th scope="col">實領薪資</th>
-                                    <th scope="col">動作</th>
-                                </tr>
-                            </thead>
-                            <tbody>
+        <!-- <div class="table" v-show="isShow"> -->
+        <form @submit.prevent="sendTrial">
+            <!-- <button type="submit" class="btn btn-primary btn-sm mb-3">儲存</button> -->
+            <div class="card">
+                <div class="card-header">
+                    <p class="head">薪資試算表</p>
+                </div>
+                <div class="card-body">
+                    <table class="table table-sm table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="hidden-column">紀錄單號</th>
+                                <th scope="col">員工編號</th>
+                                <th scope="col">姓名</th>
+                                <th scope="col">加項總和</th>
+                                <!-- <th scope="col">應領薪資grossSalary</th> -->
+                                <th scope="col">減項總和</th>
+                                <th scope="col">實領薪資</th>
+                                <th scope="col">動作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
 
-                                <tr v-for="(trial, index) in trials" :key="index">
-                                    <!-- <td class="hidden-column"><router-Link :to="'/salary/trial/update/' + trial.salaryMonthRecordDto.id"
+                            <tr v-for="(trial, index) in trials" :key="index">
+                                <!-- <td class="hidden-column"><router-Link :to="'/salary/trial/update/' + trial.salaryMonthRecordDto.id"
                             @click="handleLinkClick"><i class="bi bi-zoom-in"></i></router-Link> -->
 
-                                    <td class="hidden-column"> {{ trial.salaryMonthRecordDto.id }}
-                                    </td>
-                                    <!-- <input type="text" v-model="trial.salaryMonthRecordDto.id"> -->
+                                <td class="hidden-column"> {{ trial.salaryMonthRecordDto.id }}
+                                </td>
+                                <!-- <input type="text" v-model="trial.salaryMonthRecordDto.id"> -->
 
-                                    <!-- <td><router-Link :to="'/salary/trial/update/' + trial.salaryMonthRecordDto.id"
+                                <!-- <td><router-Link :to="'/salary/trial/update/' + trial.salaryMonthRecordDto.id"
                             @click="handleLinkClick"><i class="bi bi-zoom-in"></i></router-Link>
                     </td> -->
-                                    <td>
-                                        {{ trial.salaryMonthRecordDto.empId }}
-                                        <!-- <input type="text" v-model="trial.salaryMonthRecordDto.empId" readonly> -->
-                                    </td>
-                                    <td>
-                                        {{ trial.salaryMonthRecordDto.empName }}
-                                        <!-- <input type="text" v-model="trial.salaryMonthRecordDto.empName" readonly> -->
-                                    </td>
-                                    <td>
-                                        <!-- <input type="text" v-model="trial.salaryMonthRecordDto.addSum"> -->
-                                        {{ trial.salaryMonthRecordDto.addSum.toLocaleString() }}
-                                    </td>
+                                <td>
+                                    {{ trial.salaryMonthRecordDto.empId }}
+                                    <!-- <input type="text" v-model="trial.salaryMonthRecordDto.empId" readonly> -->
+                                </td>
+                                <td>
+                                    {{ trial.salaryMonthRecordDto.empName }}
+                                    <!-- <input type="text" v-model="trial.salaryMonthRecordDto.empName" readonly> -->
+                                </td>
+                                <td>
+                                    <!-- <input type="text" v-model="trial.salaryMonthRecordDto.addSum"> -->
+                                    {{ trial.salaryMonthRecordDto.addSum.toLocaleString() }}
+                                </td>
 
-                                    <!-- <td>
+                                <!-- <td>
                         <input type="text" v-model="trial.salaryMonthRecordDto.grossSalary"> -->
-                                    <!-- {{ trial.salaryMonthRecordDto.grossSalary }}
+                                <!-- {{ trial.salaryMonthRecordDto.grossSalary }}
                     </td> -->
-                                    <td>
-                                        <!-- <input type="text" v-model="trial.salaryMonthRecordDto.deduSum"> -->
-                                        {{ trial.salaryMonthRecordDto.deduSum.toLocaleString() }}
-                                    </td>
-                                    <td>
-                                        <!-- <input type="text" v-model="trial.salaryMonthRecordDto.netSalary"> -->
-                                        {{ trial.salaryMonthRecordDto.netSalary.toLocaleString() }}
-                                    </td>
-                                    <td><router-Link :to="'/salary/trial/update/' + trial.salaryMonthRecordDto.id"
-                                            @click="handleLinkClick" class="btn btn-secondary  btn-sm mx-1">
-                                            <i class=" bi bi-pencil-square"></i></router-Link>
-                                    </td>
-                                </tr>
-                            </tbody>
-                            <tbody>
-                                <tr>
-                                    <td></td>
-                                    <td style="font-weight: bold;">小計</td>
-                                    <td style="font-weight: bold;">{{ addSumTotal.toLocaleString() }}</td>
-                                    <td style=" font-weight: bold;">{{ deduSumTotal.toLocaleString() }}</td>
-                                    <td style="font-weight: bold;">{{ netTotal.toLocaleString() }}</td>
-                                    <td></td>
-                                </tr>
-                            </tbody>
+                                <td>
+                                    <!-- <input type="text" v-model="trial.salaryMonthRecordDto.deduSum"> -->
+                                    {{ trial.salaryMonthRecordDto.deduSum.toLocaleString() }}
+                                </td>
+                                <td>
+                                    <!-- <input type="text" v-model="trial.salaryMonthRecordDto.netSalary"> -->
+                                    {{ trial.salaryMonthRecordDto.netSalary.toLocaleString() }}
+                                </td>
+                                <td><router-Link :to="'/salary/trial/update/' + trial.salaryMonthRecordDto.id"
+                                        @click="handleLinkClick" class="btn btn-secondary  btn-sm mx-1">
+                                        <i class=" bi bi-pencil-square"></i></router-Link>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tbody>
+                            <tr>
+                                <td></td>
+                                <td style="font-weight: bold;">小計</td>
+                                <td style="font-weight: bold;">{{ addSumTotal.toLocaleString() }}</td>
+                                <td style=" font-weight: bold;">{{ deduSumTotal.toLocaleString() }}</td>
+                                <td style="font-weight: bold;">{{ netTotal.toLocaleString() }}</td>
+                                <td></td>
+                            </tr>
+                        </tbody>
 
-                        </table>
-                    </div>
+                    </table>
                 </div>
-            </form>
-        </div>
+            </div>
+        </form>
     </div>
+    <!-- </div> -->
 </template>
     
     

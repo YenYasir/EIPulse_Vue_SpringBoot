@@ -23,12 +23,6 @@ const loadData = async () => {
 
 }
 loadData()
-// const edit = () => {
-//     info.value.isEditing = !isEditing
-// }
-
-
-// onMounted(loadData);
 </script>
 
 <template>
@@ -71,11 +65,6 @@ loadData()
                         <option :value="0" :selected="info.welfareBenefitsDeduction.value == value">否</option>
                     </select>
                 </div>
-                <!-- <div class=" col-md-4">
-                        <label for="empId" class="form-label">伙食津貼</label>
-                        <input type="text" class="form-control" id="empId" placeholder="" required="" readonly
-                            :readonly="isEditing">
-                    </div> -->
             </div>
             <div class="row">
                 <div class="col-md-4">

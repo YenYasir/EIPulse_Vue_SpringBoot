@@ -33,7 +33,7 @@
       <FormPage :total-pages="page.unTotalPages" :current-page="page.unCurrentPage"
         @page-change="loadUncompletedProducts" />
     </div>
-    <div class="card-header text-center mb-2"> 未完成表單
+    <div class="card-header text-center mb-2"> 已完成表單
       <table class="table table-light" style="height: 100px">
         <thead>
           <tr>

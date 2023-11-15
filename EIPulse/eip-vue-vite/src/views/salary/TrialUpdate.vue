@@ -164,10 +164,9 @@ const handleSubmit = async () => {
                 icon: 'success',
 
                 confirmButtonText: "OK"
+            }).then(() => {
+                router.push('/salary/calculate')
             })
-            // .then(() => {
-            //     router.push('/salary/calculate')
-            // })
 
         }
     } catch (error) {
