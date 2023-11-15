@@ -48,11 +48,6 @@ public class News {
 	  @Column(name="post_time")
 	  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	  private LocalDateTime postTime;
-		
-//	  @Column(name="remove_date")
-//	  @DateTimeFormat(pattern = "yyyy/MM/dd")
-//	  @Temporal(TemporalType.DATE) 
-//	  private Date removeDate;
 	  
 	  @Column(name = "is_visible")
 	  private Boolean visible=true;

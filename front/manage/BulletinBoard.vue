@@ -2,7 +2,8 @@
     <div class="container">
         <el-tabs v-model="message">
             <div style="display: flex; justify-content: space-between; align-items: center;">
-                <el-input v-model="searchQuery" placeholder="請輸入消息標題查詢" style="width: 200px;" />
+                <el-input v-if="message === 'normal'" v-model="searchQuery" placeholder="請輸入消息標題查詢" style="width: 200px;"
+                    @input="handleLikeSearch" />
                 <div class="add-button-container">
                     <el-button v-if="message === 'normal'" type="primary" @click="addNews()">新增</el-button>
                 </div>
@@ -27,8 +28,16 @@
                     </el-table-column>
                 </el-table>
                 <!-- 全部消息的分頁 -->
-                <el-pagination background layout="prev, pager, next" :total="totalPage * 10"
-                    :current-page.sync="currentPage" @current-change="handlePageChange" />
+                <br />
+
+                <!-- 全部消息的分頁 -->
+                <el-pagination v-if="message === 'normal' && !useTitlePage" background layout="prev, pager, next"
+                    :total="totalPage * 10" :current-page.sync="currentPage" @current-change="handlePageChange" />
+
+                <!-- 模糊搜尋的分頁 -->
+                <el-pagination v-if="message === 'normal' && useTitlePage" background layout="prev, pager, next"
+                    :total="titleTotalPage * 10" :current-page.sync="titleCurrentPage" @current-change="titlePageChange" />
+
             </el-tab-pane>
             <!-- 下架消息區塊 -->
             <el-tab-pane :label="`已下架消息`" name="off">
@@ -50,6 +59,7 @@
                         </el-table-column>
                     </el-table>
                     <!-- 下架消息的分頁 -->
+                    <br />
                     <el-pagination background layout="prev, pager, next" :total="offTotalPage * 10"
                         :current-page.sync="offCurrentPage" @current-change="handleOldageChange" />
                 </div>
@@ -61,7 +71,6 @@
             <!-- 顯示詳細內容的內容 -->
             <p><strong>標題：</strong>{{ showFormContent.title }}</p>
             <p><strong>內文：</strong>{{ showFormContent.content }}</p>
-            <p><strong>檔案：</strong>{{ showFormContent.file }}</p>
             <p><strong>發布時間：</strong>{{ showFormContent.postTime }}</p>
             <p><strong>發布人：</strong>{{ showFormContent.publisherTitle }}&nbsp;{{ showFormContent.publisherName }}</p>
         </el-dialog>
@@ -74,9 +83,6 @@
                 </el-form-item>
                 <el-form-item label="內文" required>
                     <el-input v-model="addFormData.content" />
-                </el-form-item>
-                <el-form-item label="檔案">
-                    <el-input v-model="addFormData.file" />
                 </el-form-item>
                 <el-form-item label="發佈者">
                     <el-input v-model="addFormData.publisher" :readonly="true" />
@@ -98,9 +104,6 @@
                 <el-form-item label="內文" required>
                     <el-input v-model="editFormData.content" />
                 </el-form-item>
-                <el-form-item label="檔案">
-                    <el-input v-model="editFormData.file" />
-                </el-form-item>
             </el-form>
             <template #footer>
                 <div style="display:flex; justify-content: flex-end;">
@@ -118,9 +121,6 @@
                 <el-form-item label="內文" required>
                     <el-input v-model="resetFormData.content" />
                 </el-form-item>
-                <el-form-item label="檔案">
-                    <el-input v-model="resetFormData.file" />
-                </el-form-item>
             </el-form>
             <template #footer>
                 <div style="display:flex; justify-content: flex-end;">
@@ -135,9 +135,8 @@
 import Swal from "sweetalert2";
 import { empStore } from "../../stores/employee.js";
 import axios from "axios";
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted } from 'vue';
 import { ElDialog, ElInput, ElFormItem, ElButton } from 'element-plus'
-
 const emp = empStore();
 const URL = import.meta.env.VITE_API_JAVAURL;
 
@@ -145,7 +144,9 @@ const normalNews = ref([]); // 全部消息
 const offNews = ref([]); // 下架消息
 const totalPage = ref(null); // 全部消息的總頁數
 const offTotalPage = ref(null); // 下架消息的總頁數
-const searchQuery = ref(); // 模糊搜尋標題
+const searchQuery = ref(''); // 搜尋框
+const titleTotalPage = ref(null); // 模糊搜尋的總頁數
+const useTitlePage = ref(0); // 確認是否有使用模糊搜尋
 
 // 設置一開始進入的頁面為全部消息
 const message = ref('normal');
@@ -153,6 +154,7 @@ const message = ref('normal');
 // 預設第一頁開始
 const currentPage = ref(1);
 const offCurrentPage = ref(1);
+const titleCurrentPage = ref(1);
 
 // 預設詳細消息視窗為false(不彈出)
 const showFormVisible = ref(false);
@@ -178,6 +180,12 @@ const handlePageChange = async (newPage) => {
 const handleOldageChange = async (oldPage) => {
     offCurrentPage.value = oldPage;
     await readOffNewsFromDB();
+};
+
+// 模糊搜尋的換頁
+const titlePageChange = async (titlePage) => {
+    titleCurrentPage.value = titlePage;
+    await handleLikeSearch(searchQuery.value);
 };
 
 // 讀取資料庫的消息
@@ -253,6 +261,7 @@ const submitAddForm = async () => {
         Swal.fire('新增失敗!', '請再次確認消息內容。', 'error');
         console.error('新增消息時發生錯誤', error);
     }
+    addFormData.value = {};
 };
 
 // 重新上架消息
@@ -281,6 +290,7 @@ const readOffNewsFromDB = async () => {
     try {
         const response = await axios.get(`${URL}news/remove`, {
             params: {
+                publisher: emp.empId,
                 page: offCurrentPage.value,
                 size: 8,
             },
@@ -294,6 +304,33 @@ const readOffNewsFromDB = async () => {
         console.error('獲取消息時發生錯誤', error);
     }
 };
+
+// 模糊搜尋
+const handleLikeSearch = async (newQuery) => {
+    if (newQuery !== '') {
+        useTitlePage.value = 1; // 改為true，告訴程式啟用模糊搜尋
+        try {
+            const response = await axios.get(`${URL}news/search`, {
+                params: {
+                    title: newQuery,
+                    page: titleCurrentPage.value,
+                    size: 8,
+                },
+            });
+            // 將搜尋結果賦值給normalNews
+            normalNews.value = response.data.content;
+            // 賦予總頁數
+            titleTotalPage.value = response.data.totalPages;
+        } catch (error) {
+            console.error('搜尋時發生錯誤', error);
+        }
+    } else {
+        // 如果搜索框為空，重新讀取所有消息
+        useTitlePage.value = 0;
+        await readNewsFromDB();
+        await readOffNewsFromDB();
+    }
+}
 
 // content 就是傳入的 scope.row
 const showMessageDetails = content => {

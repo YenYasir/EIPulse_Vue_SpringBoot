@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.eipulse.teamproject.dto.eventdto.NewsDTO;
 import com.eipulse.teamproject.repository.eventrepository.NewsRepository;
-import com.eipulse.teamproject.entity.evententity.Event;
 import com.eipulse.teamproject.entity.evententity.News;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -33,10 +32,6 @@ public class NewsService {
     	newsRepo.updateNews(id, news); 
     }
     
-//// 依照消息id刪除消息
-//    public void deleteNewsById(Integer newsId) {
-//        newsRepo.deleteById(newsId);
-//    }
     
     // 標題模糊搜尋消息
 //    PageRequest.of 方法中的 page 預設值是 0，表示第一頁，size為每頁要返回的筆數
@@ -52,9 +47,9 @@ public class NewsService {
     }
     
     // 顯示下架消息
-    public Page<NewsDTO> findAllRemovedNews(int page, int size) {
+    public Page<NewsDTO> findAllRemovedNews(Integer publisher,int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        return newsRepo.findRemovedNews(pageable);
+        return newsRepo.findRemovedNews(publisher,pageable);
     }
     
     // 轉換傳回的 DTO 為 Entity存入資料庫
@@ -69,5 +64,6 @@ public class NewsService {
         newsEntity.setPublisher(newsDTO.getPublisher());
         return newsEntity;
     }
+   
 
 }

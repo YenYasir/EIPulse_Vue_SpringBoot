@@ -35,22 +35,10 @@ public class NewsDTO {
 	        this.file = news.getFile();
 	        this.postTime = news.getPostTime();
 	        this.visible=news.getVisible();
-//	        this.removeDate=news.getRemoveDate();
 	        this.publisher=news.getPublisher();
 	        this.publisherName=news.getEmp().getEmpName();
 	        this.publisherTitle=news.getEmp().getTitle().getTitleName();
 	    }
-	    
-//	 // 用於前端回傳資料
-//	    public NewsDTO(Integer newsId, Integer publisher, String title, String content, String file, LocalDateTime postTime, Date removeDate) {
-//	        this.newsId = newsId;
-//	        this.publisher = publisher;
-//	        this.title = title;
-//	        this.content = content;
-//	        this.file = file;
-//	        this.postTime = postTime;
-//	        this.removeDate = removeDate;	        
-//	    }
 	    
 	    public NewsDTO() {
 	        
