@@ -130,12 +130,12 @@ export default {
       this.$emit("product-update", this.product);
     },
     insertDemo() {
-      this.product.description = "什麼都能折";
-      this.product.productName = "萬用折價券";
-      this.product.price = 999;
+      this.product.description = "陶板屋餐券";
+      this.product.productName = "平日午餐券";
+      this.product.price = 650;
       this.product.stockQuantity = 10;
       this.product.imageUrl =
-        "https://memeprod.sgp1.digitaloceanspaces.com/user-wtf/1636431282729.jpg";
+        "https://shoplineimg.com/5a14d0ee72fdc03c82001454/6178b95e605a650035b00205/800x.webp?source_format=jpg";
       this.$emit("product-update", this.product);
     },
   },
