@@ -78,4 +78,8 @@ section {
   max-height: 100vh;
   overflow-x: auto;
 }
+
+dropdown{
+  color: #000;
+}
 </style>

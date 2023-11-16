@@ -1,7 +1,7 @@
 -- 初建請選取語句創建資料庫 drop 亦同
 -- create database  eipulsedemo;
 -- drop database eipulsedemo;
-
+ 	
 -- drop表用 自取
 -- drop  table if exists 
 create table if not exists chats
@@ -160,7 +160,7 @@ create table if not exists employee
     gender      varchar(10)          not null,
     phone       varchar(20)          not null,
     tel         varchar(50)          null,
-    photo_url   varchar(255)         null,
+    photo_url   varchar(1000)         null,
     address     varchar(255)         null,
     title_id    int                  not null,
     hire_date   date                 null,
@@ -626,10 +626,10 @@ values  ( '正式員工', '允許讀取個人資料'),
         ( '經理', '允許管理系統設定');
 
 insert into employee (emp_id, emp_name, birth, password, email, id_number, gender, phone, tel, photo_url, address, title_id, hire_date, leave_date, edit_date, emp_state, emp_line_id)
-values  (1000, '嚴經理', '1990-01-01', '100', 'gbu06m4d93@gmail.com', 'A123456789', '男', '0912345678', '02-12345678', 'https://eipulseimages.blob.core.windows.net/images/emp/1000/DALL%C2%B7E%202023-11-16%2009.57.00%20-%20A%20professional%20headshot%20of%20a%20male%20manager.%20He%20is%20in%20his%20mid-30s%2C%20with%20short%2C%20neatly%20styled%20hair%20and%20a%20confident%2C%20approachable%20expression.%20He%27s%20wearing.png', '台北市圓山區', 6, '2019-01-01', null, '2023-11-05', '在職', null),
+values  (1000, '嚴經理', '1990-01-01', '100', 'gbu06m4d93@gmail.com', 'A123456789', '男', '0912345678', '02-12345678', 'https://eipulseimages.blob.core.windows.net/images/emp/1000/DALL%C2%B7E%202023-11-16%2009.57.00%20-%20A%20professional%20headshot%20of%20a%20male%20manager.%20He%20is%20in%20his%20mid-30s%2C%20with%20short%2C%20neatly%20styled%20hair%20and%20a%20confident%2C%20approachable%20expression.%20He%27s%20wearing.png', '台北市圓山區', 1, '2019-01-01', null, '2023-11-05', '在職', null),
         (1001, '蕭經理', '1991-02-02', '100', 'li@gmail.com', 'A987654321', '女', '0912345678', null, 'https://eipulseimages.blob.core.windows.net/images/emp/1002/%E5%93%A1%E5%B7%A51.png', '台北市', 3, '2019-01-02', null, '2023-10-30', '在職', null),
         (1002, '凃經理', '1992-03-03', '100', 'zhang@gmail.com', 'B123456789', '男', '0912345678', null, 'https://eipulseimages.blob.core.windows.net/images/emp/1003/%E5%93%A1%E5%B7%A52-1.jpg', '新北市', 1, '2019-01-03', null, '2023-10-30', '在職', null),
-        (1003, '李四', '1993-04-04', '100', 'li4@gmail.com', 'B987654321', '女', '0912345678', '02-12345678', 'https://eipulseimages.blob.core.windows.net/images/emp/1004/%E5%93%A1%E5%B7%A51-1.jpg', '新北市', 4, '2022-01-04', null, '2023-10-30', '在職', null),
+        (1003, '李四', '1993-04-04', '100', 'li4@gmail.com', 'B987654321', '女', '0912345678', '02-12345678', 'https://eipulseimages.blob.core.windows.net/images/emp/1004/%E5%93%A1%E5%B7%A51-1.jpg', '新北市', 2, '2022-01-04', null, '2023-10-30', '在職', null),
         (1004, '王五', '1994-05-05', '100', 'wang5@gmail.com', 'C123456789', '男', '0912345678', null, 'https://eipulseimages.blob.core.windows.net/images/emp/1005/%E5%93%A1%E5%B7%A52-3.jpg', '桃園市', 5, '2022-01-05', null, '2023-10-30', '在職', null),
         (1005, '趙六', '1995-06-06', '100', 'zhao@gmail.com', 'C987654321', '女', '0912345678', '03-12345678', 'https://eipulseimages.blob.core.windows.net/images/emp/1005/%E5%A5%B3-2.jpg', '桃園市', 7, '2022-01-06', null, '2023-10-30', '在職', null),
         (1006, '孫七', '1996-07-07', '100', 'sun@gmail.com', 'D123456789', '男', '0912345678', null, 'https://eipulseimages.blob.core.windows.net/images/emp/1006/%E5%8D%97-3.png', '台中市', 7, '2022-01-07', null, '2023-10-30', '在職', null),

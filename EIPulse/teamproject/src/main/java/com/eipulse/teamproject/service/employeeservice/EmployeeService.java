@@ -226,26 +226,27 @@ public class EmployeeService {
  }
  
  // 忘記密碼
- public EmpDTO forgetPassword(EmpDTO empDTO, Integer otpVal) {
-  Optional<Employee> optional = empRepo.findByEmail(empDTO.getEmail());
-  if (optional.isPresent()) {
-   Employee employee = optional.get();
-//進階版Thread
-   CompletableFuture.runAsync(() -> {
-    SimpleMailMessage message = new SimpleMailMessage();
-    message.setFrom("EIPulse 科技 <blueyykai@gmail.com>");
-    message.setTo(employee.getEmail());
-    message.setSubject("Eipulse員工驗證碼");
-    message.setText("您的驗證碼為：" + otpVal);
-    javaMailSender.send(message);
-   }).exceptionally(ex -> {
-    throw new UnsupportedOperationException("mail發送失敗");
-   });
-   empDTO.setEmpId(employee.getEmpId());
-   return empDTO;
-  }
-  throw new UnsupportedOperationException("無此email");
- }
+  public EmpDTO forgetPassword(EmpDTO empDTO, Integer otpVal) {
+    Optional<Employee> optional = empRepo.findByEmail(empDTO.getEmail());
+    if (optional.isPresent()) {
+     Employee employee = optional.get();
+  //進階版Thread
+     CompletableFuture.runAsync(() -> {
+      SimpleMailMessage message = new SimpleMailMessage();
+      message.setFrom("EIPulse 科技 <blueyykai@gmail.com>");
+      message.setTo(employee.getEmail());
+      message.setSubject("Eipulse員工驗證碼");
+      message.setText("您的驗證碼為：" + otpVal);
+      javaMailSender.send(message);
+     }).exceptionally(ex -> {
+      throw new UnsupportedOperationException("mail發送失敗");
+     });
+     empDTO.setEmpId(employee.getEmpId());
+     return empDTO;
+    }
+    throw new UnsupportedOperationException("無此email");
+   }
+  
 
  public boolean newPassword(EmpDTO empDTO) {
   Employee employee = empRepo.findById(empDTO.getEmpId()).orElseThrow(() -> new RuntimeException("error"));
