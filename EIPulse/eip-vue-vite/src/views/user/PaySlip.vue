@@ -101,8 +101,6 @@ const show = () => {
 }
 onMounted(() => {
     selectYearAndMonth()
-    loadData()
-
 })
 
 </script>
