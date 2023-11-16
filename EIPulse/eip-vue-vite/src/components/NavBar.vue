@@ -6,7 +6,10 @@
   <div class="container-fluid justify-content-between">
     <!-- Left elements -->
     <div class="d-flex">
- 
+      <i class="bi bi-person-badge" style="color: rgb(255, 85, 0) ;"></i>
+      <span v-if="isManager" class="nav-text">管理端</span>
+      <span v-else class="nav-text">員工端</span>
+
       <!-- Search form -->
       <!-- <form class="input-group w-auto my-auto d-none d-sm-flex">
         <input
@@ -191,5 +194,8 @@ const navigateTo = route => {
 </script>
 
 <style scoped>
-
+.nav-text{
+  color: rgb(255, 85, 0) ;
+  font-size: large;
+}
 </style>

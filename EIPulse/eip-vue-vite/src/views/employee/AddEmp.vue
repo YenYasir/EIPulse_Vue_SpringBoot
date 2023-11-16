@@ -85,7 +85,7 @@ const addHandler = async () => {
 const quickEnter = async () => {
   console.log(456);
   const quickData = {
-    empName: '拾久典武',
+    empName: '林元',
     idNumber: 'A122488164',
     birth: '1988/02/09',
     gender: '男',
