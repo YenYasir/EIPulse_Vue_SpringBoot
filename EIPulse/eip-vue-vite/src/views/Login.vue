@@ -180,6 +180,10 @@ export default {
 margin-bottom: 3vh;
 }
 
+.form-control.form-control-lg{
+  width: 70vh;
+}
+
 html,
 body {
   overflow: hidden;

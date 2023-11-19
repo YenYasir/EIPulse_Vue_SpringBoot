@@ -3,7 +3,7 @@
   <div class="newpassword">
   <div class="card text-center div1">
     <div class="card-header">
-      EIPulse人事入口網站
+      新密碼
     </div>
     <div class="card-body">
       <form @submit.prevent="sendOtp">

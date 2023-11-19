@@ -2,7 +2,7 @@
 <template>
   <clock-time ref="clockModal"></clock-time>
   <div class="d-flex flex-column p-0 bg-dark text-white"  :class="{ 'sidebar': sidebarVisible }" 
-       style="width: 250px; height: 100vh;overflow-y: auto;">
+       style="width: 25vh; height: 100vh;overflow-y: auto;">
     <h3 class=" rounded-4 text-center " style="line-height: 2 ;background-color: black ; color:rgb(255, 204, 0);" >
       <img src="../assets/logo/logo.png" height="40" alt="Logo" loading="lazy"/>
       EIPulse

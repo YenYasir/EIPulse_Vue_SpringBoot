@@ -6,7 +6,7 @@ let getLocationButton = document.querySelector("#userLocation");
 
 function initMap() {
     let map = new google.maps.Map(document.querySelector("#map"), {
-        center: {lat: 22.99297785113601, lng: 120.18681223016014}, //起始位置
+        center: {lat: 22.99297785113601, lng: 120.18681223016014}, // 起始位置
         zoom: 18, //調整地圖大小
         draggable:false,  //關閉手動移動地圖
         disableDefaultUI:true, //關閉所有UI
@@ -18,7 +18,7 @@ function initMap() {
             if (userLocation) {
                 userLocation.getCurrentPosition(printPosition, getLocationError);
             } else {
-                alert("無法用戶獲取位置");
+                alert("無法獲取員工位置");
             }
         })
     } else {

@@ -85,7 +85,7 @@ const addHandler = async () => {
 const quickEnter = async () => {
   console.log(456);
   const quickData = {
-    empName: '林元',
+    empName: '林二十',
     idNumber: 'A122488164',
     birth: '1988/02/09',
     gender: '男',
@@ -279,7 +279,7 @@ const fileChange = (e) => {
             </template>
           </select>
         </div>
-
+  
         <!-- 按鈕 -->
         <div class="col-12">
           <button type="submit" class="btn btn-warning">新增</button>

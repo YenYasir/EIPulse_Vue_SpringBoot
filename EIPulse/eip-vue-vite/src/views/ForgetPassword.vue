@@ -80,7 +80,7 @@ export default {
   align-items: center;
   height: 120%;
   background-image: url("../assets/images/chpassword.jpg");
-  background-size: cover;
+  /* background-size: cover; */
 }
 .div1 {
   margin: 50px auto;

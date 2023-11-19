@@ -11,7 +11,7 @@
         :options="{
           draggable: false,
           disableDefaultUI: true,
-          clickableIcons: false,
+          clickableIcons: false,  
         }"
         style="height: 300px; width: 100%"
       >

@@ -127,7 +127,7 @@ onMounted(() => {
       </div>
     </div>
     <div class="input-group input-group-sm mb-3">
-      <span class="input-group-text">更動原因</span>
+      <span class="input-group-text">更動日期</span>
       <input
           type="date"
           class="form-control"

@@ -118,3 +118,9 @@ loadEmp();
         </div>
     </div>
 </template>
+
+<style>
+.form-control{
+    width: 20vh;
+}
+</style>

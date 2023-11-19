@@ -646,7 +646,8 @@ values  (1000, '嚴經理', '1990-01-01', '100', 'gbu06m4d93@gmail.com', 'A12345
         (1017, '嚴裕凱', '1996-11-27', '100', 'u06m4d93@gmail.com', 'D123456789', '男', '0912345678', null, 'https://eipulseimages.blob.core.windows.net/images/emp/1017/%E5%8D%97-6.png', '台中市', 2, '2022-01-27', null, '2023-11-05', '在職', null),
         (1018, '測試用員工18', '1997-11-28', '100', 'zhou18@gmail.com', 'D987654321', '女', '0912345678', '04-12345678', 'https://eipulseimages.blob.core.windows.net/images/emp/1018/%E5%A5%B3-4.jpg', '台中市', 2, '2022-01-28', null, '2023-10-31', '離職', null),
         (1019, '郭二十', '1999-11-30', '100', 'guo20@gmail.com', 'O987654321', '女', '0912345678', '05-12345678', 'https://eipulseimages.blob.core.windows.net/images/emp/1019/%E5%A5%B3-7.png', '台南市', 5, '2022-01-30', null, '2023-10-30', '離職', null);
-insert into permission_info ( emp_id, permission_id)
+
+       insert into permission_info ( emp_id, permission_id)
 values  ( 1000, 6),
         ( 1001, 6),
         ( 1002, 6),
@@ -659,12 +660,12 @@ values  ( 1000, 6),
         ( 1009, 1),
         ( 1010, 1),
         ( 1011, 1),
-        ( 1012, 6),
-        ( 1013, 6),
-        ( 1014, 6),
-        ( 1015, 6),
-        ( 1016, 6),
-        ( 1017, 6),
+        ( 1012, 1),
+        ( 1013, 1),
+        ( 1014, 1),
+        ( 1015, 1),
+        ( 1016, 1),
+        ( 1017, 1),
         ( 1018, 1),
         ( 1019, 1);
 
